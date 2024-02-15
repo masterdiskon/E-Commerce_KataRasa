@@ -1,0 +1,14 @@
+{
+  "resources": [
+    {
+      "link": "https://twitter.com/kendalmintcode",
+      "imageUrl": "https://placeimg.com/300/300/any",
+      "title": "Coffee Beans - Tem..",
+      "type": "Non coffee",
+      "originalPrice": "Rp28.000",
+      "discountedPrice": "Rp24.000",
+      "rating": "4"
+    }
+    
+  ]
+}

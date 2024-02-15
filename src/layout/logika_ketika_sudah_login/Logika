@@ -1,0 +1,143 @@
+ {/* Logika ketika sudah login  */}
+          {/* <>
+            {isLoggedIn ? (
+              <>
+                <div>
+                  <div
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="flex items-center cursor-pointer"
+                  >
+                    <img
+                      className="rounded-full w-5 h-5"
+                      src={LogoKatarasa}
+                      alt="Avatar"
+                    />
+                    <span className="mr-2 ml-5">{staticName}</span>{" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className={`h-4 w-4 ${
+                        showDropdown ? "transform rotate-180" : ""
+                      }`}
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                  {showDropdown && (
+                    <div className="absolute bg-white border rounded-md mt-2">
+                      <ul>
+                        <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">
+                          Akun
+                        </li>
+                        <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">
+                          <Link to="/history">History Pesanan</Link>
+                        </li>
+                        <li className="py-2 px-4 hover:bg-gray-100 cursor-pointer">
+                          Pengaturan
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <a
+                href="#signin"
+                onClick={() => setModalVisible(true)}
+                className="text-white border border-white rounded-full px-3 py-1 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
+              >
+                Sign In
+              </a>
+            )}
+
+            {!isLoggedIn && (
+              <Button
+                onClick={() => setModalVisible(true)}
+                className="text-white border border-white bg-[#3B8F51] rounded-full px-5 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
+              >
+                Login
+              </Button>
+            )}
+
+            <Modal
+              width={600}
+              visible={modalVisible}
+              onCancel={() => {
+                setModalVisible(false);
+                setEmail(""); // Reset email setelah modal ditutup
+                setPassword(""); // Reset password setelah modal ditutup
+              }}
+              footer={null}
+              title={
+                <span
+                  style={{ color: "#3B8F51" }}
+                  className="font-semibold text-3xl"
+                >
+                  Masuk
+                </span>
+              }
+            >
+              <div className="mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
+                <div className="mt-10">
+                  <label className=" font-medium text-xl">Email</label>
+                  <Input
+                    className="mt-3 border-none rounded-none"
+                    placeholder="Masukkan Email Anda"
+                    style={{ backgroundColor: "#E1DFDF" }}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="mt-5">
+                  <label className="font-medium text-xl">Password</label>
+                  <Input.Password
+                    className="mt-3 border-none rounded-none"
+                    placeholder="Masukkan Password Anda"
+                    iconRender={(visible) =>
+                      visible ? (
+                        <EyeTwoTone onClick={togglePasswordVisibility} />
+                      ) : (
+                        <EyeInvisibleOutlined
+                          onClick={togglePasswordVisibility}
+                        />
+                      )
+                    }
+                    type={passwordVisible ? "text" : "password"}
+                    bordered={false}
+                    style={{ backgroundColor: "#E1DFDF" }}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button
+                  className="mt-5 justify-center w-full rounded-full bg-[#3B8F51] text-white hover:bg-transparent hover:border-green-500 hover:text-green-500"
+                  onClick={handleLogin}
+                >
+                  Login
+                </Button>
+
+                <p className="text-end mt-5 text-[#3B8F51] font-medium text-sm cursor-pointer">
+                  lupa password ?
+                </p>
+                <br />
+                <br />
+                <br />
+
+                <hr className="border-1 border-solid border-[#3B8F51]" />
+                <br />
+                <br />
+
+                <Button className="mt-5 justify-center w-full rounded-full border-solid border-black flex items-center">
+                  Login Via Google
+                </Button>
+                <Button className="mt-5 justify-center w-full rounded-full border-solid border-black flex items-center">
+                  Eureka Log In
+                </Button>
+              </div>
+            </Modal>
+          </> */}
