@@ -390,19 +390,19 @@ function About() {
 
               {/* locations */}
               <>
-                <div className=" mx-auto ">
-                  <h1 className="font-semibold text-lg pl-10">
-                    Store Locations
-                  </h1>
-                </div>
+                <>
+                  <div className="mx-auto">
+                    <h1 className="font-semibold text-lg pl-10">
+                      Store Locations
+                    </h1>
+                  </div>
 
-                <div className="mx-auto mt-5 pl-10 pr-10">
-                  <div>
+                  <div className="mx-auto mt-5 pl-10 pr-10 relative">
                     {images.map((image, index) => (
                       <div key={index} className="w-full">
                         <div className="bg-white rounded-lg shadow-md mb-10">
                           <img src={image.src} alt="" className="h-[150px]" />
-                          <div className="w-full  p-5">
+                          <div className="w-full p-5">
                             <div className="w-full">
                               <h1 className="text-[22px] font-medium">
                                 {image.title}
@@ -412,31 +412,33 @@ function About() {
                               </p>
                             </div>
                             <div className="flex justify-between">
-                             <div className="w-1/2 flex mt-2">
-                             <img
-                                src={sendok}
-                                alt="Logo 1"
-                                className="h-[50px]"
-                              />
-                              <img
-                                src={shoppee}
-                                alt="Logo 2"
-                                className="h-[50px]"
-                              />
-                              <img
-                                src={grab}
-                                alt="Logo 3"
-                                className="h-[50px]"
-                              />
-                             </div>
+                              <div className="w-1/2 flex mt-2">
+                                <img
+                                  src={sendok}
+                                  alt="Logo 1"
+                                  className="h-[50px]"
+                                />
+                                <img
+                                  src={shoppee}
+                                  alt="Logo 2"
+                                  className="h-[50px]"
+                                />
+                                <img
+                                  src={grab}
+                                  alt="Logo 3"
+                                  className="h-[50px]"
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
                   </div>
-                </div>
-                <Footer />
+                  <Footer />
+                </>
+
+          
               </>
             </div>
           </div>
