@@ -129,14 +129,14 @@ const Carousel = () => {
                   <div className="flex justify-between absolute top left w-full h-full">
                     <button
                       onClick={movePrev}
-                      className="hidden sm:hidden text-black w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+                      className="hover:bg-transparent  text-[#3b8f51] w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
                       disabled={isDisabled("prev")}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-12 w-20 -ml-5"
                         fill="none"
-                        viewBox="0 0 24 24"
+                        viewBox="0 0 40 30"
                         stroke="currentColor"
                         strokeWidth={2}
                       >
@@ -150,14 +150,14 @@ const Carousel = () => {
                     </button>
                     <button
                       onClick={moveNext}
-                      className="hidden sm:hidden text-black w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+                      className="hover:bg-transparent text-[#3b8f51] w-6 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
                       disabled={isDisabled("next")}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-12 w-20 -ml-5"
                         fill="none"
-                        viewBox="0 0 24 24"
+                        viewBox="0 0 30 30"
                         stroke="currentColor"
                         strokeWidth={2}
                       >
@@ -170,6 +170,7 @@ const Carousel = () => {
                       <span className="sr-only">Next</span>
                     </button>
                   </div>
+
                   <div className="container mx-auto p-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
                       <div className="sm:col-span-1 lg:col-span-1">
@@ -211,7 +212,7 @@ const Carousel = () => {
                           <Link to="/detailproduct">
                             <div
                               ref={carousel}
-                              className="carousel-container   relative flex gap-2 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+                              className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                             >
                               {products.map((product, index) => {
                                 return (

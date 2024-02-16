@@ -121,7 +121,7 @@ const BestSeller = () => {
       <>
         <div className="hidden md:inline lg:inline ">
           <div className="text-black   justify-center flex px-10 md:px-20 py-2 mt-5">
-            <div className="carousel  mx-auto flex w-[76rem]">
+            <div className="carousel  mx-auto flex w-[78rem]">
               {/* <h2 className="text-4xl leading-8 font-semibold mb-12 text-slate-700">
           Our epic carousel
         </h2> */}
@@ -129,14 +129,14 @@ const BestSeller = () => {
                 <div className="flex justify-between absolute top left w-full h-full">
                   <button
                     onClick={movePrev}
-                    className="hidden sm:hidden text-black w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+                    className="hover:bg-transparent  text-[#42382e] w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
                     disabled={isDisabled("prev")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-12 w-20 -ml-5"
                       fill="none"
-                      viewBox="0 0 24 24"
+                      viewBox="0 0 40 30"
                       stroke="currentColor"
                       strokeWidth={2}
                     >
@@ -150,14 +150,15 @@ const BestSeller = () => {
                   </button>
                   <button
                     onClick={moveNext}
-                    className="hidden sm:hidden text-black w-10 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
+                    className="hover:bg-transparent text-[#42382e] w-6 h-full text-center opacity-75 hover:opacity-100 disabled:opacity-25 disabled:cursor-not-allowed z-10 p-0 m-0 transition-all ease-in-out duration-300"
                     disabled={isDisabled("next")}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-12 w-20 -ml-5"
                       fill="none"
-                      viewBox="0 0 24 24"
+                      viewBox="0 0 30 30"
+                      
                       stroke="currentColor"
                       strokeWidth={2}
                     >
@@ -202,12 +203,12 @@ const BestSeller = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="sm:col-span-1 lg:col-span-4">
+                    <div className="sm:col-span-1 lg:col-span-4 ">
                       {/* Konten kanan */}
                       <div className="pt-10 " style={{ marginLeft: "-30px" }}>
                         <div
                           ref={carousel}
-                          className="carousel-container  relative flex gap-2 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+                          className="carousel-container  relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                         >
                           {products.map((product, index) => {
                             return (
@@ -271,7 +272,6 @@ const BestSeller = () => {
       </>
 
       {/* Layar HP */}
-     
     </div>
   );
 };
