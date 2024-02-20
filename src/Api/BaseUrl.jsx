@@ -1,4 +1,4 @@
-const KataRasa = `http://localhost:2026/`;
-const Baseurl = KataRasa;
-// const Baseurl = process.env.REACT_APP_API_URL;
+const Baseurl = `https://api.katarasa.id/`;
+
+
 export default Baseurl;

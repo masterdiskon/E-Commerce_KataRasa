@@ -15,6 +15,7 @@ import {
   CloseOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { API_Login } from "../func/FungsiLogin";
 
 function Navbar() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -114,7 +115,7 @@ function Navbar() {
       </Menu.Item>
       <br />
       <Menu.Item key="promo">
-        <Link className=" px-8 py-1  ">
+        <Link to="/promo" className=" px-8 py-1  ">
           {" "}
           <span className="text-[#3B8F51] text-base">Promo</span>
         </Link>
@@ -259,11 +260,8 @@ function Navbar() {
             >
               <Link to="/menu">Home</Link>
             </a>
-            <a
-              href="#promo"
-              className="text-white hover:text-white rounded-full px-4 py-3 hover:bg-[#3B8F51] hover:border-none"
-            >
-              Promo
+            <a className="text-white hover:text-white rounded-full px-4 py-3 hover:bg-[#3B8F51] hover:border-none">
+              <Link to="/promo">Promo</Link>
             </a>
 
             <Input
@@ -412,7 +410,10 @@ function Navbar() {
                 </div>
                 <Button
                   className="mt-5 justify-center w-full h-[50px] rounded-full bg-[#3B8F51] text-white hover:bg-transparent hover:border-green-500 hover:text-green-500"
-                  onClick={handleLogin}
+                  onClick={() => {
+                    API_Login();
+                    handleLogin();
+                  }}
                 >
                   Login
                 </Button>
@@ -605,9 +606,8 @@ function Navbar() {
                 <Button
                   className="bg-[#3B8F51] text-white w-full h-16 rounded-full mt-5 sm:text-lg"
                   onClick={() => {
-                   
                     setVisibleOTP(false); // Tampilkan modal OTP
-                    setVisibleVerif(true)
+                    setVisibleVerif(true);
                   }}
                 >
                   Verifikasi

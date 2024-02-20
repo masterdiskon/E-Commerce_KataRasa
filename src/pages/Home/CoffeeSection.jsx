@@ -6,6 +6,8 @@ import PCB3 from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
 import PCB4 from "../../assets/ProductCoffeeBeans/product coffee beans-3.png";
 import PCB5 from "../../assets/ProductCoffeeBeans/productCoffeeBean.png";
 import { Button } from "antd";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
 
 function CoffeeSection() {
   const products = [
@@ -96,6 +98,20 @@ function CoffeeSection() {
       : 0;
   }, []);
   
+
+  const fetchData = async () => {
+    try {
+      const respons = await axios.get(`${Baseurl}product/get-product?page=1&limit=5&keyword=`
+     );
+
+      console.log("ini data produk", respons.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div>
       {/* Layar Besar */}

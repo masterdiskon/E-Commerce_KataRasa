@@ -9,6 +9,8 @@ import TambahKeranjang from "./src/pages/Cart/TambahKeranjang";
 import Payment from "./src/pages/Cart/Payment";
 import History from "./src/pages/History/History";
 import About from "./src/pages/AboutUs/About";
+import Promo from "./src/pages/Promo/promo";
+import DetailPromo from "./src/pages/Promo/DetailPromo";
 
 const AppRouter = () => {
   return (
@@ -22,6 +24,8 @@ const AppRouter = () => {
       <Route path="/pencarian" element={<Pencarian />} />
       <Route path="/detailproduct" element={<DetailProduct />} />
       <Route path="/history" element={<History />} />
+      <Route path="/promo" element={<Promo />} />
+      <Route path="/detailpromosi" element={<DetailPromo />} />
       <Route path="*" element={<App />} />
     </Routes>
   );

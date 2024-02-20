@@ -27,22 +27,7 @@ function Banner() {
     ],
   };
 
-  const fetchData = async () => {
-    try {
-      const respons = await axios.get(`${Baseurl}nimda/other/data-banner`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      });
 
-      console.log("ini data banner", respons);
-    } catch (error) {}
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   return (
     <>

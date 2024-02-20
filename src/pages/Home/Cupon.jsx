@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Cupon1 from "../../assets/Cupon/Cupon1.png";
 import Cupon2 from "../../assets/Cupon/Cupon2.png";
 import { Card, Carousel } from "antd";
+import { Link } from "react-router-dom";
 
 function Cupon() {
   const maxScrollWidth = useRef(0);
@@ -94,6 +95,7 @@ function Cupon() {
               kupon!
             </p>
           </div>
+        
           <div
             className="flex overflow-auto w-[75rem] ml-4 "
             style={{ maxWidth: "100%" }}
@@ -127,6 +129,7 @@ function Cupon() {
               </div>
             ))}
           </div>
+       
           <div className="ml-5 mr-2 mt-0 flex justify-end text-[#7da286]">
             <p className="cursor-pointer">
             *klik untuk copy kode
