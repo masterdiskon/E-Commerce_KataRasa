@@ -208,7 +208,7 @@ function Navbar() {
           {/* Search Layar HP */}
 
           <>
-            <div className="md:hidden mr-12">
+            <div className="md:hidden mr-20">
               <img
                 src={SearchIcon}
                 alt="order"
@@ -240,7 +240,7 @@ function Navbar() {
               </Modal>
             </div>
           </>
-          <div className="mr-14 ">
+          <div className="mr-28 ">
             {/* Logo */}
             <Link to="/home">
               {" "}

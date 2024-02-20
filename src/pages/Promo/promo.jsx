@@ -34,24 +34,50 @@ function Promo() {
             </div>
 
             <div className="mt-10 w-full">
-            
               <div className="flex flex-wrap justify-between">
                 {promoData.map((promo, index) => (
                   <div className="w-1/3 mb-5 " key={index}>
                     <Link to="/detailpromosi">
-                    <div className="bg-white rounded-lg shadow-md p-1">
-                      <img src={promo.image} alt={`Promo ${index + 1}`} />
-                      <p className="mb-4 ml-2 font-medium text-lg">
-                        {promo.name}
-                      </p>
-                    </div>
+                      <div className="bg-white rounded-lg shadow-md p-1">
+                        <img src={promo.image} alt={`Promo ${index + 1}`} />
+                        <p className="mb-4 ml-2 font-medium text-lg">
+                          {promo.name}
+                        </p>
+                      </div>
                     </Link>
-                   
                   </div>
                 ))}
               </div>
             </div>
           </div>
+        </div>
+      </>
+
+      {/* Layar HP */}
+      <>
+        <div className="sm:inline lg:hidden md:hidden sm:w-screen w-screen  mx-auto justify-start px-4 py-2">
+          <div className="mt-24 p-3">
+            <h1 className="text-[#3B8F51] font-medium text-xl">
+              Promo Special Kata Rasa
+            </h1>
+          </div>
+          
+          <div className="mt-5 w-full">
+              <div className="flex flex-wrap justify-between">
+                {promoData.map((promo, index) => (
+                  <div className="w-full mb-5 " key={index}>
+                    <Link to="/detailpromosi">
+                      <div className="bg-white rounded-lg shadow-md p-1">
+                        <img src={promo.image} alt={`Promo ${index + 1}`} />
+                        <p className="mb-4 ml-2 font-medium text-lg">
+                          {promo.name}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            </div>
         </div>
       </>
       <div className="hidden md:inline lg:inline">
