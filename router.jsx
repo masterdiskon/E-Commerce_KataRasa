@@ -11,6 +11,9 @@ import History from "./src/pages/History/History";
 import About from "./src/pages/AboutUs/About";
 import Promo from "./src/pages/Promo/promo";
 import DetailPromo from "./src/pages/Promo/DetailPromo";
+import ProductCoffee from "./src/pages/Produk/ProductCoffee";
+import ProductTea from "./src/pages/Produk/ProductTea";
+import ProductChocolate from "./src/pages/Produk/ProductChocolate";
 
 const AppRouter = () => {
   return (
@@ -25,6 +28,9 @@ const AppRouter = () => {
       <Route path="/detailproduct" element={<DetailProduct />} />
       <Route path="/history" element={<History />} />
       <Route path="/promo" element={<Promo />} />
+      <Route path="/product/coffee" element={<ProductCoffee />} />
+      <Route path="/product/chocolate" element={<ProductChocolate />} />
+      <Route path="/product/tea" element={<ProductTea />} />
       <Route path="/detailpromosi" element={<DetailPromo />} />
       <Route path="*" element={<App />} />
     </Routes>
