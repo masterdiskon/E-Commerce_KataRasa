@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
-import gambar from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
-import Ulasan1 from "../../assets/Ulasan/Ulasan1.png";
-import Ulasan2 from "../../assets/Ulasan/Ulasan2.png";
-import Ulasan3 from "../../assets/Ulasan/Ulasan3.png";
-import Ulasan4 from "../../assets/Ulasan/Ulasan4.png";
-import Ulasan5 from "../../assets/Ulasan/Ulasan5.png";
-import Ulasan6 from "../../assets/Ulasan/Ulasan6.png";
-import Orang1 from "../../assets/Ulasan/Orang1.png";
-import Orang2 from "../../assets/Ulasan/Orang2.png";
-import Orang3 from "../../assets/Ulasan/Orang3.png";
+import gambar from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import Ulasan1 from "../../../assets/Ulasan/Ulasan1.png";
+import Ulasan2 from "../../../assets/Ulasan/Ulasan2.png";
+import Ulasan3 from "../../../assets/Ulasan/Ulasan3.png";
+import Ulasan4 from "../../../assets/Ulasan/Ulasan4.png";
+import Ulasan5 from "../../../assets/Ulasan/Ulasan5.png";
+import Ulasan6 from "../../../assets/Ulasan/Ulasan6.png";
+import Orang1 from "../../../assets/Ulasan/Orang1.png";
+import Orang2 from "../../../assets/Ulasan/Orang2.png";
+import Orang3 from "../../../assets/Ulasan/Orang3.png";
 import { Pagination } from "antd";
 import { Link } from "react-router-dom";
 

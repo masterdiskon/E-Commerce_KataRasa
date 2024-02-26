@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import BG1 from "../../assets/BannerBelakang/abu.png";
-import Choco1 from "../../assets/ChocoBar/ChocoBar.png";
-import Choco2 from "../../assets/ChocoBar/productChocobar3.png";
-import Choco3 from "../../assets/ChocoBar/productChocobar1.png";
-import Choco4 from "../../assets/ChocoBar/productChocobar2.png";
-import Choco5 from "../../assets/ChocoBar/productChocobar4.png";
+import BG1 from "../../../assets/BannerBelakang/abu.png";
+import Choco1 from "../../../assets/ChocoBar/ChocoBar.png";
+import Choco2 from "../../../assets/ChocoBar/productChocobar3.png";
+import Choco3 from "../../../assets/ChocoBar/productChocobar1.png";
+import Choco4 from "../../../assets/ChocoBar/productChocobar2.png";
+import Choco5 from "../../../assets/ChocoBar/productChocobar4.png";
 
 function ChocolateSection() {
   const maxScrollWidth = useRef(0);

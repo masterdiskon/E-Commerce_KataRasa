@@ -4,14 +4,14 @@ import Footer from "../../layout/Footer";
 import { EditOutlined } from "@ant-design/icons";
 import { Button, Input, Select } from "antd";
 const { Option } = Select;
-import LogoGrab from "../../assets/logo/logoGrab.png";
-import Image1 from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import LogoGrab from "../../../assets/logo/logoGrab.png";
+import Image1 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
-import Mandiri from "../../assets/Bank/Mandiri.png";
-import BCA from "../../assets/Bank/BCA.png";
-import BNI from "../../assets/Bank/BNI.png";
-import OCBC from "../../assets/Bank/OCBC.png";
+import Mandiri from "../../../assets/Bank/Mandiri.png";
+import BCA from "../../../assets/Bank/BCA.png";
+import BNI from "../../../assets/Bank/BNI.png";
+import OCBC from "../../../assets/Bank/OCBC.png";
 
 import {
   AppstoreOutlined,

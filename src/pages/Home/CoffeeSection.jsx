@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import BG1 from "../../assets/BannerBelakang/Coklat.png";
-import PCB1 from "../../assets/ProductCoffeeBeans/product coffee beans.png";
-import PCB2 from "../../assets/ProductCoffeeBeans/product coffee beans-1.png";
-import PCB3 from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
-import PCB4 from "../../assets/ProductCoffeeBeans/product coffee beans-3.png";
-import PCB5 from "../../assets/ProductCoffeeBeans/productCoffeeBean.png";
+import BG1 from "../../../assets/BannerBelakang/Coklat.png";
+import PCB1 from "../../../assets/ProductCoffeeBeans/product coffee beans.png";
+import PCB2 from "../../../assets/ProductCoffeeBeans/product coffee beans-1.png";
+import PCB3 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import PCB4 from "../../../assets/ProductCoffeeBeans/product coffee beans-3.png";
+import PCB5 from "../../../assets/ProductCoffeeBeans/productCoffeeBean.png";
 import { Button } from "antd";
 import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";

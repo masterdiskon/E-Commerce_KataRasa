@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import LogoKatarasa from "../assets/Katarasa/KataRasa.png";
-import IconOrder from "../assets/KeranjangPutih.png";
-import IconGoogle from "../assets/logo/Google.png";
-import IconElogs from "../assets/logo/Elogs.png";
-import SearchIcon from "../assets/Search.png";
-import keranjangIcon from "../assets/Keranjang.png";
+import LogoKatarasa from "../../assets/Katarasa/KataRasa.png";
+import IconOrder from "../../assets/KeranjangPutih.png";
+import IconGoogle from "../../assets/logo/Google.png";
+import IconElogs from "../../assets/logo/Elogs.png";
+import SearchIcon from "../../assets/Search.png";
+import keranjangIcon from "../../assets/Keranjang.png";
 import { Button, Dropdown, Input, InputNumber, Menu, Modal, Tag } from "antd";
 import {
   SearchOutlined,

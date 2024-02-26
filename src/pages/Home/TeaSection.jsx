@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import BG1 from "../../assets/BannerBelakang/hijau.png";
-import Tea1 from "../../assets/ProductTea/productTea.png";
-import Tea2 from "../../assets/ProductTea/product Tea-1.png";
-import Tea3 from "../../assets/ProductTea/product Tea-2.png";
-import Tea4 from "../../assets/ProductTea/product Tea-3.png";
-import Tea5 from "../../assets/ProductTea/Tea.png";
+import BG1 from "../../../assets/BannerBelakang/hijau.png";
+import Tea1 from "../../../assets/ProductTea/productTea.png";
+import Tea2 from "../../../assets/ProductTea/product Tea-1.png";
+import Tea3 from "../../../assets/ProductTea/product Tea-2.png";
+import Tea4 from "../../../assets/ProductTea/product Tea-3.png";
+import Tea5 from "../../../assets/ProductTea/Tea.png";
 
 
 function TeaSection() {

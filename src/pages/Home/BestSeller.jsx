@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 // import katarasaLogo from "../src/assets/katarasaLogo.png";
-import PestaDisc from "../../assets/Katarasa/PestaDiscountCoklat.png";
-import PC1 from "../../assets/ProductChocolate/productChocolateJar1.png";
-import PC2 from "../../assets/ProductChocolate/productChocolateJar2.png";
-import PC3 from "../../assets/ProductChocolate/productChocolateJar3.png";
-import PC4 from "../../assets/ProductChocolate/productChocolateJar4.png";
+import PestaDisc from "../../../assets/Katarasa/PestaDiscountCoklat.png";
+import PC1 from "../../../assets/ProductChocolate/productChocolateJar1.png";
+import PC2 from "../../../assets/ProductChocolate/productChocolateJar2.png";
+import PC3 from "../../../assets/ProductChocolate/productChocolateJar3.png";
+import PC4 from "../../../assets/ProductChocolate/productChocolateJar4.png";
 import data from "../../data.json";
 import { Button } from "antd";
 import Navbar from "../../layout/Navbar";

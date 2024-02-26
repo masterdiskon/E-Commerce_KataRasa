@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Banner1 from "../../assets/Katarasa/BannerDefault.png";
-import Banner2 from "../../assets/Katarasa/BannerImlek.png";
+
+import Banner1 from "../../../assets/Katarasa/BannerDefault.png";
+import Banner2 from "../../../assets/Katarasa/BannerImlek.png";
 import { Carousel } from "antd";
 import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";

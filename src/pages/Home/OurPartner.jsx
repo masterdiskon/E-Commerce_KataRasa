@@ -1,10 +1,10 @@
 import React from "react";
-import PE from "../../assets/Partners/Logo-Penerbit-Erlangga.png";
-import JI from "../../assets/Partners/Jajaid.png";
-import EBH from "../../assets/Partners/EurekaBookhouse.png";
-import Masdis from "../../assets/Partners/Master Diskon.png";
-import RACE from "../../assets/Partners/Race_New.png";
-import Elogs from "../../assets/Partners/elogs.png";
+import PE from "../../../assets/Partners/Logo-Penerbit-Erlangga.png";
+import JI from "../../../assets/Partners/Jajaid.png";
+import EBH from "../../../assets/Partners/EurekaBookhouse.png";
+import Masdis from "../../../assets/Partners/Master Diskon.png";
+import RACE from "../../../assets/Partners/Race_New.png";
+import Elogs from "../../../assets/Partners/elogs.png";
 
 function OurPartner() {
   const partners = [

@@ -1,13 +1,13 @@
 import React from "react";
-import Logo from "../assets/Katasa_Putih.png"; // Ganti dengan path logo Anda
-import FooterBackground from "../assets/Footer.png"; // Ganti dengan path gambar background Anda
-import FooterBackground2 from "../assets/FooterBackground2.png"; // Ganti dengan path gambar background Anda
-import IG from "../assets/Sosmed/IG.png";
-import FB from "../assets/Sosmed/FB.png";
-import TT from "../assets/Sosmed/TT.png";
-import TWIT from "../assets/Sosmed/TWIT.png";
-import APS from "../assets/Sosmed/APS.png";
-import GP from "../assets/Sosmed/GP.png";
+import Logo from "../../assets/Katasa_Putih.png"; // Ganti dengan path logo Anda
+import FooterBackground from "../../assets/Footer.png"; // Ganti dengan path gambar background Anda
+import FooterBackground2 from "../../assets/FooterBackground2.png"; // Ganti dengan path gambar background Anda
+import IG from "../../assets/Sosmed/IG.png";
+import FB from "../../assets/Sosmed/FB.png";
+import TT from "../../assets/Sosmed/TT.png";
+import TWIT from "../../assets/Sosmed/TWIT.png";
+import APS from "../../assets/Sosmed/APS.png";
+import GP from "../../assets/Sosmed/GP.png";
 import { Link } from "react-router-dom";
 // import { Link, useNavigate } from "react-router-dom";
 

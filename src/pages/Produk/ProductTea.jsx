@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import Tea1 from "../../assets/ProductTea/productTea.png";
-import Tea2 from "../../assets/ProductTea/product Tea-1.png";
-import Tea3 from "../../assets/ProductTea/product Tea-2.png";
-import Tea4 from "../../assets/ProductTea/product Tea-3.png";
-import BackgroundTea from "../../assets/Produk/ProductpageTeaLeaves.png";
+import Tea1 from "../../../assets/ProductTea/productTea.png";
+import Tea2 from "../../../assets/ProductTea/product Tea-1.png";
+import Tea3 from "../../../assets/ProductTea/product Tea-2.png";
+import Tea4 from "../../../assets/ProductTea/product Tea-3.png";
+import BackgroundTea from "../../../assets/Produk/ProductpageTeaLeaves.png";
 import Navbar from "../../layout/Navbar";
 import { Slider } from "antd";
 import Footer from "../../layout/Footer";

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import Navbar from "../../layout/Navbar";
-import BackgroundChocolate from "../../assets/Produk/ProductpageChocolate.png";
-import Choco1 from "../../assets/ProductChocolate/productChocolateJar2.png";
-import Choco2 from "../../assets/ProductChocolate/productChocolateJar1.png";
-import Choco3 from "../../assets/ProductChocolate/productChocolateJar4.png";
-import Choco4 from "../../assets/ProductChocolate/productChocolateJar3.png";
-import Bar1 from "../../assets/ChocoBar/productChocobar3.png";
-import Bar2 from "../../assets/ChocoBar/productChocobar1.png";
-import Bar3 from "../../assets/ChocoBar/productChocobar2.png";
-import Bar4 from "../../assets/ChocoBar/productChocobar4.png";
+import BackgroundChocolate from "../../../assets/Produk/ProductpageChocolate.png";
+import Choco1 from "../../../assets/ProductChocolate/productChocolateJar2.png";
+import Choco2 from "../../../assets/ProductChocolate/productChocolateJar1.png";
+import Choco3 from "../../../assets/ProductChocolate/productChocolateJar4.png";
+import Choco4 from "../../../assets/ProductChocolate/productChocolateJar3.png";
+import Bar1 from "../../../assets/ChocoBar/productChocobar3.png";
+import Bar2 from "../../../assets/ChocoBar/productChocobar1.png";
+import Bar3 from "../../../assets/ChocoBar/productChocobar2.png";
+import Bar4 from "../../../assets/ChocoBar/productChocobar4.png";
 import { Slider } from "antd";
 import Footer from "../../layout/Footer";
 

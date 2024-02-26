@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Navbar from "../../layout/Navbar";
-import BackgroundCoffee from "../../assets/Produk/ProductpageCoffeBeans.png";
-import ProductCoffee1 from "../../assets/ProductCoffeeBeans/product coffee beans.png";
-import ProductCoffee2 from "../../assets/ProductCoffeeBeans/product coffee beans-1.png";
-import ProductCoffee3 from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
-import ProductCoffee4 from "../../assets/ProductCoffeeBeans/product coffee beans-3.png";
+import BackgroundCoffee from "../../../assets/Produk/ProductpageCoffeBeans.png";
+import ProductCoffee1 from "../../../assets/ProductCoffeeBeans/product coffee beans.png";
+import ProductCoffee2 from "../../../assets/ProductCoffeeBeans/product coffee beans-1.png";
+import ProductCoffee3 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import ProductCoffee4 from "../../../assets/ProductCoffeeBeans/product coffee beans-3.png";
 import { Pagination, Slider } from "antd";
 import Footer from "../../layout/Footer";
 

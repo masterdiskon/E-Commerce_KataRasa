@@ -1,11 +1,11 @@
 import React from "react";
 import Navbar from "../../layout/Navbar";
-import Promo1 from "../../assets/Promo/Promo1.png";
-import Promo2 from "../../assets/Promo/Promo2.png";
-import Promo3 from "../../assets/Promo/Promo3.png";
-import Promo4 from "../../assets/Promo/Promo4.png";
-import Promo5 from "../../assets/Promo/Promo5.png";
-import Promo6 from "../../assets/Promo/Promo6.png";
+import Promo1 from "../../../assets/Promo/Promo1.png";
+import Promo2 from "../../../assets/Promo/Promo2.png";
+import Promo3 from "../../../assets/Promo/Promo3.png";
+import Promo4 from "../../../assets/Promo/Promo4.png";
+import Promo5 from "../../../assets/Promo/Promo5.png";
+import Promo6 from "../../../assets/Promo/Promo6.png";
 import Footer from "../../layout/Footer";
 import { Link } from "react-router-dom";
 

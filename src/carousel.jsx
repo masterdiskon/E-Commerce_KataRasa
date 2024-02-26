@@ -1,10 +1,10 @@
 import { useState, useRef, useEffect } from "react";
-import PestaDisc from "./assets/PestaDiscount.png";
-import ProductCoffee from "./assets/ProductCoffeeBeans/product coffee beans-2.png";
-import ProductChocoBar1 from "./assets/ChocoBar/productChocobar2.png";
-import ProductChocoBar2 from "./assets/ChocoBar/productChocobar4.png";
-import ProductChocolate1 from "./assets/ProductChocolate/productChocolateJar2.png";
-import ProductChocolate2 from "./assets/ProductChocolate/productChocolateJar4.png";
+import PestaDisc from "../assets/PestaDiscount.png";
+import ProductCoffee from "../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import ProductChocoBar1 from "../assets/ChocoBar/productChocobar2.png";
+import ProductChocoBar2 from "../assets/ChocoBar/productChocobar4.png";
+import ProductChocolate1 from "../assets/ProductChocolate/productChocolateJar2.png";
+import ProductChocolate2 from "../assets/ProductChocolate/productChocolateJar4.png";
 import data from "./data.json";
 import { Button, Col, Row } from "antd";
 import Navbar from "./layout/Navbar";

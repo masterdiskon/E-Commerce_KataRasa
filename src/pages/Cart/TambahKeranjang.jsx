@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
 import { Button, Input, Radio, Tag } from "antd";
-import produk1 from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
-import produk2 from "../../assets/ProductCoffeeBeans/product coffee beans-1.png";
-import produk3 from "../../assets/ProductCoffeeBeans/product coffee beans-3.png";
-import Tea from "../../assets/ProductTea/Tea.png";
+import produk1 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import produk2 from "../../../assets/ProductCoffeeBeans/product coffee beans-1.png";
+import produk3 from "../../../assets/ProductCoffeeBeans/product coffee beans-3.png";
+import Tea from "../../../assets/ProductTea/Tea.png";
 import { Link } from "react-router-dom";
 
 

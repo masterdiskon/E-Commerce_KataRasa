@@ -1,8 +1,8 @@
 import React from "react";
-import BT1 from "../../assets/Produk/CoffeBeans.png";
-import BT2 from "../../assets/Produk/TeaLeaves.png";
-import BT3 from "../../assets/Produk/Chocolate.png";
-import BT4 from "../../assets/Produk/Merch.png";
+import BT1 from "../../../assets/Produk/CoffeBeans.png";
+import BT2 from "../../../assets/Produk/TeaLeaves.png";
+import BT3 from "../../../assets/Produk/Chocolate.png";
+import BT4 from "../../../assets/Produk/Merch.png";
 import { Link } from "react-router-dom";
 
 function ButtonHalamanLain() {

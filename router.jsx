@@ -14,6 +14,7 @@ import DetailPromo from "./src/pages/Promo/DetailPromo";
 import ProductCoffee from "./src/pages/Produk/ProductCoffee";
 import ProductTea from "./src/pages/Produk/ProductTea";
 import ProductChocolate from "./src/pages/Produk/ProductChocolate";
+import ProductMerchen from "./src/pages/Produk/ProductMerchen";
 
 const AppRouter = () => {
   return (
@@ -31,6 +32,7 @@ const AppRouter = () => {
       <Route path="/product/coffee" element={<ProductCoffee />} />
       <Route path="/product/chocolate" element={<ProductChocolate />} />
       <Route path="/product/tea" element={<ProductTea />} />
+      <Route path="/product/merch" element={<ProductMerchen />} />
       <Route path="/detailpromosi" element={<DetailPromo />} />
       <Route path="*" element={<App />} />
     </Routes>

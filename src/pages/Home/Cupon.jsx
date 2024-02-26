@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import Cupon1 from "../../assets/Cupon/Cupon1.png";
-import Cupon2 from "../../assets/Cupon/Cupon2.png";
+
+import Cupon1 from "../../../assets/Cupon/Cupon1.png";
+import Cupon2 from "../../../assets/Cupon/Cupon2.png";
 import { Card, Carousel } from "antd";
 import { Link } from "react-router-dom";
 

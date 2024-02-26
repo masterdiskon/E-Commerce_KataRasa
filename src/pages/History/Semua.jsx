@@ -1,5 +1,5 @@
 import React from "react";
-import IMG1 from "../../assets/ProductCoffeeBeans/product coffee beans-2.png";
+import IMG1 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
 import { Button, Tag } from "antd";
 
 function Semua() {
