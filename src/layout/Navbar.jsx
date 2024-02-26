@@ -121,13 +121,7 @@ function Navbar() {
         </Link>
       </Menu.Item>
       <br />
-      {/* <Menu.Item key="product">
-        <Link to="/product" className=" px-8 py-1  ">
-          {" "}
-          <span className="text-[#3B8F51] text-base">Produk</span>
-        </Link>
-      </Menu.Item>
-      <br /> */}
+
       <Menu className="flex justify-center">
         <Menu.Item>
           <Link to="/tambahkeranjang">
@@ -270,9 +264,6 @@ function Navbar() {
             <a className="text-white hover:text-white rounded-full px-4 py-3 hover:bg-[#3B8F51] hover:border-none">
               <Link to="/promo">Promo</Link>
             </a>
-            {/* <a className="text-white hover:text-white rounded-full px-4 py-3 hover:bg-[#3B8F51] hover:border-none">
-              <Link to="/product">Produk</Link>
-            </a> */}
 
             <Input
               placeholder="Cari disini"
