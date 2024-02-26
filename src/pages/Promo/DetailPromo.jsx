@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
-import Promo1 from "../../../assets/Promo/Promo1.png";
+import Promo1 from "../../../assets/Promo/promo1.png";
 import { Button, Input, Tooltip } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
 import FB from "../../../assets/Sosmed/FB.png";
