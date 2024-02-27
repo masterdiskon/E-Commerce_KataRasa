@@ -82,12 +82,13 @@ function ProductTea() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${Baseurl}product/get-product?page=1&limit=5&keyword=`
+          `${Baseurl}product/get-product?page=1&limit=100&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
           (product) => product.type === "tea"
         );
         setProducts(filteredProducts);
+        console.log('ini njir', response.data.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -221,11 +222,11 @@ function ProductTea() {
                                 {product.description}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-sm">
-                                <s>{product.discount[0].discount_price}</s>
+                                <s>{product.formatted_price}{" "}</s>
                               </p>
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
-                                  {product.formatted_price}{" "}
+                                  {product.discount[0].discount_price}
                                   <span className="text-[#FFCA0C] ml-5">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
