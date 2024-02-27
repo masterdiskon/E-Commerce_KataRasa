@@ -1,21 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tea1 from "../../../assets/ProductTea/productTea.png";
 import Tea2 from "../../../assets/ProductTea/product Tea-1.png";
 import Tea3 from "../../../assets/ProductTea/product Tea-2.png";
 import Tea4 from "../../../assets/ProductTea/product Tea-3.png";
+import TidakTersedia from "../../../assets/TidakTersedia.png";
 import BackgroundTea from "../../../assets/Produk/ProductpageTeaLeaves.png";
 import Navbar from "../../layout/Navbar";
-import { Slider } from "antd";
+import Filter from "../../../assets/Filter.png";
+import { Button, Modal, Select, Slider } from "antd";
 import Footer from "../../layout/Footer";
+import { RightOutlined, CloseOutlined } from "@ant-design/icons";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
+
+const { Option } = Select;
 
 function ProductTea() {
+  const [products, setProducts] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50000]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [DataProduk, setDataProduk] = useState();
   const handlePriceRangeChange = (value) => {
     // Mengatur range harga yang dipilih
     setPriceRange(value);
   };
 
-  const products = [
+  const productss = [
     {
       image: Tea1,
       name: "Teh Dewi-Sakura Tea",
@@ -49,6 +60,41 @@ function ProductTea() {
       rating: 4,
     },
   ];
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  // Fungsi untuk menutup modal
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  // Fungsi untuk menutup modal jika dibatalkan
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleSelectChange = (value) => {
+    setSelectedOption(value);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${Baseurl}product/get-product?page=1&limit=5&keyword=`
+        );
+        const filteredProducts = response.data.data.data.filter(
+          (product) => product.type === "tea"
+        );
+        setProducts(filteredProducts);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="w-screen h-screen  ">
@@ -165,7 +211,7 @@ function ProductTea() {
                               {/* Isi konten produk */}
                               <img
                                 className="rounded-md"
-                                src={product.image}
+                                src={`https://api.katarasa.id/` + product.image}
                                 alt={`Product ${index}`}
                               />
                               <h3 className="text-md font-semibold mb-2 mt-2">
@@ -175,11 +221,11 @@ function ProductTea() {
                                 {product.description}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-sm">
-                                <s>{product.originalPrice}</s>
+                                <s>{product.discount[0].discount_price}</s>
                               </p>
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
-                                  {product.discountedPrice}{" "}
+                                  {product.formatted_price}{" "}
                                   <span className="text-[#FFCA0C] ml-5">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
@@ -201,6 +247,195 @@ function ProductTea() {
           </div>
         </div>
       </div>
+
+      {/* Layar HP */}
+
+      <>
+        <div className="sm:inline lg:hidden md:hidden sm:w-full mx-auto justify-start  py-2">
+          <div className="mt-20">
+            <>
+              <div
+                className="w-full h-[110px] p-4 mb-4 md:mb-0 relative text-white flex justify-center items-center"
+                style={{
+                  backgroundImage: `url(${BackgroundTea})`,
+                  backgroundSize: "cover", // Menentukan lebar gambar latar belakang
+                }}
+              >
+                {/* Konten Anda di sini */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#41644A] to-transparent h-[100%]"></div>
+                <div className="z-0 text-center relative">
+                  <h1 className="text-2xl font-bold relative">
+                    <span
+                      className="text-transparent"
+                      style={{
+                        WebkitTextStroke: "1px white",
+                      }}
+                    >
+                      Tea <span className="text-white">Leaves</span>
+                    </span>
+                  </h1>
+                </div>
+              </div>
+            </>
+          </div>
+          <div className="px-4">
+            <div className=" flex  text-black ">
+              {/* Filter */}
+
+              <>
+                <div className="w-full mt-1">
+                  <p className="text-[#41644A] text-sm">
+                    Search{" "}
+                    <span className="ml-5 mr-5">
+                      {" "}
+                      <RightOutlined />{" "}
+                    </span>{" "}
+                    “Coffee Beans”
+                  </p>
+                </div>
+
+                {/* FILTER */}
+                <div className="w-1/3">
+                  <Button
+                    className="flex items-center text-white bg-[#3B8F51] border border-[#3B8F51] rounded-full transition-colors duration-300 ease-in-out"
+                    onClick={showModal}
+                  >
+                    <img src={Filter} alt="filter" className="w-4 h-2" />
+                    <span className="ml-1">Filter</span>
+                  </Button>
+
+                  {/* Modal */}
+                  <Modal
+                    title={
+                      <span className="text-[#3B8F51] text-xl font-bold">
+                        Filter Pencarian
+                      </span>
+                    }
+                    closeIcon={<CloseOutlined style={{ color: "#3B8F51" }} />}
+                    visible={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    footer={null}
+                  >
+                    <h2 className="text-lg text-[#41644A] font-medium mt-5 mb-2">
+                      Urutkan Menu
+                    </h2>
+                    <Select
+                      className="w-full mt-2 border-[#3B8F51] text-[#3B8F51]"
+                      onChange={handleSelectChange}
+                      value={selectedOption || "0"} // Mengatur nilai default ke opsi pertama
+                    >
+                      <Option value="0" style={{ color: "#3B8F51" }}>
+                        Ter-Favorite
+                      </Option>
+                      <Option value="1" style={{ color: "#3B8F51" }}>
+                        Kategori 1
+                      </Option>
+                      <Option value="2" style={{ color: "#3B8F51" }}>
+                        Kategori 2
+                      </Option>
+                      {/* Tambahkan lebih banyak opsi jika diperlukan */}
+                    </Select>
+                    <>
+                      <div>
+                        <h2 className="text-lg text-[#41644A] font-medium mt-5 mb-5">
+                          Range Harga
+                        </h2>
+                        <Slider
+                          range
+                          min={0}
+                          max={100000}
+                          defaultValue={[0, 100000]}
+                          value={priceRange}
+                          onChange={handlePriceRangeChange}
+                          className="slider-track-color"
+                        />
+
+                        {/* Tampilkan nilai range harga dalam format rupiah */}
+                        <div className="flex justify-between">
+                          <span>
+                            Min:{" "}
+                            {priceRange[0].toLocaleString("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                            })}
+                          </span>
+                          <span>
+                            Max:{" "}
+                            {priceRange[1].toLocaleString("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                            })}
+                          </span>
+                        </div>
+
+                        {/* CSS custom dengan Tailwind */}
+                        <style>{`
+                      .slider-track-color .ant-slider-track {
+                        background-color: #3B8F51; /* Ganti warna garis slider menjadi hijau */
+                      }
+                      .slider-track-color .ant-slider-handle {
+                        border-color: #3B8F51; /* Ganti warna border buletan menjadi hijau */
+                        background-color: #3B8F51; /* Ganti warna buletan menjadi hijau */
+                      }
+                      
+                    `}</style>
+                      </div>
+                    </>
+                  </Modal>
+                </div>
+              </>
+            </div>
+            {/* PRODUK */}
+            <>
+              <div className="mt-5">
+                {" "}
+                <div className="sm:w-2/3 ml-0 sm:ml-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Looping untuk menampilkan konten produk */}
+                    <>
+                      {products.map((product, index) => (
+                        <div
+                          key={product.id}
+                          className="bg-white rounded-lg shadow-md p-4"
+                        >
+                          {/* Isi konten produk */}
+                          <img
+                            className="rounded-md"
+                            src={product.image}
+                            alt={`Product ${index}`}
+                          />
+                          <h3 className="text-base font-semibold mb-2 mt-2">
+                            {product.name}
+                          </h3>
+                          <p className="text-[10px] text-gray-600">
+                            {product.description}
+                          </p>
+                          <p className="text-[#E53C3C] font-semibold text-[10px]">
+                            <s>{product.discount[0].discount_price}</s>
+                          </p>
+                          <div className="mt-2">
+                            <div className="text-xs text-[#3B8F51]">
+                              {product.formatted_price}{" "}
+                              <span className="text-[#FFCA0C] ml-8">
+                                &#9733;
+                                <span className="text-xs text-[#3B8F51] ml-2">
+                                  {product.rating}/5
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                          {/* Informasi lebih lanjut atau tombol beli */}
+                        </div>
+                      ))}
+                    </>
+                  </div>
+                </div>
+              </div>
+            </>
+          </div>
+        </div>
+      </>
 
       <Footer />
     </div>
