@@ -49,7 +49,7 @@ function About() {
       {/* Layar Besar */}
       <div>
         <div className="hidden sm:inline lg:inline ">
-          <div className="flex flex-col sm:flex-row md:justify-between h-screen w-screen  space-x-5  mx-auto ">
+          <div className="flex flex-col sm:flex-row md:justify-between h-screen w-full  space-x-5  mx-auto ">
             <div className=" mt-20 mx-auto w-screen  h-auto  ">
               <>
                 <div
@@ -111,7 +111,7 @@ function About() {
                           <img
                             src={Gambar1}
                             alt=""
-                            className="w-[589px] h-[580px] self-start mt-28 mr-[18rem]"
+                            className="w-[589px] h-[580px] self-start mt-28 mr-[12rem]"
                           />
                           <div className="absolute top-[7rem] right-[22rem]">
                             <img

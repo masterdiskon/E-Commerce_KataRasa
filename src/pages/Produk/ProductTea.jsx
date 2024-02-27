@@ -83,7 +83,7 @@ function ProductTea() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${Baseurl}product/get-product?page=1&limit=991&keyword=`
+          `${Baseurl}product/get-product?page=1&limit=0&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
           (product) => product.type === "tea"
