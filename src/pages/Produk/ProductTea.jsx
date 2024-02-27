@@ -16,6 +16,7 @@ import axios from "axios";
 const { Option } = Select;
 
 function ProductTea() {
+  const [limit, setlimit] = useState(10);
   const [products, setProducts] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 50000]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -82,13 +83,13 @@ function ProductTea() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${Baseurl}product/get-product?page=1&limit=100&keyword=`
+          `${Baseurl}product/get-product?page=1&limit=991&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
           (product) => product.type === "tea"
         );
         setProducts(filteredProducts);
-        console.log('ini njir', response.data.data.data);
+        console.log("ini njir", response.data.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -212,7 +213,7 @@ function ProductTea() {
                               {/* Isi konten produk */}
                               <img
                                 className="rounded-md"
-                                src={`https://api.katarasa.id/` + product.image}
+                                src={product.image}
                                 alt={`Product ${index}`}
                               />
                               <h3 className="text-md font-semibold mb-2 mt-2">
@@ -222,7 +223,7 @@ function ProductTea() {
                                 {product.description}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-sm">
-                                <s>{product.formatted_price}{" "}</s>
+                                <s>{product.formatted_price} </s>
                               </p>
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
@@ -413,7 +414,7 @@ function ProductTea() {
                             {product.description}
                           </p>
                           <p className="text-[#E53C3C] font-semibold text-[10px]">
-                            <s>{product.discount[0].discount_price}</s>
+                            <s>{product.discount[0].discount_price} </s>
                           </p>
                           <div className="mt-2">
                             <div className="text-xs text-[#3B8F51]">

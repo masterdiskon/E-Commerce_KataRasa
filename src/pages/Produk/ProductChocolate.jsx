@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../layout/Navbar";
 import BackgroundChocolate from "../../../assets/Produk/ProductpageChocolate.png";
 import Choco1 from "../../../assets/ProductChocolate/productChocolateJar2.png";
@@ -13,6 +13,8 @@ import Footer from "../../layout/Footer";
 import { Button, Modal, Select, Slider } from "antd";
 import { RightOutlined, CloseOutlined } from "@ant-design/icons";
 import Filter from "../../../assets/Filter.png";
+import axios from "axios";
+import Baseurl from "../../Api/BaseUrl";
 
 function ProductChocolate() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -23,7 +25,7 @@ function ProductChocolate() {
     setPriceRange(value);
   };
 
-  const products = [
+  const productss = [
     {
       image: Choco1,
       name: "Hazelnut ChocoBox",
@@ -107,6 +109,28 @@ function ProductChocolate() {
   const handleSelectChange = (value) => {
     setSelectedOption(value);
   };
+
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${Baseurl}product/get-product?page=1&limit=991&keyword=`
+        );
+        const filteredProducts = response.data.data.data.filter(
+          (product) => product.type === "choco"
+        );
+        setProducts(filteredProducts);
+        console.log("ini njir", response.data.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="w-full h-screen  ">
       <Navbar />
@@ -232,11 +256,11 @@ function ProductChocolate() {
                                 {product.description}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-sm">
-                                <s>{product.originalPrice}</s>
+                                <s> {product.discount[0].discount_price} </s>
                               </p>
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
-                                  {product.discountedPrice}{" "}
+                                  {product.formatted_price}
                                   <span className="text-[#FFCA0C] ml-5">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
@@ -262,36 +286,34 @@ function ProductChocolate() {
       {/* Layar HP */}
       <div className="sm:inline lg:hidden md:hidden sm:w-full mx-auto justify-start  py-2">
         <div className="mt-20">
-        <>
-              <div
-                className="w-full h-[110px] p-4 mb-4 md:mb-0 relative text-white flex justify-center items-center"
-                style={{
-                  backgroundImage: `url(${BackgroundChocolate})`,
-                  backgroundSize: "cover", // Menentukan lebar gambar latar belakang
-                }}
-              >
-                {/* Konten Anda di sini */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#41644A] to-transparent h-[100%]"></div>
-                <div className="z-0 text-center relative">
-                  <h1 className="text-2xl font-bold relative">
-                    <span
-                      className="text-transparent"
-                      style={{
-                        WebkitTextStroke: "1px white",
-                      }}
-                    >
-                      Chocolate <span className="text-white">Snack</span>
-                    </span>
-                  </h1>
-                </div>
+          <>
+            <div
+              className="w-full h-[110px] p-4 mb-4 md:mb-0 relative text-white flex justify-center items-center"
+              style={{
+                backgroundImage: `url(${BackgroundChocolate})`,
+                backgroundSize: "cover", // Menentukan lebar gambar latar belakang
+              }}
+            >
+              {/* Konten Anda di sini */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#41644A] to-transparent h-[100%]"></div>
+              <div className="z-0 text-center relative">
+                <h1 className="text-2xl font-bold relative">
+                  <span
+                    className="text-transparent"
+                    style={{
+                      WebkitTextStroke: "1px white",
+                    }}
+                  >
+                    Chocolate <span className="text-white">Snack</span>
+                  </span>
+                </h1>
               </div>
-            </>
-
+            </div>
+          </>
         </div>
 
         <div className="px-4 ml-2">
-         <div className=" flex  text-black ">
-            
+          <div className=" flex  text-black ">
             {/* Filter */}
 
             <>
@@ -424,11 +446,11 @@ function ProductChocolate() {
                           {product.description}
                         </p>
                         <p className="text-[#E53C3C] font-semibold text-[10px]">
-                          <s>{product.originalPrice}</s>
+                          <s>{product.formatted_price} </s>
                         </p>
                         <div className="mt-2">
                           <div className="text-xs text-[#3B8F51]">
-                            {product.discountedPrice}{" "}
+                            {product.discount[0].discount_price}
                             <span className="text-[#FFCA0C] ml-8">
                               &#9733;
                               <span className="text-xs text-[#3B8F51] ml-2">
@@ -445,7 +467,7 @@ function ProductChocolate() {
               </div>
             </div>
           </>
-         </div>
+        </div>
       </div>
 
       <Footer />

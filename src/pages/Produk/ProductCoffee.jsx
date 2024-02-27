@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../layout/Navbar";
 import BackgroundCoffee from "../../../assets/Produk/ProductpageCoffeBeans.png";
 import ProductCoffee1 from "../../../assets/ProductCoffeeBeans/product coffee beans.png";
@@ -9,10 +9,13 @@ import Filter from "../../../assets/Filter.png";
 import { Button, Modal, Pagination, Select, Slider } from "antd";
 import Footer from "../../layout/Footer";
 import { RightOutlined, CloseOutlined } from "@ant-design/icons";
+import axios from "axios";
+import Baseurl from "../../Api/BaseUrl";
 
 const { Option } = Select;
 
 function ProductCoffee() {
+  const [products, setProducts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [priceRange, setPriceRange] = useState([0, 50000]);
@@ -25,7 +28,7 @@ function ProductCoffee() {
     setSelectedOption(value);
   };
 
-  const products = [
+  const productss = [
     {
       image: ProductCoffee1,
       name: "Coffee Beans - Temanggung",
@@ -107,6 +110,25 @@ function ProductCoffee() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${Baseurl}product/get-product?page=1&limit=991&keyword=`
+        );
+        const filteredProducts = response.data.data.data.filter(
+          (product) => product.type === "coffe"
+        );
+        setProducts(filteredProducts);
+        console.log("ini njir", response.data.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="w-full h-screen  ">
@@ -234,11 +256,11 @@ function ProductCoffee() {
                                   {product.description}
                                 </p>
                                 <p className="text-[#E53C3C] font-semibold text-sm">
-                                  <s>{product.originalPrice}</s>
+                                  <s>{product.discount[0].discount_price} </s>
                                 </p>
                                 <div className="mt-2">
                                   <div className="text-lg font-semibold text-[#3B8F51]">
-                                    {product.discountedPrice}{" "}
+                                    {product.formatted_price}{" "}
                                     <span className="text-[#FFCA0C] ml-5">
                                       &#9733;
                                       <span className="text-sm text-[#3B8F51] ml-1">
@@ -427,11 +449,11 @@ function ProductCoffee() {
                             {product.description}
                           </p>
                           <p className="text-[#E53C3C] font-semibold text-[10px]">
-                            <s>{product.originalPrice}</s>
+                            <s>{product.discount[0].discount_price} </s>
                           </p>
                           <div className="mt-2">
                             <div className="text-xs text-[#3B8F51]">
-                              {product.discountedPrice}{" "}
+                              {product.formatted_price}{" "}
                               <span className="text-[#FFCA0C] ml-8">
                                 &#9733;
                                 <span className="text-xs text-[#3B8F51] ml-2">

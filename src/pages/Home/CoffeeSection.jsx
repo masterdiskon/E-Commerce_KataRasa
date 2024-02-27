@@ -10,7 +10,7 @@ import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
 
 function CoffeeSection() {
-  const products = [
+  const productss = [
     {
       image: PCB1,
       title: "Coffee Beans - Tem..",
@@ -98,17 +98,24 @@ function CoffeeSection() {
       : 0;
   }, []);
   
-
-  const fetchData = async () => {
-    try {
-      const respons = await axios.get(`${Baseurl}product/get-product?page=1&limit=5&keyword=`
-     );
-
-      console.log("ini data produk", respons.data);
-    } catch (error) {}
-  };
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${Baseurl}product/get-product?page=1&limit=999&keyword=`
+        );
+        const filteredProducts = response.data.data.data.filter(
+          (product) => product.type === "coffe"
+        );
+        setProducts(filteredProducts);
+        console.log("ini njir", response.data.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     fetchData();
   }, []);
 
@@ -142,7 +149,7 @@ function CoffeeSection() {
                   <div className="flex">
                     <div className="w-full flex space-x-4">
                       {/* Konten produk di kolom kiri */}
-                      {products.map((product, index) => (
+                      {products.slice(0, 5).map((product, index) => (
                         <div
                           key={index}
                           className="shadow-2xl md:w-[200px] md:h-[290px] mt-2 bg-white rounded-lg"
@@ -154,17 +161,17 @@ function CoffeeSection() {
                           />
                           <div className="ml-2">
                             <p className="font-bold text-sm text-black mt-2">
-                              {product.title}
+                              {product.name}
                             </p>
                             <p className="text-slate-400 text-xs">
                               {product.type}
                             </p>
                             <p className="text-[#E53C3C] font-semibold text-sm">
-                              <s>{product.originalPrice}</s>
+                              <s>{product.discount[0].discount_price}</s>
                             </p>
                             <div>
                               <div className="text-lg font-semibold text-[#3B8F51]">
-                                {product.discountedPrice}{" "}
+                                {product.formatted_price}{" "}
                                 <span className="text-[#FFCA0C]  ml-16">
                                   &#9733;
                                   <span className="text-sm text-[#3B8F51] ml-1">
@@ -203,7 +210,7 @@ function CoffeeSection() {
                     ref={carousel}
                     className="carousel-container  relative flex gap-1 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                   >
-                    {products.map((product, index) => {
+                    {products.slice(0, 5).map((product, index)=> {
                       return (
                         <div
                           key={index}
@@ -220,17 +227,17 @@ function CoffeeSection() {
                             />
                             <div className="ml-2">
                               <p className="font-bold text-xs">
-                                {product.title}
+                              {product.name}
                               </p>
                               <p className="text-slate-400 text-[10px]">
                                 {product.type}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                <s>{product.originalPrice}</s>
+                              <s>{product.discount[0].discount_price}</s>
                               </p>
                               <div>
                                 <div className="text-sm font-semibold text-[#3B8F51] mt-3">
-                                  {product.discountedPrice}{" "}
+                                {product.formatted_price}{" "}
                                   <span className="text-[#FFCA0C] ml-1">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">

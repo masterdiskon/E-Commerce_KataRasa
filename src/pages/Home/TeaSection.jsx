@@ -5,7 +5,8 @@ import Tea2 from "../../../assets/ProductTea/product Tea-1.png";
 import Tea3 from "../../../assets/ProductTea/product Tea-2.png";
 import Tea4 from "../../../assets/ProductTea/product Tea-3.png";
 import Tea5 from "../../../assets/ProductTea/Tea.png";
-
+import axios from "axios";
+import Baseurl from "../../Api/BaseUrl";
 
 function TeaSection() {
   const maxScrollWidth = useRef(0);
@@ -53,7 +54,7 @@ function TeaSection() {
       : 0;
   }, []);
 
-  const products = [
+  const productss = [
     {
       image: Tea1,
       title: "Teh Dewi-Sakura Tea",
@@ -94,80 +95,109 @@ function TeaSection() {
       discountedPrice: "Rp24.000",
       rating: 4,
     },
-    
   ];
 
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `${Baseurl}product/get-product?page=1&limit=999&keyword=`
+        );
+        const filteredProducts = response.data.data.data.filter(
+          (product) => product.type === "tea"
+        );
+        setProducts(filteredProducts);
+        console.log("ini njir", response.data.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-   <div>
-    {/* Layar Besar */}
-    <>
-    <div className="hidden md:inline lg:inline">
-    <div className="text-black  mx-auto justify-center flex px-20 py-2 mt-10">
-      <div>
-        <div className="justify-start mt-2" style={{ position: "relative" }}>
-          <img src={BG1} className="w-[1200px] h-[300px]" />
-          <div
-            style={{
-              position: "absolute",
-              top: "75%", // Atur posisi ke tengah secara vertikal
-              left: "50%", // Atur posisi ke tengah secara horizontal
-              transform: "translate(-50%, -50%)", // Geser sejauh setengah dari width dan height elemen
-              color: "white",
-            }}
-          >
-            <div className="text-center">
-              <p className="font-semibold text-[40px] text-[#41644A]">Tea KataRasa Section</p>
-            </div>
-            {/* Kolom baru */}
-            <div className="flex">
-              <div className="w-full flex space-x-3">
-                {/* Konten produk di kolom kiri */}
-                {products.map((product, index) => (
-                  <div
-                    key={index}
-                    className="shadow-2xl md:w-[200px] md:h-[290px] mt-2 bg-white rounded-lg"
-                  >
-                    <img
-                      className="rounded-md"
-                      src={product.image}
-                      alt={`Product ${index}`}
-                    />
-                    <div className="ml-2">
-                      <p className="font-bold text-sm text-black mt-2">{product.title}</p>
-                      <p className="text-slate-400 text-xs">{product.type}</p>
-                      <p className="text-[#E53C3C] font-semibold text-sm">
-                        <s>{product.originalPrice}</s>
-                      </p>
-                      <div>
-                        <div className="text-lg font-semibold text-[#3B8F51]">
-                          {product.discountedPrice}{" "}
-                          <span className="text-[#FFCA0C] ml-16">
-                            &#9733;
-                            <span className="text-sm text-[#3B8F51] ml-1">
-                              {product.rating}/5
-                            </span>
-                          </span>
+    <div>
+      {/* Layar Besar */}
+      <>
+        <div className="hidden md:inline lg:inline">
+          <div className="text-black  mx-auto justify-center flex px-20 py-2 mt-10">
+            <div>
+              <div
+                className="justify-start mt-2"
+                style={{ position: "relative" }}
+              >
+                <img src={BG1} className="w-[1200px] h-[300px]" />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "75%", // Atur posisi ke tengah secara vertikal
+                    left: "50%", // Atur posisi ke tengah secara horizontal
+                    transform: "translate(-50%, -50%)", // Geser sejauh setengah dari width dan height elemen
+                    color: "white",
+                  }}
+                >
+                  <div className="text-center">
+                    <p className="font-semibold text-[40px] text-[#41644A]">
+                      Tea KataRasa Section
+                    </p>
+                  </div>
+                  {/* Kolom baru */}
+                  <div className="flex">
+                    <div className="w-full flex space-x-3">
+                      {/* Konten produk di kolom kiri */}
+                      {products.slice(0, 5).map((product, index) => (
+                        <div
+                          key={index}
+                          className="shadow-2xl md:w-[200px] md:h-[290px] mt-2 bg-white rounded-lg"
+                        >
+                          <img
+                            className="rounded-md"
+                            src={product.image}
+                            alt={`Product ${index}`}
+                          />
+                          <div className="ml-2">
+                            <p className="font-bold text-sm text-black mt-2">
+                              {product.name}
+                            </p>
+                            <p className="text-slate-400 text-xs">
+                              {product.type}
+                            </p>
+                            <p className="text-[#E53C3C] font-semibold text-sm">
+                              <s>{product.discount[0].discount_price}</s>
+                            </p>
+                            <div>
+                              <div className="text-lg font-semibold text-[#3B8F51]">
+                                {product.formatted_price}{" "}
+                                <span className="text-[#FFCA0C]  ml-16">
+                                  &#9733;
+                                  <span className="text-sm text-[#3B8F51] ml-1">
+                                    {product.rating}/5
+                                  </span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    </div>
-   </>
+      </>
 
-   {/* Layar HP */}
-   <>
+      {/* Layar HP */}
+      <>
         <div className="md:hidden lg:hidden  mx-auto justify-start mt-5 px-4  py-1 ">
           <div>
             <div className="w-full p-3 mb-0">
               <p className="text-[#3B8F51] text-lg font-bold">
-              Tea KataRasa Section
+                Tea KataRasa Section
               </p>
             </div>
           </div>
@@ -179,7 +209,7 @@ function TeaSection() {
                     ref={carousel}
                     className="carousel-container  relative flex gap-1 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                   >
-                    {products.map((product, index) => {
+                    {products.slice(0, 5).map((product, index) => {
                       return (
                         <div
                           key={index}
@@ -196,17 +226,17 @@ function TeaSection() {
                             />
                             <div className="ml-2">
                               <p className="font-bold text-xs">
-                                {product.title}
+                                {product.name}
                               </p>
                               <p className="text-slate-400 text-[10px]">
                                 {product.type}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                <s>{product.originalPrice}</s>
+                                <s>{product.discount[0].discount_price}</s>
                               </p>
                               <div>
                                 <div className="text-sm font-semibold text-[#3B8F51] mt-3">
-                                  {product.discountedPrice}{" "}
+                                  {product.formatted_price}{" "}
                                   <span className="text-[#FFCA0C] ml-1">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
@@ -227,7 +257,7 @@ function TeaSection() {
           </div>
         </div>
       </>
-   </div>
+    </div>
   );
 }
 
