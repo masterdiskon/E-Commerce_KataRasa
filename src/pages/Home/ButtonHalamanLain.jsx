@@ -72,12 +72,15 @@ function ButtonHalamanLain() {
         <div className="md:hidden lg:hidden inline">
           <div className="text-black mx-auto justify-center flex px-5 py-2 mt-5">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
+            
               {Buttons.map((gambar, index) => (
+                 <Link to={gambar.path}>
                 <div
                   key={index}
                   className="justify-start mt-2"
                   style={{ position: "relative" }}
                 >
+                 
                   <img
                     src={gambar.image}
                     className="w-full h-auto md:w-[285px] md:h-[140px]"
@@ -94,7 +97,9 @@ function ButtonHalamanLain() {
                     <p className="text-xs">{gambar.title}</p>
                   </div>
                 </div>
+                </Link>
               ))}
+             
             </div>
           </div>
         </div>
