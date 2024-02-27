@@ -30,7 +30,7 @@ function Footer() {
 
   return (
     <footer className=" mt-10">
-      <div className="w-screen mx-auto" style={footerStyle}>
+      <div className="w-full mx-auto" style={footerStyle}>
         <div className="flex flex-wrap justify-start sm:justify-center mx-auto  sm:w-[85rem] p-14 text-white">
           <div className="w-screen sm:w-1/6 mb-4 sm:mb-0  ">
             {" "}

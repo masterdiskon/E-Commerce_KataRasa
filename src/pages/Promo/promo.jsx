@@ -20,7 +20,7 @@ function Promo() {
   ];
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-full h-screen">
       <Navbar />
 
       {/* Layar Besar */}

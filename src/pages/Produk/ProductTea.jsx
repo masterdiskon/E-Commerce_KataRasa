@@ -98,11 +98,11 @@ function ProductTea() {
   }, []);
 
   return (
-    <div className="w-screen h-screen  ">
+    <div className="w-full h-screen  ">
       <Navbar />
 
       <div className="hidden md:inline">
-        <div className=" flex flex-col h-auto w-screen mx-auto ">
+        <div className=" flex flex-col h-auto w-full mx-auto ">
           <div className="mt-24">
             <>
               <div
