@@ -16,7 +16,7 @@ function ButtonHalamanLain() {
     {
       id: "2",
       image: BT2,
-      title: "Tea Leaves",
+      title: "Tea Leavess",
       path: "/product/tea",
     },
     {
