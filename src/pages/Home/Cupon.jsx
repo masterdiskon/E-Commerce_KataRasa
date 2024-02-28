@@ -2,6 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Cupon1 from "../../../assets/Cupon/Cupon1.png";
 import Cupon2 from "../../../assets/Cupon/Cupon2.png";
+import Imlek from "../../../assets/Promo/promo1.png";
+import Valentine from "../../../assets/Promo/promo2.png";
+import Promo3 from "../../../assets/Promo/promo3.png";
+import Promo4 from "../../../assets/Promo/promo4.png";
+import Promo5 from "../../../assets/Promo/promo5.png";
 import { Card, Carousel } from "antd";
 import { Link } from "react-router-dom";
 
@@ -53,35 +58,36 @@ function Cupon() {
 
   const promos = [
     {
-      image: Cupon1,
+      image: Imlek,
       title: "Promo New Member",
       discount: "Discount up to 50%",
       date: "1 Jan - 31 Jan 2024",
     },
     {
-      image: Cupon2,
+      image: Valentine,
       title: "Promo New Member",
       discount: "Discount up to 50%",
       date: "1 Jan - 31 Jan 2024",
     },
     {
-      image: Cupon1,
+      image: Promo3,
       title: "Promo New Member",
       discount: "Discount up to 50%",
       date: "1 Jan - 31 Jan 2024",
     },
     {
-      image: Cupon2,
+      image: Promo4,
       title: "Promo New Member",
       discount: "Discount up to 50%",
       date: "1 Jan - 31 Jan 2024",
     },
     {
-      image: Cupon1,
+      image: Promo5,
       title: "Promo New Member",
       discount: "Discount up to 50%",
       date: "1 Jan - 31 Jan 2024",
     },
+
     // Tambahkan promo lainnya jika diperlukan
   ];
 
@@ -96,7 +102,7 @@ function Cupon() {
               kupon!
             </p>
           </div>
-        
+
           <div
             className="flex overflow-auto w-[75rem] ml-4 "
             style={{ maxWidth: "100%" }}
@@ -113,9 +119,9 @@ function Cupon() {
               >
                 <img
                   src={promo.image}
-                  className="w-full md:w-[240px] h-[110px]"
+                  className="w-full md:w-[270px] h-[150px]"
                 />
-                <div
+                {/* <div
                   style={{
                     position: "absolute",
                     top: "10px",
@@ -126,15 +132,13 @@ function Cupon() {
                   <p className="text-base font-medium mt-2">{promo.title}</p>
                   <p className="text-sm">{promo.discount}</p>
                   <p className="text-sm mt-2">{promo.date}</p>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>
-       
+
           <div className="ml-5 mr-2 mt-0 flex justify-end text-[#7da286]">
-            <p className="cursor-pointer">
-            *klik untuk copy kode
-            </p>
+            <p className="cursor-pointer">*klik untuk copy kode</p>
           </div>
         </div>
       </div>

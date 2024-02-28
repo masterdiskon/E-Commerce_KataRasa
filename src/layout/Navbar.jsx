@@ -20,10 +20,11 @@ import { API_Login } from "../func/FungsiLogin";
 function Navbar() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordVisibleSignIn, setPasswordVisibleSignIn] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("email"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [staticName, setStaticName] = useState("");
+  const [staticEmail, setStaticEmail] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -74,20 +75,26 @@ function Navbar() {
   };
 
   // Login
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Menggunakan email dan password statis
     const staticEmail = "nmaya7371@gmail.com";
     const staticPassword = "akumaya098";
-    const staticName = "maya";
 
+    await API_Login(email, password);
     // Proses validasi login
-    if (email === staticEmail && password === staticPassword) {
-      setIsLoggedIn(true);
-      setStaticName(staticName); // Set nama pengguna setelah berhasil login
+    if (email === email && password === password) {
+      setIsLoggedIn(localStorage.getItem("email"));
+      setEmail(localStorage.getItem("email")); // Set nama pengguna setelah berhasil login
       setModalVisible(false);
     } else {
       // Handle jika login gagal (misalnya, menampilkan pesan kesalahan)
     }
+  };
+
+  const handleLogout = () => {
+    // Clear token (assuming you are storing it in localStorage)
+    localStorage.removeItem("email");
+    setIsLoggedIn(null); // Update isLoggedIn state
   };
 
   const showModal = () => {
@@ -104,60 +111,6 @@ function Navbar() {
     // Setelah login atau sign in berhasil, tutup dropdown dengan menetapkan isMenuOpen ke false
     setIsMenuOpen(false);
   };
-
-  const menu = (
-    <Menu className="w-36">
-      <br />
-      <Menu.Item key="menu">
-        <Link to="/menu" className=" px-8 py-1  ">
-          <span className="text-[#3B8F51] text-base">Home</span>
-        </Link>
-      </Menu.Item>
-      <br />
-      <Menu.Item key="promo">
-        <Link to="/promo" className=" px-8 py-1  ">
-          {" "}
-          <span className="text-[#3B8F51] text-base">Promo</span>
-        </Link>
-      </Menu.Item>
-      <br />
-
-      <Menu className="flex justify-center">
-        <Menu.Item>
-          <Link to="/tambahkeranjang">
-            <img src={keranjangIcon} alt="keranjang" className="w-7 h-6 ml-8" />
-          </Link>
-        </Menu.Item>
-      </Menu>
-      <hr className="border border-[#3B8F51]" />
-      <br />
-
-      <Menu.Item>
-        <Button
-          onClick={() => {
-            handleLoginOrSignIn();
-            setModalVisible(true);
-          }}
-          className="text-white bg-[#3B8F51] border border-[#3B8F51] rounded-full px-8 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-white hover:border-[#3B8F51]"
-        >
-          Login
-        </Button>
-      </Menu.Item>
-      <Menu.Item>
-        <Button
-          onClick={() => {
-            handleLoginOrSignIn();
-            setVisibleSignIn(true);
-          }}
-          className="text-[#3B8F51] border border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
-        >
-          Sign In
-        </Button>
-      </Menu.Item>
-
-      <br />
-    </Menu>
-  );
 
   useEffect(() => {
     if (visibleOTP) {
@@ -201,6 +154,100 @@ function Navbar() {
   const handleCancelVerif = () => {
     setVisibleVerif(false);
   };
+
+  const handleDropdownClick = () => {
+    setDropdownVisible(!dropdownVisible);
+  };
+
+  const items = [
+    {
+      key: "1",
+      label: <div className="text-base">Akun</div>,
+    },
+    {
+      key: "2",
+      label: (
+        <div className="text-base">
+          <Link to={"/history"}>History Pesanan</Link>
+        </div>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <div className="text-base" onClick={handleLogout}>
+          Logout
+        </div>
+      ),
+    },
+  ];
+
+  const menu = (
+    <Menu className="w-48 justify-center items-center text-center overflow-auto">
+      <br />
+      <Menu.Item key="menu">
+        <Link to="/menu" className="px-8 py-1">
+          <span className="text-[#3B8F51] text-base">Home</span>
+        </Link>
+      </Menu.Item>
+      <br />
+      <Menu.Item key="promo">
+        <Link to="/promo" className="px-8 py-1">
+          <span className="text-[#3B8F51] text-base">Promo</span>
+        </Link>
+      </Menu.Item>
+      <br />
+      <Menu.Item>
+        <Link to="/tambahkeranjang">
+          <img src={keranjangIcon} alt="keranjang" className="w-7 h-6 ml-16" />
+        </Link>
+      </Menu.Item>
+      <br />
+      <hr className="border border-[#3B8F51]" />
+      <br />
+      <Menu.Item>
+        {isLoggedIn ? (
+          <>
+            <div className="text-black text-sm overflow-auto w-40">
+              {localStorage.getItem("email")}
+            </div>
+            <br />
+            <Button
+              onClick={handleLogout}
+              className="text-[#3B8F51] bg-transparent border border-[#3B8F51] rounded-full px-4 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-white hover:border-[#3B8F51]"
+              style={{ width: "120px" }}
+            >
+              Logout
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              onClick={() => {
+                handleLoginOrSignIn();
+                setModalVisible(true);
+              }}
+              className="text-white bg-[#3B8F51] border border-[#3B8F51] rounded-full px-8 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-white hover:border-[#3B8F51]"
+            >
+              Login
+            </Button>
+            <Button
+              onClick={() => {
+                handleLoginOrSignIn();
+                setVisibleSignIn(true);
+              }}
+              className="text-[#3B8F51] border mt-4 border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
+            >
+              Sign In
+            </Button>
+          </>
+        )}
+
+      </Menu.Item>
+      <br />
+    </Menu>
+    
+  );
 
   return (
     <div className="flex mx-auto bg-red-700 sm:w-screen w-screen  fixed sm:z-[10] z-[999] ">
@@ -298,27 +345,44 @@ function Navbar() {
             <div className="text-white font-bold px-2 py-3">|</div>
             {/* Tambahkan kondisional untuk menampilkan tombol "Login" */}
             <>
-              <div className="px-4 py-2">
-                <Button
-                  onClick={() => setModalVisible(true)}
-                  className="text-white border border-white bg-[#3B8F51] rounded-full px-5 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
-                >
-                  Login
-                </Button>
-                <>
-                  <Button
-                    className="text-[#3B8F51] bg-white border border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
-                    onClick={showModalSignIn}
-                  >
-                    Sign In
-                  </Button>
-                </>
+              <div className="px-4 py-2 ">
+                {isLoggedIn ? (
+                  <div>
+                    <Dropdown
+                      menu={{
+                        items,
+                      }}
+                      placement="bottomRight"
+                      arrow
+                    >
+                      <span className="text-white cursor-pointer">
+                        {localStorage.getItem("email")}
+                      </span>
+                    </Dropdown>
+                  </div>
+                ) : (
+                  <>
+                    <Button
+                      onClick={() => setModalVisible(true)}
+                      className="text-white border border-white bg-[#3B8F51] rounded-full px-5 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      className="text-[#3B8F51] bg-white border border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
+                      onClick={showModalSignIn}
+                    >
+                      Sign In
+                    </Button>
+                  </>
+                )}
               </div>
             </>
           </div>
 
           {/* Hanya tampilkan hamburger icon saat layar kecil */}
-          <div className="md:hidden absolute top-0 right-0 mt-9 mr-5">
+
+          <div className="md:hidden absolute top-0 right-0 mt-9 mr-5 ">
             <Dropdown overlay={menu} trigger={["click"]} visible={isMenuOpen}>
               <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {isMenuOpen ? (
@@ -412,7 +476,6 @@ function Navbar() {
                 <Button
                   className="mt-5 justify-center w-full h-[50px] rounded-full bg-[#3B8F51] text-white hover:bg-transparent hover:border-green-500 hover:text-green-500"
                   onClick={() => {
-                    API_Login();
                     handleLogin();
                   }}
                 >
