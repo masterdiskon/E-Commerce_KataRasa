@@ -214,7 +214,7 @@ const BestSeller = () => {
                             return (
                               <div
                                 key={index}
-                                className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] md:h-[300px] mt-2 bg-white"
+                                className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white"
                               >
                                 <a
                                   href={product.link}
@@ -225,7 +225,7 @@ const BestSeller = () => {
                                     alt={product.title}
                                     className="w-full rounded-lg"
                                   />
-                                  <div className="ml-2">
+                                  <div className="ml-2 p-[10px]">
                                     <p className="font-bold text-sm">
                                       {product.title}
                                     </p>
@@ -238,7 +238,7 @@ const BestSeller = () => {
                                     <div>
                                       <div className="text-lg font-semibold text-[#3B8F51] mt-3">
                                         {product.discountedPrice}{" "}
-                                        <span className="text-[#FFCA0C] ml-1">
+                                        <span className="text-[#FFCA0C]  ml-6">
                                           &#9733;
                                           <span className="text-sm text-[#3B8F51] ml-1">
                                             {product.rating}/5

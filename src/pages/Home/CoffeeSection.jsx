@@ -8,6 +8,7 @@ import PCB5 from "../../../assets/ProductCoffeeBeans/productCoffeeBean.png";
 import { Button } from "antd";
 import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function CoffeeSection() {
   const productss = [
@@ -149,17 +150,18 @@ function CoffeeSection() {
                   <div className="flex">
                     <div className="w-full flex space-x-4">
                       {/* Konten produk di kolom kiri */}
-                      {products.slice(0, 5).map((product, index) => (
-                        <div
+                      {products.slice(12,17).map((product, index) => (
+                         <Link to={`/detailproductt/${product.slug}`}>
+                          <div
                           key={index}
-                          className="shadow-2xl md:w-[200px] md:h-[290px] mt-2 bg-white rounded-lg"
+                          className="shadow-2xl md:w-[200px] md:h-[300px] mt-2 bg-white rounded-lg"
                         >
                           <img
                             className="rounded-md"
                             src={product.image}
                             alt={`Product ${index}`}
                           />
-                          <div className="ml-2">
+                          <div className="ml-2 p-[10px]">
                             <p className="font-bold text-sm text-black mt-2">
                               {product.name}
                             </p>
@@ -167,12 +169,12 @@ function CoffeeSection() {
                               {product.type}
                             </p>
                             <p className="text-[#E53C3C] font-semibold text-sm">
-                              <s>{product.discount[0].discount_price}</s>
+                            <s> {product.discount[0].discount_price_formatted}</s>
                             </p>
                             <div>
                               <div className="text-lg font-semibold text-[#3B8F51]">
                                 {product.formatted_price}{" "}
-                                <span className="text-[#FFCA0C]  ml-16">
+                                <span className="text-[#FFCA0C]  ml-10">
                                   &#9733;
                                   <span className="text-sm text-[#3B8F51] ml-1">
                                     {product.rating}/5
@@ -182,6 +184,7 @@ function CoffeeSection() {
                             </div>
                           </div>
                         </div>
+                        </Link>
                       ))}
                     </div>
                   </div>

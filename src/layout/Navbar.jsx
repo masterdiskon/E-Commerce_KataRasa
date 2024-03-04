@@ -5,7 +5,16 @@ import IconGoogle from "../../assets/logo/Google.png";
 import IconElogs from "../../assets/logo/Elogs.png";
 import SearchIcon from "../../assets/Search.png";
 import keranjangIcon from "../../assets/Keranjang.png";
-import { Button, Dropdown, Input, InputNumber, Menu, Modal, Tag } from "antd";
+import {
+  Button,
+  Dropdown,
+  Input,
+  InputNumber,
+  Menu,
+  Modal,
+  Select,
+  Tag,
+} from "antd";
 import {
   SearchOutlined,
   EyeTwoTone,
@@ -16,6 +25,10 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { API_Login } from "../func/FungsiLogin";
+import Baseurl from "../Api/BaseUrl";
+import axios from "axios";
+import Swal from "sweetalert2";
+import Base from "antd/es/typography/Base";
 
 function Navbar() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -74,25 +87,11 @@ function Navbar() {
     setPasswordVisibleSignIn(!setPasswordVisibleSignIn);
   };
 
-  // Login
-  const handleLogin = async () => {
-    // Menggunakan email dan password statis
-    const staticEmail = "nmaya7371@gmail.com";
-    const staticPassword = "akumaya098";
-
-    await API_Login(email, password);
-    // Proses validasi login
-    if (email === email && password === password) {
-      setIsLoggedIn(localStorage.getItem("email"));
-      setEmail(localStorage.getItem("email")); // Set nama pengguna setelah berhasil login
-      setModalVisible(false);
-    } else {
-      // Handle jika login gagal (misalnya, menampilkan pesan kesalahan)
-    }
-  };
+  
 
   const handleLogout = () => {
     // Clear token (assuming you are storing it in localStorage)
+    localStorage.removeItem("token");
     localStorage.removeItem("email");
     setIsLoggedIn(null); // Update isLoggedIn state
   };
@@ -182,6 +181,115 @@ function Navbar() {
     },
   ];
 
+  // API Register
+  const [name, setName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [emailRegister, setEmailRegister] = useState("");
+  const [passwordRegister, setPasswordRegister] = useState("");
+  const [gender, setGender] = useState("");
+
+  const handleRegister = () => {
+    const data = {
+      name: name,
+      phone_number: phoneNumber,
+      email: emailRegister,
+      password: passwordRegister,
+      gender_id: gender,
+    };
+    axios
+      .post(`${Baseurl}auth/register`, data)
+      .then((response) => {
+        // Handle successful registration
+        console.log(response.data);
+        setVisibleSignIn(false); // Hide the modal after successful registration
+        // Show success notification using SweetAlert2
+        Swal.fire({
+          icon: "success",
+          title: "Pendaftaran akun customer berhasil",
+          showConfirmButton: false,
+          timer: 2000, // Close the notification after 2 seconds
+          onClose: () => window.location.reload(true)
+        });
+      })
+      .catch((error) => {
+        // Handle registration error
+        console.error("Registration error:", error);
+        // Check if the error response contains errors
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errors
+        ) {
+          const errors = error.response.data.errors;
+          // Get the error message from the first error object
+          const errorMessage = errors[0].message;
+          // Show error notification using SweetAlert2
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: errorMessage,
+          });
+        } else {
+          // Show generic error notification using SweetAlert2
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Terjadi kesalahan saat melakukan pendaftaran akun",
+          });
+        }
+      });
+  };
+  
+
+  // Login
+    const handleLogin = () => {
+      // Kirim permintaan login ke API
+      // Gantikan "email" dan "password" dengan nilai yang sesuai
+      fetch('https://api.katarasa.id/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Tangani respons dari API
+        if (data.status.code === 200) {
+          // Jika login berhasil, tampilkan pesan berhasil menggunakan SweetAlert
+          Swal.fire({
+            icon: 'success',
+            title: 'Login Berhasil',
+            text: data.status.message,
+          });
+          // Set isLoggedIn menjadi true
+          setIsLoggedIn(true);
+          // Simpan email pengguna di localStorage
+          localStorage.setItem('email', email);
+          // Simpan token pengguna di localStorage
+          localStorage.setItem("token", data.data.token);
+          // Set email pengguna setelah berhasil login
+          setEmail(email);
+          // Tutup modal setelah login berhasil
+          setModalVisible(false);
+        } else {
+          // Jika login gagal, tampilkan pesan gagal menggunakan SweetAlert
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Gagal',
+            text: data.errors[0].message,
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    };
+  
+
   const menu = (
     <Menu className="w-48 justify-center items-center text-center overflow-auto">
       <br />
@@ -242,11 +350,9 @@ function Navbar() {
             </Button>
           </>
         )}
-
       </Menu.Item>
       <br />
     </Menu>
-    
   );
 
   return (
@@ -281,14 +387,14 @@ function Navbar() {
                 />
                 <Link to="/pencarian">
                   {" "}
-                  <Button className="mt-5 w-full text-white bg-[#3B8F51] border border-[#3B8F51] rounded-full px-8 py-1  transition-colors duration-300 ease-in-out hover:bg-white hover:border-[#3B8F51]">
+                  <Button className="mt-5 w-full h-12 text-white bg-[#3B8F51] border border-[#3B8F51] rounded-full px-8 py-1  transition-colors duration-300 ease-in-out hover:bg-white hover:border-[#3B8F51]">
                     Search
                   </Button>
                 </Link>
               </Modal>
             </div>
           </>
-          <div className="mr-16 ">
+          <div className="mr-10 ">
             {/* Logo */}
             <Link to="/home">
               {" "}
@@ -301,53 +407,58 @@ function Navbar() {
           </div>
 
           {/* Tampilkan tab pada layar besar */}
-          <div className="hidden md:flex md:space-x-6">
+          <div className="hidden md:flex md:space-x-5">
             <a
-              className="text-white hover:text-white rounded-full px-4 py-3  hover:bg-[#3B8F51] hover:border-none"
+              className="text-white hover:text-white px-2 py-5 hover:bg-[#3B8F51] hover:border-none rounded-full"
               style={{ fontFamily: "Special Elite, sans-serif" }}
             >
               <Link to="/menu">Home</Link>
             </a>
-            <a className="text-white hover:text-white rounded-full px-4 py-3 hover:bg-[#3B8F51] hover:border-none">
-              <Link to="/promo">Promo</Link>
+            <a className="text-white hover:text-white rounded-full px-2 py-5 hover:bg-[#3B8F51] hover:border-none">
+              <Link to="/promo" className="mr-1">Promo</Link>
             </a>
 
             <Input
               placeholder="Cari disini"
               suffix={
                 <Link to="/pencarian">
-                  <SearchOutlined
-                    style={{ color: "rgba(0, 0, 0, 0.25)" }}
-                    className="cursor-pointer "
+                 <div >
+                 <SearchOutlined
+                 width={100}
+                    style={{ color: "rgba(0, 0, 0, 0.25)", width:'20px', height:'20px' }}
+                    className="cursor-pointer h-12"
                   />
+                 </div>
                 </Link>
               }
               style={{
-                width: "447px",
-                marginLeft: "16px",
-                marginRight: "16px",
+                width: "480px",
+                marginLeft: "20px",
+                marginRight: "5px",
                 marginTop: "8px",
                 marginBottom: "8px",
                 borderRadius: "40px",
                 paddingLeft: "36px", // Sesuaikan dengan lebar ikon
               }}
             />
-            <div className="px-3 py-3 bg-[#d0d0d0a7] rounded-full">
+            <div className=" py-2 ">
               <Link to="/tambahkeranjang">
-                <img
+               <div className="bg-[#d0d0d0a7] rounded-full p-4">
+               <img
                   src={IconOrder}
                   alt="order"
-                  className="w-[24px] h-[24px]"
+                  className="w-[20px] h-[20px]"
                 />
+               </div>
               </Link>
             </div>
 
-            <div className="text-white font-bold px-2 py-3">|</div>
+            <div className="text-white font-bold px-4 py-5">|</div>
             {/* Tambahkan kondisional untuk menampilkan tombol "Login" */}
             <>
-              <div className="px-4 py-2 ">
+              <div className="px-2 py-2 ">
                 {isLoggedIn ? (
-                  <div>
+                  <div className="mt-3">
                     <Dropdown
                       menu={{
                         items,
@@ -355,7 +466,7 @@ function Navbar() {
                       placement="bottomRight"
                       arrow
                     >
-                      <span className="text-white cursor-pointer">
+                      <span className="text-white cursor-pointer ">
                         {localStorage.getItem("email")}
                       </span>
                     </Dropdown>
@@ -364,12 +475,12 @@ function Navbar() {
                   <>
                     <Button
                       onClick={() => setModalVisible(true)}
-                      className="text-white border border-white bg-[#3B8F51] rounded-full px-5 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
+                      className="text-white border h-12 pl-8 pr-8 border-white bg-[#3B8F51] rounded-full px-5 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
                     >
                       Login
                     </Button>
                     <Button
-                      className="text-[#3B8F51] bg-white border border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
+                      className="text-[#3B8F51] h-12 bg-white border border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
                       onClick={showModalSignIn}
                     >
                       Sign In
@@ -426,8 +537,10 @@ function Navbar() {
           {/* Modal Login */}
           <>
             <Modal
+            
               width={600}
               visible={modalVisible}
+              maskClosable={false} 
               onCancel={() => {
                 setModalVisible(false);
                 setEmail(""); // Reset email setelah modal ditutup
@@ -437,17 +550,18 @@ function Navbar() {
               title={
                 <span
                   style={{ color: "#3B8F51" }}
-                  className="font-semibold md:text-2xl text-lg "
+                  className="font-semibold md:text-2xl text-lg pl-5"
                 >
                   Masuk
                 </span>
               }
+              style={{ borderRadius: "20px" }} 
             >
-              <div className="mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl">
+              <div className="mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl pl-5 pr-5 pb-5">
                 <div className="md:mt-10 mt-5">
                   <label className=" font-medium md:text-xl">Email</label>
                   <Input
-                    className="mt-3 border-none rounded-[10px] p-3"
+                    className="mt-3 border-none rounded-full p-3"
                     placeholder="Masukkan Email Anda"
                     style={{ backgroundColor: "#E1DFDF" }}
                     onChange={(e) => setEmail(e.target.value)}
@@ -456,7 +570,7 @@ function Navbar() {
                 <div className="mt-5">
                   <label className="font-medium md:text-xl">Password</label>
                   <Input.Password
-                    className="mt-3 border-none rounded-[10px] p-3 "
+                    className="mt-3 border-none rounded-full p-3 "
                     placeholder="Masukkan Password Anda"
                     iconRender={(visible) =>
                       visible ? (
@@ -494,7 +608,7 @@ function Navbar() {
                   <div className="justify-center items-center w-full flex">
                     Belum punya akun?{" "}
                     <span
-                      className="ml-2 text-[#3B8F51] cursor-pointer"
+                      className="ml-[0.3rem] text-[#3B8F51] cursor-pointer"
                       onClick={() => {
                         setVisibleSignIn(true);
                         setModalVisible(false);
@@ -523,6 +637,7 @@ function Navbar() {
           {/* Modal Sign In */}
           <>
             <Modal
+              width={600}
               title={
                 <span
                   style={{ color: "#3B8F51" }}
@@ -536,15 +651,50 @@ function Navbar() {
               footer={null}
             >
               <div className="md:mt-10 mt-5">
-                <label className=" font-medium md:text-xl">
-                  Email / Nomor{" "}
-                </label>
+                <label className="font-medium md:text-xl">Nama</label>
                 <Input
                   className="mt-3 border-none rounded-[10px] p-3"
-                  placeholder="Masukkan Email / Nomor Anda"
+                  placeholder="Masukkan Nama Anda"
                   style={{ backgroundColor: "#E1DFDF" }}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </div>
+              <div className="flex space-x-4">
+                <div className="md:mt-10 mt-5 w-1/2">
+                  <label className="font-medium md:text-xl">Phone Number</label>
+                  <Input
+                    className="mt-3 border-none rounded-[10px] p-3"
+                    placeholder="Masukkan Nomor HP Anda"
+                    style={{ backgroundColor: "#E1DFDF" }}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  />
+                </div>
+                <div className="md:mt-11 mt-5 w-1/2">
+                  <label className="font-medium md:text-xl">Gender</label>
+                  <Select
+                    className="w-full mt-2 h-11 text-[#41644A] bg-[#3B8F51] border-[#3B8F51] rounded-[10px]"
+                    placeholder="Pilih Gendermu"
+                    onChange={(value) => setGender(value)}
+                  >
+                    <Select.Option value="1" className="text-[#41644A]">
+                      Laki - Laki
+                    </Select.Option>
+                    <Select.Option value="2" className="text-[#41644A]">
+                      Perempuan{" "}
+                    </Select.Option>
+                  </Select>
+                </div>
+              </div>
+              <div className="md:mt-10 mt-5">
+                <label className="font-medium md:text-xl">Email</label>
+                <Input
+                  className="mt-3 border-none rounded-[10px] p-3"
+                  placeholder="Masukkan Email Anda"
+                  style={{ backgroundColor: "#E1DFDF" }}
+                  onChange={(e) => setEmailRegister(e.target.value)}
+                />
+              </div>
+
               <div className="mt-5">
                 <label className="font-medium md:text-xl">Password</label>
                 <Input.Password
@@ -562,15 +712,12 @@ function Navbar() {
                   type={passwordVisibleSignIn ? "text" : "password"}
                   bordered={false}
                   style={{ backgroundColor: "#E1DFDF" }}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => setPasswordRegister(e.target.value)}
                 />
               </div>
               <Button
                 className="mt-6 mb-8 justify-center w-full h-[50px] rounded-full bg-[#3B8F51] text-white hover:bg-transparent hover:border-green-500 hover:text-green-500"
-                onClick={() => {
-                  setVisibleSignIn(false); // Sembunyikan modal Sign In
-                  setVisibleOTP(true); // Tampilkan modal OTP
-                }}
+                onClick={handleRegister}
               >
                 Daftar
               </Button>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
 import { EditOutlined } from "@ant-design/icons";
-import { Button, Input, Select } from "antd";
+import { Button, Input, Select, Tag } from "antd";
 const { Option } = Select;
 import LogoGrab from "../../../assets/logo/logoGrab.png";
 import Image1 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
@@ -233,7 +233,10 @@ function Payment() {
             <div className="flex flex-col md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-5  mx-auto sm:w-[85rem]">
               <div className="sm:w-2/3 mt-14 text-black">
                 <div className="mt-5">
-                  <h1 className="text-xl font-medium">Alamat Anda</h1>
+                  <h1 className="text-3xl font-medium text-[#3B8F51]">
+                    CHECKOUT
+                  </h1>
+                  <h1 className="text-xl font-medium mt-5">Alamat Anda</h1>
                   <div className="flex flex-col sm:flex-row mt-2 border rounded-lg border-[#41644A] bg-[#fbfff1]">
                     <div className="w-full sm:w-5/6 p-4 text-[#41644A] text-base  font-medium">
                       Jl. Raya Poncol No.36 8 9, RT.8/RW.9, Susukan, Kec.
@@ -247,10 +250,41 @@ function Payment() {
                     </div>
                   </div>
                 </div>
-                <div className="mt-10">
-                  <h1 className="text-xl font-medium">Pilih Pengiriman Anda</h1>
+
+                <div className="mt-10 ">
+                  <h1 className="text-xl font-medium">Pesanan Anda</h1>
+                  <>
+                    {dataItems.map((item) => (
+                      <div key={item.id} className="mt-5 w-full flex">
+                        <div className=" w-1/6">
+                          <img src={item.image} alt={item.title} />
+                        </div>
+                        <div className=" w-full">
+                          <h1 className="font-medium text-lg mb-2">{item.title}</h1>
+                         <Tag color="#41644A">
+                         <p className="text-white text-lg font-normal p-2">
+                            {item.description}
+                          </p>
+                         </Tag>
+                          <p className="text-[#41644A] md:text-lg font-medium mt-2">
+                            {item.price} <span> x {item.quantity}</span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </>
+                </div>
+              </div>
+
+              <div className="sm:block sm:w-1/3 mt-16 shadow-xl rounded-lg p-4 sticky top-0 bg-white h-[50%]">
+                <h2 className="text-2xl text-[#41644A] font-medium  mb-4 mt-2">
+                  Detail Pesanan
+                </h2>
+
+                <div className="mt-2">
+                  <h1 className="text-lg font-medium">Pilih Pengiriman Anda</h1>
                   <Select
-                    className="mt-5 w-full h-auto"
+                    className="mt-2 w-full h-auto"
                     defaultValue={deliveryOptions[0].name}
                   >
                     {deliveryOptions.map((option) => (
@@ -264,14 +298,14 @@ function Payment() {
                             />
                           </div>
                           <div className="flex flex-col flex-grow">
-                            <div className="font-medium text-lg">
+                            <div className="font-medium text-base">
                               {option.name}
                             </div>
-                            <p className="text-base text-[#787878]">
+                            <p className="text-xs text-[#787878]">
                               {option.estimate}
                             </p>
                           </div>
-                          <div className="flex items-center justify-center md:ml-auto text-[#41644A] text-lg font-medium">
+                          <div className="flex items-center justify-center md:ml-auto text-[#41644A] text-base font-medium">
                             {option.price}
                           </div>
                         </div>
@@ -279,66 +313,40 @@ function Payment() {
                     ))}
                   </Select>
                 </div>
-                <div className="mt-10 ">
-                  <h1 className="text-xl font-medium">Pesanan Anda</h1>
-                  <>
-                    {dataItems.map((item) => (
-                      <div key={item.id} className="mt-5 w-full flex">
-                        <div className=" w-1/6">
-                          <img src={item.image} alt={item.title} />
-                        </div>
-                        <div className=" w-full">
-                          <h1 className="font-medium text-lg">{item.title}</h1>
-                          <p className="text-[#41644A] text-lg font-normal p-2">
-                            {item.description}
-                          </p>
-                          <p className="text-[#41644A] md:text-lg font-medium">
-                            {item.price} <span> x {item.quantity}</span>
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </>
-                </div>
-              </div>
-
-              <div className="sm:block sm:w-1/3 mt-16 shadow-xl rounded-lg p-4 sticky top-0 bg-white h-[50%]">
-                <h2 className="text-lg text-[#41644A] font-medium  mb-4 mt-2">
-                  Detail Pesanan
-                </h2>
-                {orderDetails.map((order, index) => (
-                  <div className="flex justify-between mb-4" key={index}>
-                    <div className="w-[230px]">
-                      <p className="truncate font-semibold text-lg">
-                        {order.name}
-                      </p>
-                      <p className="text-gray-400">{order.quantity}</p>
-                    </div>
-                    <div className="w-1/4 text-[#3B8F51] text-end mt-5">
-                      {order.price}
-                    </div>
-                  </div>
-                ))}
-                <div className="flex justify-between mb-4">
-                  {" "}
-                  <div className="w-[230px]">
-                    {" "}
-                    <p className="truncate text-lg text-[#3B8F51] ">
-                      {" "}
-                      Grab Instant{" "}
-                    </p>{" "}
-                    <p className="text-[#3B8F51] ">Pengiriman</p>{" "}
-                  </div>{" "}
-                  <div className="w-1/4 text-[#3B8F51] text-end mt-5">
-                    Rp {grabInstantDeliveryCost}
-                  </div>{" "}
-                </div>
-                <div className="flex justify-between mb-4">
+                <div className="flex justify-between mt-4">
                   <div className="w-1/2">
-                    <p className="text-lg font-medium">Total Pesanan</p>
+                    <p className="text-lg font-medium mt-2">SubTotal </p>
                     <p className="text-gray-400">Items {orderDetails.length}</p>
                   </div>
-                  <div className="w-1/4 text-[#3B8F51] text-center mt-5 md:text-lg sm:text-sm font-medium">
+                  <div className="w-1/4 text-[#3B8F51] text-center mt-5 md:text-base sm:text-sm font-medium">
+                    Rp {totalWithGrab.toLocaleString()}
+                  </div>
+                </div>
+
+                <div className="flex justify-between ">
+                <div className="w-1/2">
+                    <p className="text-lg font-medium mt-4">Pengiriman </p>
+                  
+                  </div>
+                  <div className="w-1/4 text-[#3B8F51] text-center mt-5 md:text-base sm:text-sm font-medium">
+                    Rp 10.000
+                  </div>
+                </div>
+                <div className="flex justify-between ">
+                <div className="w-1/2">
+                    <p className="text-lg font-medium mt-4">Diskon </p>
+                  
+                  </div>
+                  <div className="w-1/3 text-red-500 pl-5 text-center mt-5 md:text-base sm:text-sm font-medium">
+                   - Rp 10.000
+                  </div>
+                </div>
+                <div className="flex justify-between mb-4 mt-4">
+                  <div className="w-1/2">
+                    <p className="text-lg font-medium">Grand Total</p>
+                   
+                  </div>
+                  <div className="w-1/4 text-[#3B8F51] text-center  md:text-lg sm:text-sm font-medium">
                     Rp {totalWithGrab.toLocaleString()}
                   </div>
                 </div>
@@ -389,36 +397,7 @@ function Payment() {
               </div>
             </div>
 
-            <div className="mt-10">
-              <h1 className="text-sm font-medium">Pilih Pengiriman Anda</h1>
-              <Select
-                className="mt-3 w-full h-auto"
-                defaultValue={deliveryOptions[0].name}
-              >
-                {deliveryOptions.map((option) => (
-                  <Option key={option.id} value={option.name}>
-                    <div className="flex  sm:flex-row items-center p-2">
-                      <div className="flex justify-center items-center w-10 h-8 mr-4">
-                        <img
-                          src={option.logo}
-                          alt={option.name}
-                          className="w-full h-full"
-                        />
-                      </div>
-                      <div className="flex flex-col flex-grow">
-                        <div className="font-medium text-sm">{option.name}</div>
-                        <p className="text-xs text-[#787878]">
-                          {option.estimate}
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-center  text-[#41644A] text-base font-medium">
-                        {option.price}
-                      </div>
-                    </div>
-                  </Option>
-                ))}
-              </Select>
-            </div>
+           
 
             <div className="mt-8">
               <div className="bg-white rounded-lg shadow-md p-4 sticky top-0">
@@ -483,8 +462,11 @@ function Payment() {
                   </Menu>
                 </div>
                 <br />
-                <br />
+               
               </div>
+              <br />
+                <br />
+                <br />
             </div>
           </div>
         </div>

@@ -31,7 +31,7 @@ function Footer() {
   return (
     <footer className=" mt-10">
       <div className="w-full mx-auto" style={footerStyle}>
-        <div className="flex flex-wrap justify-start sm:justify-center mx-auto  sm:w-[85rem] p-14 text-white">
+        <div className="flex flex-wrap justify-start sm:justify-center mx-auto  sm:w-[80rem] p-14 text-white">
           <div className="w-screen sm:w-1/6 mb-4 sm:mb-0  ">
             {" "}
             {/* Tambahkan kelas order-last dan sm:order-first */}
@@ -100,14 +100,7 @@ function Footer() {
               Twitter / X
             </p>
             {/* <Link to="/barcode"> */}
-            <p className="mt-5 flex items-center cursor-pointer">
-              <img
-                src={TWIT}
-                alt="Twitter"
-                className="w-6 h-6 md:w-8 md:h-8 mr-2"
-              />
-              Barcode
-            </p>
+          
             {/* </Link> */}
           </div>
 

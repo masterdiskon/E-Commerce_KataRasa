@@ -15,6 +15,7 @@ import { RightOutlined, CloseOutlined } from "@ant-design/icons";
 import Filter from "../../../assets/Filter.png";
 import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";
+import { Link } from "react-router-dom";
 
 function ProductChocolate() {
   const [selectedOption, setSelectedOption] = useState(null);
@@ -239,6 +240,7 @@ function ProductChocolate() {
                         {/* Looping untuk menampilkan konten produk */}
                         <>
                           {products.map((product, index) => (
+                           <Link to={`/detailproductt/${product.slug}`}>
                             <div
                               key={product.id}
                               className="bg-white rounded-lg shadow-xl p-4"
@@ -256,7 +258,7 @@ function ProductChocolate() {
                                 {product.description}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-sm">
-                                <s> {product.discount[0].discount_price} </s>
+                                <s> {product.discount[0].discount_price_formatted} </s>
                               </p>
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
@@ -271,6 +273,7 @@ function ProductChocolate() {
                               </div>
                               {/* Informasi lebih lanjut atau tombol beli */}
                             </div>
+                            </Link>
                           ))}
                         </>
                       </div>

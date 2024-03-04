@@ -17,7 +17,7 @@ import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";
 import Swal from "sweetalert2";
 
-function DetailProduct() {
+function DetailProductChoco() {
   const [nilai, setNilai] = useState(4);
   const [bintang, setBintang] = useState("");
   const [gambarTerbuka, setGambarTerbuka] = useState(6);
@@ -271,18 +271,14 @@ function DetailProduct() {
                         alt="Gambar Konten"
                         className="w-72 h-72 mb-4 mt-4 rounded-lg"
                       />
-
-                    
                       <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
-                       <Tag color="red">
-                       Potongan Harga {product.discount[0].potongan}%
-                        </Tag> 
+                        <Tag color="red">Potongan Harga 0%</Tag>
                       </p>
                       <p className="mt-5 text-md text-red-500 text-xl font-medium">
-                       <s>{product.formatted_price}</s> 
+                       <s>Rp. 0</s> 
                       </p>
                       <p className=" text-md text-[#3B8F51] text-3xl font-medium">
-                        {product.discount[0].discount_price_formatted}
+                        {product.formatted_price}
                       </p>
                       <p className="mt-5 text-md">{product.description}</p>
                     </div>
@@ -457,10 +453,10 @@ function DetailProduct() {
                               </div>
                               <div className="w-1/2 ">
                                 <p className="justify-end items-end flex text-[#E53C3C] ">
-                                  <s>{product.formatted_price}</s>
+                                  <s>Rp. 0</s>
                                 </p>
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
-                                Rp. {product.price}
+                                 Rp. {product.price}
                                 </p>
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
                                  Rp. {product.discount &&
@@ -487,11 +483,7 @@ function DetailProduct() {
                 </>
               </div>
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
+
             <div className=" mx-auto w-[89rem]">
               {/* Ulasan Produk */}
               <>
@@ -822,4 +814,4 @@ function DetailProduct() {
   );
 }
 
-export default DetailProduct;
+export default DetailProductChoco;

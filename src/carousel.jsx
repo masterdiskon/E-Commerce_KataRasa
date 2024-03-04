@@ -218,7 +218,7 @@ const Carousel = () => {
                                 return (
                                   <div
                                     key={index}
-                                    className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[300px] mt-2 bg-white"
+                                    className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white"
                                   >
                                     <a
                                       href={product.link}
@@ -229,7 +229,7 @@ const Carousel = () => {
                                         alt={product.title}
                                         className="w-full rounded-lg"
                                       />
-                                      <div className="ml-2">
+                                      <div className="ml-2 p-[10px]">
                                         <p className="font-bold text-sm mt-2">
                                           {product.title}
                                         </p>
@@ -239,10 +239,10 @@ const Carousel = () => {
                                         <p className="text-[#E53C3C] font-semibold text-sm">
                                           <s>{product.originalPrice}</s>
                                         </p>
-                                        <div>
+                                        <div className="">
                                           <div className="text-lg font-semibold text-[#3B8F51] mt-3">
                                             {product.discountedPrice}{" "}
-                                            <span className="text-[#FFCA0C] ml-1">
+                                            <span className="text-[#FFCA0C] ml-6">
                                               &#9733;
                                               <span className="text-sm text-[#3B8F51] ml-1">
                                                 {product.rating}/5
@@ -252,15 +252,6 @@ const Carousel = () => {
                                         </div>
                                       </div>
                                     </a>
-
-                                    {/* <a
-             href={product.link}
-             className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-blue-800/75 z-10"
-           >
-             <h3 className="text-black py-6 px-3 mx-auto text-xl">
-               {product.title}
-             </h3>
-           </a> */}
                                   </div>
                                 );
                               })}

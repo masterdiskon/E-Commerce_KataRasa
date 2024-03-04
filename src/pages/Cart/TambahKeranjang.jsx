@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
 import { Button, Input, Radio, Tag } from "antd";
@@ -7,6 +7,11 @@ import produk2 from "../../../assets/ProductCoffeeBeans/product coffee beans-1.p
 import produk3 from "../../../assets/ProductCoffeeBeans/product coffee beans-3.png";
 import Tea from "../../../assets/ProductTea/Tea.png";
 import { Link } from "react-router-dom";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
+import {
+  DeleteOutlined 
+} from '@ant-design/icons';
 
 
 function TambahKeranjang() {
@@ -25,29 +30,14 @@ function TambahKeranjang() {
     // (e.g., green, grey, and white), or implement your own color logic.
   };
 
-  const kurangiJumlah = () => {
-    setKurangiClicked(true);
-    setJumlah(jumlah - 1);
-    setTimeout(() => {
-      setKurangiClicked(false);
-    }, 500);
-  };
-
-  const tambahJumlah = () => {
-    setTambahClicked(true);
-    setJumlah(jumlah + 1);
-    setTimeout(() => {
-      setTambahClicked(false);
-    }, 500);
-  };
-
-  const [disabled, setDisabled] = useState(false);
+ 
+  
 
   const [items, setItems] = useState([
     {
       id: 1,
       image: produk1,
-      quantity: 0,
+      qty: 0,
       name: "Coffee Beans - Robusta Temanggung",
       description: "1000gr, Exclude Gula, Plastics & no extra",
       harga: "24.000",
@@ -56,7 +46,7 @@ function TambahKeranjang() {
     {
       id: 2,
       image: produk2,
-      quantity: 0,
+      qty: 0,
       name: "Coffee Beans - Robusta Temanggung",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -65,7 +55,7 @@ function TambahKeranjang() {
     {
       id: 3,
       image: produk3,
-      quantity: 0,
+      qty: 0,
       name: "Coffee Beans - Robusta Temanggung",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -74,7 +64,7 @@ function TambahKeranjang() {
     {
       id: 4,
       image: produk3,
-      quantity: 0,
+      qty: 0,
       name: "Coffee Beans - Robusta Temanggung",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -83,7 +73,7 @@ function TambahKeranjang() {
     {
       id: 5,
       image: Tea,
-      quantity: 0,
+      qty: 0,
       name: "Teh Dewi - Jasmin Tea",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -92,7 +82,7 @@ function TambahKeranjang() {
     {
       id: 6,
       image: Tea,
-      quantity: 0,
+      qty: 0,
       name: "Teh Dewi - Jasmin Tea",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -101,7 +91,7 @@ function TambahKeranjang() {
     {
       id: 7,
       image: Tea,
-      quantity: 0,
+      qty: 0,
       name: "Teh Dewi - Jasmin Tea",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -110,7 +100,7 @@ function TambahKeranjang() {
     {
       id: 7,
       image: Tea,
-      quantity: 0,
+      qty: 0,
       name: "Teh Dewi - Jasmin Tea",
       description: "500gr, Exclude, Plastics",
       harga: "24.000",
@@ -154,6 +144,7 @@ function TambahKeranjang() {
   }, 0);
 
   const [checkedItems, setCheckedItems] = useState([]);
+  const [DataCartAll, setDataCartAll] = useState([]);
 
   const handleClick = (itemId) => {
     // Mencari index dari item yang diklik
@@ -173,6 +164,29 @@ function TambahKeranjang() {
     setCheckedItems(newCheckedItems);
   };
 
+  useEffect(() => {
+    const GetTambahKeranjang = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${Baseurl}cart/data-cart?page=1&limit=5&is_gift=0`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const dataKeranjang = response.data.data.data;
+        setDataCartAll(dataKeranjang);
+        console.log("Data keranjang:", dataKeranjang);
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    };
+
+    GetTambahKeranjang();
+  }, []);
+
   return (
     <div className="w-full h-screen">
       <Navbar />
@@ -181,7 +195,7 @@ function TambahKeranjang() {
       <>
         <div>
           <div className="hidden md:inline lg:inline">
-            <div className="flex flex-col md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-5  mx-auto sm:w-[85rem] ">
+            <div className="flex flex-col md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-6  mx-auto sm:w-[85rem] ">
               <div className="mt-20 mx-auto w-screen h-auto space-x-5 ">
                 <h1 className="text-3xl font-medium text-[#3B8F51]">
                   Keranjang Anda
@@ -190,17 +204,18 @@ function TambahKeranjang() {
                   {/* Konten 1 */}
                   <>
                     <div className="w-full h-[30rem] overflow-auto">
-                      {items.map((item) => (
+                      {DataCartAll.map((item) => (
+                        
                         <div key={item.id} className="w-full p-4">
                           <div className="flex items-center">
                             <input
                               value={item.id}
-                              type="radio"
-                              className="form-radio text-green-500"
+                              type="checkbox"
+                              className=" text-green-500 "
                             />
                             <div className="w-1/3 flex justify-center items-center">
                               <img
-                                src={item.image}
+                                src={`https://api.katarasa.id/` + item.image}
                                 className="w-28 h-24 ml-5 rounded-md"
                                 alt="Coffee Beans"
                               />
@@ -208,7 +223,7 @@ function TambahKeranjang() {
                             <div className="w-1/2 ml-6">
                               <div className="ml-2">
                                 <p className="text-base font-medium">
-                                  {item.name}
+                                  {item.product}
                                 </p>
                                 <p className="text-[#41644A] mt-2 text-sm font-medium">
                                   <Tag color="#3B8F51">
@@ -220,7 +235,7 @@ function TambahKeranjang() {
                                     onClick={() =>
                                       handleDecreaseQuantity(item.id)
                                     }
-                                    className={`px-2 py-0 rounded-full mr-2 ${
+                                    className={`px-3 py-1 rounded-full mr-2 ${
                                       item.quantity > 0
                                         ? "bg-[#3B8F51] text-white"
                                         : "bg-gray-300"
@@ -229,13 +244,13 @@ function TambahKeranjang() {
                                     -
                                   </button>
                                   <p className="text-[#3B8F51]">
-                                    {item.quantity}
+                                    {item.qty}
                                   </p>
                                   <button
                                     onClick={() =>
                                       handleIncreaseQuantity(item.id)
                                     }
-                                    className={`px-2 py-0 rounded-full ml-2 ${
+                                    className={`px-3 py-1 rounded-full ml-2 ${
                                       item.quantity > 0
                                         ? "bg-[#3B8F51] text-white"
                                         : "bg-gray-300"
@@ -244,11 +259,17 @@ function TambahKeranjang() {
                                     +
                                   </button>
                                   <span className="ml-6 text-[#3B8F51] font-semibold">
-                                    Rp {item.harga}
+                                    Rp {item.total}
                                   </span>
                                 </div>
+                                
                               </div>
                             </div>
+                            <div>
+                              <button className="text-red-600 w-10">
+                              <DeleteOutlined />
+                              </button>
+                              </div>
                           </div>
                         </div>
                       ))}
@@ -256,7 +277,7 @@ function TambahKeranjang() {
                   </>
                   {/* Konten 2 */}
                   <>
-                    <div className="w-1/2 p-4 h-[450px] bg-white  rounded-lg shadow-xl">
+                    <div className="w-1/2 p-4 h-auto bg-white  rounded-lg shadow-xl">
                       <h1 className="text-2xl font-medium mb-5 text-[#3B8F51]">
                         Detail Pesanan
                       </h1>
@@ -271,15 +292,33 @@ function TambahKeranjang() {
                           </div>
                         </div>
                       ))}
-                      <div className="flex justify-between mb-4">
+                      <div className="flex justify-between mb-2">
                         <div className="w-1/2">
-                          <p className="text-lg font-medium">Total Pesanan</p>
+                          <p className="text-lg font-medium">Sub Total</p>
                           <p className="text-gray-400">
                             Item x {orderDetails.length}
                           </p>
                         </div>
                         <div className="w-1/4 text-[#3B8F51] text-center mt-5 text-xl font-medium">
                           Rp {totalPrice.toLocaleString()}
+                        </div>
+                      </div>
+                      <div className="flex justify-between mb-4">
+                        <div className="w-1/2">
+                          <p className="text-lg font-medium mt-4">Diskon</p>
+                         
+                        </div>
+                        <div className="w-1/3 text-red-500 text-end mt-5 text-xl font-medium">
+                          - Rp 10.000
+                        </div>
+                      </div>
+                      <div className="flex justify-between mb-2">
+                        <div className="w-1/2">
+                          <p className="text-lg font-medium mt-5">Grand Total</p>
+                         
+                        </div>
+                        <div className="w-1/4 text-[#3B8F51] text-center mt-5 text-xl font-medium">
+                          Rp 38.000
                         </div>
                       </div>
                       <Input

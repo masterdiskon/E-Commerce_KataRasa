@@ -12,6 +12,7 @@ import Footer from "../../layout/Footer";
 import { RightOutlined, CloseOutlined } from "@ant-design/icons";
 import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -97,6 +98,19 @@ function ProductTea() {
 
     fetchData();
   }, []);
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleProductClick = (slug) => {
+    // Fetch product detail based on slug
+    axios.get(`${Baseurl}product/get-product-detail?slug=${slug}`)
+      .then(response => {
+        setSelectedProduct(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching product detail:', error);
+      });
+  };
 
   return (
     <div className="w-full h-screen  ">
@@ -206,6 +220,7 @@ function ProductTea() {
                         {/* Looping untuk menampilkan konten produk */}
                         <>
                           {products.map((product, index) => (
+                             <Link to={`/detailproduct/${product.slug}`}>
                             <div
                               key={product.id}
                               className="bg-white rounded-lg shadow-xl p-4"
@@ -219,6 +234,7 @@ function ProductTea() {
                               <h3 className="text-md font-semibold mb-2 mt-2">
                                 {product.name}
                               </h3>
+                          
                               <p className="text-sm text-gray-600">
                                 {product.description}
                               </p>
@@ -227,7 +243,7 @@ function ProductTea() {
                               </p>
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
-                                  {product.discount[0].discount_price}
+                                 Rp. {product.discount[0].discount_price}
                                   <span className="text-[#FFCA0C] ml-5">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
@@ -238,7 +254,9 @@ function ProductTea() {
                               </div>
                               {/* Informasi lebih lanjut atau tombol beli */}
                             </div>
+                            </Link>
                           ))}
+
                         </>
                       </div>
                     </div>

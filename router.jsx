@@ -15,6 +15,7 @@ import ProductCoffee from "./src/pages/Produk/ProductCoffee";
 import ProductTea from "./src/pages/Produk/ProductTea";
 import ProductChocolate from "./src/pages/Produk/ProductChocolate";
 import ProductMerchen from "./src/pages/Produk/ProductMerchen";
+import DetailProductChoco from "./src/pages/DetailProduct/DetailProductChoco";
 
 const AppRouter = () => {
   return (
@@ -26,7 +27,9 @@ const AppRouter = () => {
       <Route path="/tambahkeranjang" element={<TambahKeranjang />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/pencarian" element={<Pencarian />} />
-      <Route path="/detailproduct" element={<DetailProduct />} />
+      {/* <Route path="/detailproduct" element={<DetailProduct />} /> */}
+      <Route path="/detailproduct/:slug" element={<DetailProduct />} />
+      <Route path="/detailproductt/:slug" element={<DetailProductChoco />} />
       <Route path="/history" element={<History />} />
       <Route path="/promo" element={<Promo />} />
       <Route path="/product/coffee" element={<ProductCoffee />} />
