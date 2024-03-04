@@ -9,10 +9,8 @@ import Tea from "../../../assets/ProductTea/Tea.png";
 import { Link } from "react-router-dom";
 import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
-import {
-  DeleteOutlined 
-} from '@ant-design/icons';
-
+import { DeleteOutlined } from "@ant-design/icons";
+import Swal from "sweetalert2";
 
 function TambahKeranjang() {
   const [quantity, setQuantity] = useState(0);
@@ -21,6 +19,7 @@ function TambahKeranjang() {
   const [tambahClicked, setTambahClicked] = useState(false);
   const [jumlah, setJumlah] = useState(0);
   const [clickCount, setClickCount] = useState(0);
+  const [DeleteData, setDeleteData] = useState();
 
   const handleRadioClick = (item) => {
     setClickCount((prevCount) => (prevCount + 1) % 3);
@@ -29,9 +28,6 @@ function TambahKeranjang() {
     // You may want to toggle between different colors
     // (e.g., green, grey, and white), or implement your own color logic.
   };
-
- 
-  
 
   const [items, setItems] = useState([
     {
@@ -108,21 +104,21 @@ function TambahKeranjang() {
     },
   ]);
 
-  const handleDecreaseQuantity = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity - 1 } : item
-      )
-    );
-  };
+  // const handleDecreaseQuantity = (id) => {
+  //   setItems((prevItems) =>
+  //     prevItems.map((item) =>
+  //       item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+  //     )
+  //   );
+  // };
 
-  const handleIncreaseQuantity = (id) => {
-    setItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
+  // const handleIncreaseQuantity = (id) => {
+  //   setItems((prevItems) =>
+  //     prevItems.map((item) =>
+  //       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+  //     )
+  //   );
+  // };
 
   const orderDetails = [
     {
@@ -164,29 +160,95 @@ function TambahKeranjang() {
     setCheckedItems(newCheckedItems);
   };
 
-  useEffect(() => {
-    const GetTambahKeranjang = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `${Baseurl}cart/data-cart?page=1&limit=5&is_gift=0`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const dataKeranjang = response.data.data.data;
-        setDataCartAll(dataKeranjang);
-        console.log("Data keranjang:", dataKeranjang);
-      } catch (error) {
-        console.error("Error fetching cart data:", error);
-      }
-    };
+  const GetTambahKeranjang = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${Baseurl}cart/data-cart?page=1&limit=5&is_gift=0`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const dataKeranjang = response.data.data.data;
+      setDataCartAll(dataKeranjang);
+      
+      console.log("Data keranjang:", dataKeranjang);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
 
+  useEffect(() => {
     GetTambahKeranjang();
   }, []);
 
+  const handleDelete = async (cartId) => {
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `https://api.katarasa.id/cart/delete-dari-cart?cart_id=${cartId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        }
+      );
+
+      if (response.ok) {
+        // Item deleted successfully
+        Swal.fire("Success", "Item deleted successfully!", "success");
+        // You can also update the state or perform any other actions as needed
+      } else {
+        // Handle error response
+        Swal.fire("Error", "Failed to delete item!", "error");
+      }
+    } catch (error) {
+      // Handle fetch error
+      console.error("Error deleting item:", error);
+      Swal.fire("Error", "Failed to delete item!", "error");
+    }
+  };
+
+  const [cartItems, setCartItems] = useState(DataCartAll);
+
+  const handleIncreaseQuantity = (itemId) => {
+    const updatedCartItems = cartItems.map((item) => {
+      if (item.id === itemId) {
+        const updatedQty = item.qty + 1;
+        const updatedTotal = item.price * updatedQty; // Menghitung total harga baru
+        // Memperbarui data item
+        return { ...item, qty: updatedQty, total: updatedTotal };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
+  };
+
+  const handleDecreaseQuantity = (itemId) => {
+    const updatedCartItems = cartItems.map((item) => {
+      if (item.id === itemId && item.qty > 0) {
+        const updatedQty = item.qty - 1;
+        const updatedTotal = item.price * updatedQty; // Menghitung total harga baru
+        // Memperbarui data item
+        return { ...item, qty: updatedQty, total: updatedTotal };
+      }
+      return item;
+    });
+    setCartItems(updatedCartItems);
+  };
+
+  const totalPrices = DataCartAll.reduce(
+    (accumulator, order) => accumulator + order.price,
+    0
+  );
+
+  const discount = 0;
+  
   return (
     <div className="w-full h-screen">
       <Navbar />
@@ -205,7 +267,6 @@ function TambahKeranjang() {
                   <>
                     <div className="w-full h-[30rem] overflow-auto">
                       {DataCartAll.map((item) => (
-                        
                         <div key={item.id} className="w-full p-4">
                           <div className="flex items-center">
                             <input
@@ -226,8 +287,8 @@ function TambahKeranjang() {
                                   {item.product}
                                 </p>
                                 <p className="text-[#41644A] mt-2 text-sm font-medium">
-                                  <Tag color="#3B8F51">
-                                  {item.description}
+                                  <Tag color="#455048">
+                                    {item.formated_price}
                                   </Tag>
                                 </p>
                                 <div className="flex items-center mt-3">
@@ -243,9 +304,7 @@ function TambahKeranjang() {
                                   >
                                     -
                                   </button>
-                                  <p className="text-[#3B8F51]">
-                                    {item.qty}
-                                  </p>
+                                  <p className="text-[#3B8F51]">{item.qty}</p>
                                   <button
                                     onClick={() =>
                                       handleIncreaseQuantity(item.id)
@@ -262,14 +321,16 @@ function TambahKeranjang() {
                                     Rp {item.total}
                                   </span>
                                 </div>
-                                
                               </div>
                             </div>
                             <div>
-                              <button className="text-red-600 w-10">
-                              <DeleteOutlined />
+                              <button
+                                className="text-red-600 w-10"
+                                onClick={() => handleDelete(item.cart_id)}
+                              >
+                                <DeleteOutlined />
                               </button>
-                              </div>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -281,44 +342,42 @@ function TambahKeranjang() {
                       <h1 className="text-2xl font-medium mb-5 text-[#3B8F51]">
                         Detail Pesanan
                       </h1>
-                      {orderDetails.map((order, index) => (
+                      {DataCartAll.map((order, index) => (
                         <div className="flex justify-between mb-4" key={index}>
                           <div className="w-[230px]">
-                            <p className="truncate text-lg">{order.name}</p>
-                            <p className="text-gray-400">{order.quantity}</p>
+                            <p className="truncate text-lg">{order.product}</p>
+                            <p className="text-gray-400">Item x {order.qty}</p>
                           </div>
                           <div className="w-1/4 text-[#3B8F51] text-end mt-5">
-                            {order.price}
+                           {order.formated_price}
                           </div>
                         </div>
                       ))}
                       <div className="flex justify-between mb-2">
                         <div className="w-1/2">
                           <p className="text-lg font-medium">Sub Total</p>
-                          <p className="text-gray-400">
-                            Item x {orderDetails.length}
-                          </p>
+                          <p className="text-gray-400">Item x</p>
                         </div>
                         <div className="w-1/4 text-[#3B8F51] text-center mt-5 text-xl font-medium">
-                          Rp {totalPrice.toLocaleString()}
+                          Rp {totalPrices}
                         </div>
                       </div>
                       <div className="flex justify-between mb-4">
                         <div className="w-1/2">
                           <p className="text-lg font-medium mt-4">Diskon</p>
-                         
                         </div>
                         <div className="w-1/3 text-red-500 text-end mt-5 text-xl font-medium">
-                          - Rp 10.000
+                          - Rp {discount}
                         </div>
                       </div>
                       <div className="flex justify-between mb-2">
                         <div className="w-1/2">
-                          <p className="text-lg font-medium mt-5">Grand Total</p>
-                         
+                          <p className="text-lg font-medium mt-5">
+                            Grand Total
+                          </p>
                         </div>
                         <div className="w-1/4 text-[#3B8F51] text-center mt-5 text-xl font-medium">
-                          Rp 38.000
+                          Rp {totalPrices - discount}
                         </div>
                       </div>
                       <Input
@@ -340,88 +399,109 @@ function TambahKeranjang() {
 
       {/* Layar HP */}
       <>
-      <div className="sm:inline lg:hidden md:hidden sm:w-screen w-screen mx-auto justify-start px-4 py-2 ">
-     
-        <div className="  mt-24 text-black">
-           <h1 className="text-[#3B8F51] text-lg font-medium">Your Chart</h1>
-          <br />
+        <div className="sm:inline lg:hidden md:hidden sm:w-screen w-screen mx-auto justify-start px-4 py-2 ">
+          <div className="  mt-24 text-black">
+            <h1 className="text-[#3B8F51] text-lg font-medium">Your Chart</h1>
+            <br />
 
-          <>
-            <div className=" h-[43rem] overflow-auto">
-              <div className="w-full md:w-2/3">
-                {items.map((item, index) => (
-                  <React.Fragment key={item.id}>
-                    {index === 0 ||
-                    items[index - 1].category !== item.category ? (
-                      <h1 className="text-lg font-bold  mb-2">
-                        {item.category.charAt(0).toUpperCase() +
-                          item.category.slice(1)}
-                      </h1>
-                    ) : null}
-                    <div className="w-full p-2">
-                      <div className="flex items-center">
-                        <div
-                          key={item.id}
-                          className="flex items-center space-x-4"
-                        >
-                          <input
-                            type="checkbox"
-                            className="form-checkbox"
-                            checked={checkedItems.includes(item.id)}
-                            onChange={() => handleClick(item.id)}
-                            value={item.id}
-                          />
-                        </div>
-                        <div className="w-1/3">
-                          <img
-                            src={item.image}
-                            className="w-16 h-16 ml-2 rounded-md"
-                            alt="Coffee Beans"
-                          />
-                        </div>
-                        <div className="w-full ">
-                          <p className="text-xs font-medium">{item.name}</p>
-                          <p className="text-[#41644A] mt-2 text-[10px] font-medium">
-                            {item.description}
-                          </p>
-                          <div className="flex">
-                            <div className="w-1/2  text-[#3B8F51] text-xs mt-2">
-                              Rp {item.harga}
+            <>
+              <div className=" h-[41rem] overflow-auto">
+                <div className="w-full md:w-2/3">
+                  {DataCartAll.map((item) => (
+                    <div key={item.id} className="w-full">
+                      <div className="w-full p-2">
+                        <div className="flex items-center">
+                          <div
+                            key={item.id}
+                            className="flex items-center space-x-4"
+                          >
+                            <input
+                              type="checkbox"
+                              className="form-checkbox"
+                              checked={checkedItems.includes(item.id)}
+                              onChange={() => handleClick(item.id)}
+                              value={item.id}
+                            />
+                          </div>
+                          <div className="w-1/3">
+                            <img
+                              src={`https://api.katarasa.id/` + item.image}
+                              className="w-16 h-16 ml-2 rounded-md"
+                              alt="Coffee Beans"
+                            />
+                          </div>
+                          <div className="w-full ">
+                            <div className=" flex">
+                              <div className="w-full">
+                                <p className="text-xs font-medium">
+                                  {item.product}
+                                </p>
+                              </div>
                             </div>
-                            <div className="w-1/2  mt-2 flex justify-end items-end">
-                              {" "}
-                              <button
-                                onClick={() => handleDecreaseQuantity(item.id)}
-                                className={`px-2 py-0 rounded-full mr-2 ${
-                                  item.quantity > 0
-                                    ? "bg-[#3B8F51] text-white"
-                                    : "bg-gray-300"
-                                }`}
-                              >
-                                -
-                              </button>
-                              <p className="text-[#3B8F51]">{item.quantity}</p>
-                              <button
-                                onClick={() => handleIncreaseQuantity(item.id)}
-                                className={`px-2 py-0 rounded-full ml-2 ${
-                                  item.quantity > 0
-                                    ? "bg-[#3B8F51] text-white"
-                                    : "bg-gray-300"
-                                }`}
-                              >
-                                +
-                              </button>
+                            <div className=" flex">
+                              <div className="w-full">
+                                <p className="text-[#41644A] mt-2 text-[10px] font-medium">
+                                  <Tag color="#455048">
+                                    {item.formated_price}
+                                  </Tag>
+                                </p>
+                              </div>
+                              <div className="w-1/3 ">
+                                <div className="justify-end items-end flex">
+                                  <button
+                                    className="text-red-600 w-10"
+                                    onClick={() => handleDelete(item.cart_id)}
+                                  >
+                                    <DeleteOutlined />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex">
+                              <div className="w-1/2  text-[#3B8F51] text-xs mt-2">
+                                Rp {item.total}
+                              </div>
+                              <div className="w-1/2  mt-2 flex justify-end items-end">
+                                {" "}
+                                <button
+                                  onClick={() =>
+                                    handleDecreaseQuantity(item.id)
+                                  }
+                                  className={`px-2 py-0 rounded-full mr-2 ${
+                                    item.quantity > 0
+                                      ? "bg-[#3B8F51] text-white"
+                                      : "bg-gray-300"
+                                  }`}
+                                >
+                                  -
+                                </button>
+                                <p className="text-[#3B8F51]">
+                                  {item.quantity}
+                                </p>
+                                <button
+                                  onClick={() =>
+                                    handleIncreaseQuantity(item.id)
+                                  }
+                                  className={`px-2 py-0 rounded-full ml-2 ${
+                                    item.quantity > 0
+                                      ? "bg-[#3B8F51] text-white"
+                                      : "bg-gray-300"
+                                  }`}
+                                >
+                                  +
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </React.Fragment>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          </>
-        </div>
+            </>
+          </div>
         </div>
       </>
 

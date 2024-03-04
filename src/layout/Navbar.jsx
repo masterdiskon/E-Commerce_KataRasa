@@ -87,7 +87,7 @@ function Navbar() {
     setPasswordVisibleSignIn(!setPasswordVisibleSignIn);
   };
 
-  
+
 
   const handleLogout = () => {
     // Clear token (assuming you are storing it in localStorage)
@@ -174,9 +174,9 @@ function Navbar() {
     {
       key: "3",
       label: (
-        <div className="text-base" onClick={handleLogout}>
+        <Link to="/menu" className="text-base" onClick={handleLogout}>
           Logout
-        </div>
+        </Link>
       ),
     },
   ];
@@ -208,7 +208,7 @@ function Navbar() {
           title: "Pendaftaran akun customer berhasil",
           showConfirmButton: false,
           timer: 2000, // Close the notification after 2 seconds
-          onClose: () => window.location.reload(true)
+          onClose: () => window.location.reload(true),
         });
       })
       .catch((error) => {
@@ -239,36 +239,35 @@ function Navbar() {
         }
       });
   };
-  
 
   // Login
-    const handleLogin = () => {
-      // Kirim permintaan login ke API
-      // Gantikan "email" dan "password" dengan nilai yang sesuai
-      fetch('https://api.katarasa.id/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
+  const handleLogin = () => {
+    // Kirim permintaan login ke API
+    // Gantikan "email" dan "password" dengan nilai yang sesuai
+    fetch("https://api.katarasa.id/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
         // Tangani respons dari API
         if (data.status.code === 200) {
           // Jika login berhasil, tampilkan pesan berhasil menggunakan SweetAlert
           Swal.fire({
-            icon: 'success',
-            title: 'Login Berhasil',
+            icon: "success",
+            title: "Login Berhasil",
             text: data.status.message,
           });
           // Set isLoggedIn menjadi true
           setIsLoggedIn(true);
           // Simpan email pengguna di localStorage
-          localStorage.setItem('email', email);
+          localStorage.setItem("email", email);
           // Simpan token pengguna di localStorage
           localStorage.setItem("token", data.data.token);
           // Set email pengguna setelah berhasil login
@@ -278,17 +277,61 @@ function Navbar() {
         } else {
           // Jika login gagal, tampilkan pesan gagal menggunakan SweetAlert
           Swal.fire({
-            icon: 'error',
-            title: 'Login Gagal',
+            icon: "error",
+            title: "Login Gagal",
             text: data.errors[0].message,
           });
         }
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
-    };
-  
+  };
+
+  const [DataCartAll, setDataCartAll] = useState([]);
+
+  const GetTambahKeranjang = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${Baseurl}cart/data-cart?page=1&limit=100&is_gift=0`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const dataKeranjang = response.data.data.totalData;
+      setDataCartAll(dataKeranjang);
+      console.log("Data keranjang:", dataKeranjang);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetTambahKeranjang();
+  }, []);
+
+  const handleClick = () => {
+    // Check if the user is logged in and has a token
+    if (!localStorage.getItem("token")) {
+      // If not logged in, show Sweet Alert
+      Swal.fire({
+        icon: "warning",
+        title: "Belum Login",
+        text: "Tolong Login Terlebih dahulu untuk membuka keranjang!",
+        confirmButtonText: "Login",
+        showCancelButton: true,
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Redirect user to login page
+          setModalVisible(true); // Update this with your login modal visibility state
+        }
+      });
+    }
+  };
 
   const menu = (
     <Menu className="w-48 justify-center items-center text-center overflow-auto">
@@ -306,9 +349,41 @@ function Navbar() {
       </Menu.Item>
       <br />
       <Menu.Item>
-        <Link to="/tambahkeranjang">
-          <img src={keranjangIcon} alt="keranjang" className="w-7 h-6 ml-16" />
-        </Link>
+        <div className="py-2 relative">
+          {localStorage.getItem("token") ? (
+            <Link to="/tambahkeranjang">
+              <div>
+                <img
+                  src={keranjangIcon}
+                  alt="keranjang"
+                  className="w-7 h-6 ml-16"
+                />
+                {/* Notifikasi di sini */}
+                <span className="absolute top-0 right-10 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                  {DataCartAll}
+                </span>
+              </div>
+            </Link>
+          ) : (
+            <div
+              
+              onClick={handleClick}
+            >
+              <img
+              src={keranjangIcon}
+              alt="keranjang"
+              className="w-7 h-6 ml-16"
+            />
+              {/* Notification badge */}
+              {localStorage.getItem("token") && (
+                 <span className="absolute top-0 right-10 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                 {DataCartAll}
+               </span>
+              )}
+            </div>
+          )}
+        </div>
+        
       </Menu.Item>
       <br />
       <hr className="border border-[#3B8F51]" />
@@ -415,20 +490,26 @@ function Navbar() {
               <Link to="/menu">Home</Link>
             </a>
             <a className="text-white hover:text-white rounded-full px-2 py-5 hover:bg-[#3B8F51] hover:border-none">
-              <Link to="/promo" className="mr-1">Promo</Link>
+              <Link to="/promo" className="mr-1">
+                Promo
+              </Link>
             </a>
 
             <Input
               placeholder="Cari disini"
               suffix={
                 <Link to="/pencarian">
-                 <div >
-                 <SearchOutlined
-                 width={100}
-                    style={{ color: "rgba(0, 0, 0, 0.25)", width:'20px', height:'20px' }}
-                    className="cursor-pointer h-12"
-                  />
-                 </div>
+                  <div>
+                    <SearchOutlined
+                      width={100}
+                      style={{
+                        color: "rgba(0, 0, 0, 0.25)",
+                        width: "20px",
+                        height: "20px",
+                      }}
+                      className="cursor-pointer h-12"
+                    />
+                  </div>
                 </Link>
               }
               style={{
@@ -441,18 +522,42 @@ function Navbar() {
                 paddingLeft: "36px", // Sesuaikan dengan lebar ikon
               }}
             />
-            <div className=" py-2 ">
-              <Link to="/tambahkeranjang">
-               <div className="bg-[#d0d0d0a7] rounded-full p-4">
-               <img
-                  src={IconOrder}
-                  alt="order"
-                  className="w-[20px] h-[20px]"
-                />
-               </div>
-              </Link>
+            <div className="py-2 relative">
+              {localStorage.getItem("token") ? (
+                <Link to="/tambahkeranjang">
+                  <div className="bg-[#d0d0d0a7] rounded-full p-4 relative">
+                    <img
+                      src={IconOrder}
+                      alt="order"
+                      className="w-[20px] h-[20px]"
+                    />
+                    {/* Notification badge */}
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                      {/* Assuming DataCartAll is the number of items in the cart */}
+                      {DataCartAll}
+                    </span>
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  className="bg-[#d0d0d0a7] rounded-full p-4 relative"
+                  onClick={handleClick}
+                >
+                  <img
+                    src={IconOrder}
+                    alt="order"
+                    className="w-[20px] h-[20px]"
+                  />
+                  {/* Notification badge */}
+                  {localStorage.getItem("token") && (
+                    <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                      {/* Assuming DataCartAll is the number of items in the cart */}
+                      {DataCartAll}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
-
             <div className="text-white font-bold px-4 py-5">|</div>
             {/* Tambahkan kondisional untuk menampilkan tombol "Login" */}
             <>
@@ -537,10 +642,9 @@ function Navbar() {
           {/* Modal Login */}
           <>
             <Modal
-            
               width={600}
               visible={modalVisible}
-              maskClosable={false} 
+              maskClosable={false}
               onCancel={() => {
                 setModalVisible(false);
                 setEmail(""); // Reset email setelah modal ditutup
@@ -555,7 +659,7 @@ function Navbar() {
                   Masuk
                 </span>
               }
-              style={{ borderRadius: "20px" }} 
+              style={{ borderRadius: "20px" }}
             >
               <div className="mx-auto max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl pl-5 pr-5 pb-5">
                 <div className="md:mt-10 mt-5">
