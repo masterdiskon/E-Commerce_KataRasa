@@ -173,7 +173,7 @@ function TambahKeranjang() {
       );
       const dataKeranjang = response.data.data.data;
       setDataCartAll(dataKeranjang);
-      
+
       console.log("Data keranjang:", dataKeranjang);
     } catch (error) {
       console.error("Error fetching cart data:", error);
@@ -198,7 +198,7 @@ function TambahKeranjang() {
           },
         }
       );
-
+      GetTambahKeranjang();
       if (response.ok) {
         // Item deleted successfully
         Swal.fire("Success", "Item deleted successfully!", "success");
@@ -243,12 +243,12 @@ function TambahKeranjang() {
   };
 
   const totalPrices = DataCartAll.reduce(
-    (accumulator, order) => accumulator + order.price,
+    (accumulator, order) => accumulator + order.total,
     0
   );
 
   const discount = 0;
-  
+
   return (
     <div className="w-full h-screen">
       <Navbar />
@@ -349,7 +349,7 @@ function TambahKeranjang() {
                             <p className="text-gray-400">Item x {order.qty}</p>
                           </div>
                           <div className="w-1/4 text-[#3B8F51] text-end mt-5">
-                           {order.formated_price}
+                            {order.formated_price_total}
                           </div>
                         </div>
                       ))}
@@ -510,7 +510,7 @@ function TambahKeranjang() {
           <div className="w-full mx-auto bg-[#3B8F51] p-4">
             <div className="w-full flex mt-1">
               <div className="w-1/2  text-lg text-white">
-                <p className="text-[#F7FFF1] text-xs">Total</p>Rp 30.000
+                <p className="text-[#F7FFF1] text-xs">Total</p>Rp {totalPrices}
               </div>
               <div className="w-1/2  ">
                 <Link to="/payment">

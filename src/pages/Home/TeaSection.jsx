@@ -215,6 +215,7 @@ function TeaSection() {
                   >
                     {products.slice(0, 5).map((product, index) => {
                       return (
+                        <Link to={`/detailproduct/${product.slug}`}>
                         <div
                           key={index}
                           className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
@@ -252,7 +253,9 @@ function TeaSection() {
                             </div>
                           </a>
                         </div>
+                        </Link>
                       );
+                   
                     })}
                   </div>
                 </div>

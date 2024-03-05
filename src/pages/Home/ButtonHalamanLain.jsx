@@ -81,39 +81,37 @@ function ButtonHalamanLain() {
         <div className="md:hidden lg:hidden inline">
           <div className="text-black mx-auto justify-center flex px-5 py-2 mt-5">
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4 ">
-              {Buttons.map((gambar, index) => (
-                <div
-                  key={index}
-                  className={`justify-start mt-2 ${
-                    gambar.disabled ? "opacity-50 cursor-not-allowed" : ""
-                  }`} // Menyesuaikan kelas CSS untuk menonaktifkan tombol
-                  style={{ position: "relative" }}
+            {Buttons.map((gambar, index) => (
+              <div
+                key={index}
+                className={`justify-start mt-2 ${
+                  gambar.disabled ? "opacity-50 cursor-not-allowed" : ""
+                }`} // Menyesuaikan kelas CSS untuk menonaktifkan tombol
+                style={{ position: "relative" }}
+              >
+                <Link
+                  to={gambar.path}
+                  onClick={(e) => gambar.disabled && e.preventDefault()}
                 >
-                  <Link
-                    to={gambar.path}
-                    onClick={(e) => gambar.disabled && e.preventDefault()}
+                  <img
+                    src={gambar.image}
+                    className="w-full h-auto md:w-[285px] md:h-[140px] rounded-xl"
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                      color: "white",
+                    }}
                   >
-                    <img
-                      src={gambar.image}
-                      className="w-full h-auto md:w-[285px] md:h-[140px]"
-                    />
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)",
-                        color: "white",
-                      }}
-                    >
-                      <p className="text-xs">
-                        {gambar.disabled ? "Coming Soon" : gambar.title}
-                      </p>{" "}
-                      {/* Mengubah teks judul jika tombol dinonaktifkan */}
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                    <p className="text-xs">{gambar.disabled ? "Coming Soon" : gambar.title}</p>{" "}
+                    {/* Mengubah teks judul jika tombol dinonaktifkan */}
+                  </div>
+                </Link>
+              </div>
+            ))}
             </div>
           </div>
         </div>

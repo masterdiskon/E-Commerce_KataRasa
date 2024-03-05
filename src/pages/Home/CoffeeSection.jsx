@@ -213,8 +213,9 @@ function CoffeeSection() {
                     ref={carousel}
                     className="carousel-container  relative flex gap-1 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                   >
-                    {products.slice(0, 5).map((product, index)=> {
+                    {products.slice(12,17).map((product, index)=> {
                       return (
+                        <Link to={`/detailproductt/${product.slug}`}>
                         <div
                           key={index}
                           className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
@@ -252,7 +253,9 @@ function CoffeeSection() {
                             </div>
                           </a>
                         </div>
+                        </Link>
                       );
+
                     })}
                   </div>
                 </div>

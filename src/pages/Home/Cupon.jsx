@@ -164,7 +164,7 @@ function Cupon() {
                   src={promo.image}
                   className="w-full md:w-[240px] h-[95px]"
                 />
-                <div
+                {/* <div
                   style={{
                     position: "absolute",
                     top: "10px",
@@ -175,7 +175,7 @@ function Cupon() {
                   <p className="text-xs font-medium mt-2">{promo.title}</p>
                   <p className="text-[10px]">{promo.discount}</p>
                   <p className="text-[10px] mt-2">{promo.date}</p>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

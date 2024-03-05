@@ -272,14 +272,13 @@ function DetailProduct() {
                         className="w-72 h-72 mb-4 mt-4 rounded-lg"
                       />
 
-                    
                       <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
-                       <Tag color="red">
-                       Potongan Harga {product.discount[0].potongan}%
-                        </Tag> 
+                        <Tag color="red">
+                          Potongan Harga {product.discount[0].potongan}%
+                        </Tag>
                       </p>
                       <p className="mt-5 text-md text-red-500 text-xl font-medium">
-                       <s>{product.formatted_price}</s> 
+                        <s>{product.formatted_price}</s>
                       </p>
                       <p className=" text-md text-[#3B8F51] text-3xl font-medium">
                         {product.discount[0].discount_price_formatted}
@@ -460,13 +459,12 @@ function DetailProduct() {
                                   <s>{product.formatted_price}</s>
                                 </p>
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
-                                Rp. {product.price}
+                                  Rp. {product.price}
                                 </p>
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
-                                 Rp. {product.discount &&
-                                    parseInt(
-                                      product.price
-                                    ) * count}
+                                  Rp.{" "}
+                                  {product.discount &&
+                                    parseInt(product.price) * count}
                                 </p>
                               </div>
                             </div>
@@ -795,21 +793,24 @@ function DetailProduct() {
                 </div>
                 <div className="w-1/2  flex justify-center items-center">
                   <div className="flex items-center">
-                    <Button onClick={decrement} className="mr-2">
+                    <button onClick={decrement} className="mr-2">
                       -
-                    </Button>
+                    </button>
                     <div className="bg-white border border-gray-300 rounded-md px-4 py-2">
                       {count}
                     </div>
-                    <Button onClick={increment} className="ml-2">
+                    <button onClick={increment} className="ml-2">
                       +
-                    </Button>
+                    </button>
                   </div>
                 </div>
                 <div className="w-1/2 ">
                   {" "}
-                  <button className="px-4 py-2 bg-[#3B8F51] text-white rounded-full w-full text-[10px]">
-                    <Link to="/tambahkeranjang">Tambah Keranjang</Link>
+                  <button
+                    onClick={addToCart}
+                    className="px-4 py-2 bg-[#3B8F51] text-white rounded-full w-full text-[10px]"
+                  >
+                    Tambah Keranjang
                   </button>
                 </div>
               </div>
