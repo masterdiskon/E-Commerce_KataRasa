@@ -14,6 +14,7 @@ import Cupon2 from "../../../assets/Cupon/Cupon2.png";
 import DetailPromosi1 from "../../../assets/Promo/detailpromo1.png";
 import DetailPromosi2 from "../../../assets/Promo/detailpromo2.png";
 import DetailPromosi3 from "../../../assets/Promo/detailpromo3.png";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 
 function DetailPromo() {
   const promoDetails = [
@@ -94,6 +95,13 @@ function DetailPromo() {
     },
   ];
 
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = (scrollOffset) => {
+    const newPosition = scrollPosition + scrollOffset;
+    setScrollPosition(newPosition < 0 ? 0 : newPosition);
+  };
+
   return (
     <div className="w-full h-screen ">
       <Navbar />
@@ -162,9 +170,9 @@ function DetailPromo() {
                           </span>
                         </Tooltip>
                       </div>
-                      {copied && (
+                      {/* {copied && (
                         <span className="text-[#41644A]">Copied!</span>
-                      )}
+                      )} */}
                     </div>
                     <div className="mt-5">
                       Bagikan Promo
@@ -201,36 +209,64 @@ function DetailPromo() {
             <div>
               <p className="font-medium text-lg mb-5">Promo Lainnya</p>
               <div className="hidden md:inline lg:inline bg-[#F7FFF1] h-[250px] ">
-                <div
-                  className="flex overflow-auto w-[75rem] ml-4 "
-                  style={{ maxWidth: "100%" }}
-                >
-                  {promos.map((promo, index) => (
-                    <div
-                      key={index}
-                      className="justify-start mt-2 shadow-xl"
-                      style={{
-                        position: "relative",
-                        flex: "0 0 auto",
-                        marginRight: "10px",
-                      }}
-                    >
-                      <img
-                        src={promo.image}
-                        className="w-full md:w-[488px] h-[180px]"
-                      />
-                      <div className="mt-2 mb-3 flex items-center justify-between">
-                        <div className="text-xl font-medium">
-                          <p className="p-3 pt-4 pb-8">{promo.title}</p>
-                        </div>
-                        <div className="pr-3">
-                          <button className="p-2 bg-[#3B8F51] text-white rounded-full cursor-pointer py-2 px-5">
-                            Lihat
-                          </button>
+                <div style={{ overflow: "hidden", position: "relative" }}>
+                  <div
+                    className="flex w-[75rem] ml-4"
+                    style={{
+                      maxWidth: "100%",
+                      position: "relative",
+                      overflowX: "hidden",
+                    }}
+                  >
+                    {promos.map((promo, index) => (
+                      <div
+                        key={index}
+                        className="justify-start mt-2 shadow-xl"
+                        style={{
+                          position: "relative",
+                          flex: "0 0 auto",
+                          marginRight: "10px",
+                          transform: `translateX(-${scrollPosition}px)`,
+                          transition: "transform 0.3s ease",
+                        }}
+                      >
+                        <img
+                          src={promo.image}
+                          className="w-full md:w-[488px] h-[180px]"
+                        />
+                        <div className="mt-2 mb-3 flex items-center justify-between">
+                          <div className="text-xl font-medium">
+                            <p className="p-3 pt-4 pb-8">{promo.title}</p>
+                          </div>
+                          <div className="pr-3">
+                            <button className="p-2 bg-[#3B8F51] text-white rounded-full cursor-pointer py-2 px-5">
+                              Lihat
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                  {scrollPosition > 0 && (
+                    <button
+                      onClick={() => handleScroll(-400)}
+                      className="absolute top-0 bottom-0 left-0 bg-transparent px-2 py-3 font-bold text-white"
+                    >
+                      <div className="rounded-full bg-[#3B8F51] px-2 py-1">
+                        <LeftOutlined />
+                      </div>
+                    </button>
+                  )}
+                  {scrollPosition < (promos.length - 1) * (488 + 10) && (
+                    <button
+                      onClick={() => handleScroll(400)}
+                      className="absolute top-0 bottom-0 right-0 bg-transparent px-2 py-3 font-bold text-white"
+                    >
+                      <div className="rounded-full bg-[#3B8F51] px-2 py-1">
+                        <RightOutlined />
+                      </div>
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
@@ -334,13 +370,13 @@ function DetailPromo() {
             <br />
             {/* Card Promo */}
             <div>
-              <p className="font-medium text-lg mb-5">Promo Lainnya</p>
+              <p className="font-medium text-lg mb-4">Promo Lainnya</p>
               <div className="max-w-sm rounded  ">
-                <div className="px-0 py-4 space-y-10">
+                <div className="px-0 py-0 space-y-10">
                   {promos.map((promo, index) => (
                     <div
                       key={index}
-                      className="justify-start mt-2 shadow-xl bg-white rounded-2xl"
+                      className="justify-start mt-2 shadow-xl bg-white rounded-lg"
                       style={{
                         position: "relative",
                         flex: "0 0 auto",
@@ -352,7 +388,7 @@ function DetailPromo() {
                         className="w-full md:w-[350px] h-[120px]"
                       />
                       <div className="mt-2 mb-3 flex items-center justify-between">
-                        <div className="text-xl font-medium">
+                        <div className="text-lg font-medium">
                           <p className="p-3 pt-4 pb-8">{promo.title}</p>
                         </div>
                         <div className="pr-3">

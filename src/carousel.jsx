@@ -122,7 +122,7 @@ const Carousel = () => {
       {/* Layar Besar */}
       <>
         <div className="hidden md:inline lg:inline ">
-          <div className=" text-black mx-auto justify-center flex   py-2 ">
+          <div className=" text-black mx-auto justify-center flex py-2 ">
             <div className="hidden lg:inline md:inline">
               <div className="carousel mx-auto flex w-[76rem]">
                 <div className="relative overflow-hidden">
@@ -182,7 +182,7 @@ const Carousel = () => {
                           >
                             <img
                               src={PestaDisc}
-                              className="w-full sm:w-[250px] sm:h-[250px] lg:h-[340px]"
+                              className="w-full sm:w-[250px] sm:h-[250px] lg:h-[350px]"
                             />
                             <div
                               style={{
@@ -197,7 +197,7 @@ const Carousel = () => {
                                   Pesta Seru Discount
                                 </p>
                                 <p className="text-sm mt-4">Recommendations!</p>
-                                <Button className="mt-4 rounded-full text-xs text-white">
+                                <Button className="font-bold  border h-10 pl-6 pr-6 border-white bg-[#3b8f51]  px-2 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none mt-5 rounded-full text-xs text-white">
                                   Lihat Semua
                                 </Button>
                               </div>
@@ -212,7 +212,7 @@ const Carousel = () => {
                           <Link to="/detailproduct">
                             <div
                               ref={carousel}
-                              className="carousel-container relative flex gap-1 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+                              className="carousel-container relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 sm:h-[330px]"
                             >
                               {products.map((product, index) => {
                                 return (

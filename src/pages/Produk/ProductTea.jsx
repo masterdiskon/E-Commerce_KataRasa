@@ -415,6 +415,7 @@ function ProductTea() {
                     {/* Looping untuk menampilkan konten produk */}
                     <>
                       {products.map((product, index) => (
+                         <Link to={`/detailproduct/${product.slug}`}>
                         <div
                           key={product.id}
                           className="bg-white rounded-lg shadow-md p-4"
@@ -447,6 +448,7 @@ function ProductTea() {
                           </div>
                           {/* Informasi lebih lanjut atau tombol beli */}
                         </div>
+                        </Link>
                       ))}
                     </>
                   </div>

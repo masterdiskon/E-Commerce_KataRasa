@@ -91,6 +91,16 @@ function Cupon() {
     // Tambahkan promo lainnya jika diperlukan
   ];
 
+  const sliderRef = useRef(null);
+
+  const scrollLeft = () => {
+    sliderRef.current.scrollLeft -= 200; // Sesuaikan nilai scroll sesuai kebutuhan
+  };
+
+  const scrollRight = () => {
+    sliderRef.current.scrollLeft += 200; // Sesuaikan nilai scroll sesuai kebutuhan
+  };
+
   return (
     <div className="mx-auto">
       <div className="text-black mx-auto justify-center flex px-5 md:px-20 py-2 mt-5">
@@ -103,42 +113,69 @@ function Cupon() {
             </p>
           </div>
 
-          <div
-            className="flex overflow-auto w-[75rem] ml-4 "
-            style={{ maxWidth: "100%" }}
-          >
-            {promos.map((promo, index) => (
-              <div
-                key={index}
-                className="justify-start mt-2"
-                style={{
-                  position: "relative",
-                  flex: "0 0 auto",
-                  marginRight: "10px",
-                }}
-              >
-                <img
-                  src={promo.image}
-                  className="w-full md:w-[270px] h-[150px]"
-                />
-                {/* <div
+          <div className="relative overflow-hidden scroll-smooth" style={{ maxWidth: "100%", scrollBehavior: "smooth" }}>
+            <div
+              className="flex overflow-hidden w-[75rem] ml-4"
+              style={{ maxWidth: "100%" }}
+              ref={sliderRef}
+            >
+              {promos.map((promo, index) => (
+                <div
+                  key={index}
+                  className="justify-start mt-2"
                   style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "15px",
-                    color: "white",
+                    position: "relative",
+                    flex: "0 0 auto",
+                    marginRight: "10px",
                   }}
                 >
-                  <p className="text-base font-medium mt-2">{promo.title}</p>
-                  <p className="text-sm">{promo.discount}</p>
-                  <p className="text-sm mt-2">{promo.date}</p>
-                </div> */}
-              </div>
-            ))}
-          </div>
-
-          <div className="ml-5 mr-2 mt-0 flex justify-end text-[#7da286]">
-            <p className="cursor-pointer">*klik untuk copy kode</p>
+                  <img
+                    src={promo.image}
+                    alt={`Promo ${index}`}
+                    className="w-full md:w-[270px] h-[150px]"
+                  />
+                </div>
+              ))}
+            </div>
+            <button
+            
+              className="absolute   top-0 bottom-0 left-0 bg-transparent text-[#3B8F51] px-2 py-1"
+              onClick={scrollLeft}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-20 -ml-5"
+                fill="none"
+                viewBox="0 0 55 40"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              className="absolute top-0 bottom-0 right-0 bg-transparent text-[#3B8F51] px-2 py-1"
+              onClick={scrollRight}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-12 w-10 -mr-5"
+                fill="none"
+                viewBox="0 0 25 40"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
           </div>
         </div>
       </div>

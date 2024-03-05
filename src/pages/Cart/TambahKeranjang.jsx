@@ -187,30 +187,43 @@ function TambahKeranjang() {
   const handleDelete = async (cartId) => {
     const token = localStorage.getItem("token");
 
-    try {
-      const response = await fetch(
-        `https://api.katarasa.id/cart/delete-dari-cart?cart_id=${cartId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-          },
+    // Show confirmation prompt before deleting the item
+    const confirmation = await Swal.fire({
+      title: "Confirmation",
+      text: "Are you sure you want to delete this item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (confirmation.isConfirmed) {
+      try {
+        const response = await fetch(
+          `https://api.katarasa.id/cart/delete-dari-cart?cart_id=${cartId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            },
+          }
+        );
+
+        if (response.ok) {
+          // Item deleted successfully
+          Swal.fire("Success", "Item deleted successfully!", "success");
+          GetTambahKeranjang();
+          // You can also update the state or perform any other actions as needed
+        } else {
+          // Handle error response
+          Swal.fire("Error", "Failed to delete item!", "error");
         }
-      );
-      GetTambahKeranjang();
-      if (response.ok) {
-        // Item deleted successfully
-        Swal.fire("Success", "Item deleted successfully!", "success");
-        // You can also update the state or perform any other actions as needed
-      } else {
-        // Handle error response
+      } catch (error) {
+        // Handle fetch error
+        console.error("Error deleting item:", error);
         Swal.fire("Error", "Failed to delete item!", "error");
       }
-    } catch (error) {
-      // Handle fetch error
-      console.error("Error deleting item:", error);
-      Swal.fire("Error", "Failed to delete item!", "error");
     }
   };
 
@@ -272,9 +285,9 @@ function TambahKeranjang() {
                             <input
                               value={item.id}
                               type="checkbox"
-                              className=" text-green-500 "
+                              className="h-6 w-6 text-green-500"
                             />
-                            <div className="w-1/3 flex justify-center items-center">
+                            <div className="w-1/5 flex justify-center items-center">
                               <img
                                 src={`https://api.katarasa.id/` + item.image}
                                 className="w-28 h-24 ml-5 rounded-md"
@@ -400,7 +413,7 @@ function TambahKeranjang() {
       {/* Layar HP */}
       <>
         <div className="sm:inline lg:hidden md:hidden sm:w-screen w-screen mx-auto justify-start px-4 py-2 ">
-          <div className="  mt-24 text-black">
+          <div className="  mt-24 text-black p-4">
             <h1 className="text-[#3B8F51] text-lg font-medium">Your Chart</h1>
             <br />
 
@@ -408,19 +421,20 @@ function TambahKeranjang() {
               <div className=" h-[41rem] overflow-auto">
                 <div className="w-full md:w-2/3">
                   {DataCartAll.map((item) => (
+                    
                     <div key={item.id} className="w-full">
+                     
                       <div className="w-full p-2">
                         <div className="flex items-center">
                           <div
                             key={item.id}
                             className="flex items-center space-x-4"
                           >
+                            
                             <input
-                              type="checkbox"
-                              className="form-checkbox"
-                              checked={checkedItems.includes(item.id)}
-                              onChange={() => handleClick(item.id)}
                               value={item.id}
+                              type="checkbox"
+                              className="h-4 w-4 text-green-500"
                             />
                           </div>
                           <div className="w-1/3">
@@ -430,39 +444,23 @@ function TambahKeranjang() {
                               alt="Coffee Beans"
                             />
                           </div>
-                          <div className="w-full ">
+                          <div className="w-full  ">
                             <div className=" flex">
-                              <div className="w-full">
+                              <div className="w-full ">
                                 <p className="text-xs font-medium">
                                   {item.product}
                                 </p>
                               </div>
                             </div>
                             <div className=" flex">
-                              <div className="w-full">
+                              <div className="w-1/2 ">
                                 <p className="text-[#41644A] mt-2 text-[10px] font-medium">
                                   <Tag color="#455048">
                                     {item.formated_price}
                                   </Tag>
                                 </p>
                               </div>
-                              <div className="w-1/3 ">
-                                <div className="justify-end items-end flex">
-                                  <button
-                                    className="text-red-600 w-10"
-                                    onClick={() => handleDelete(item.cart_id)}
-                                  >
-                                    <DeleteOutlined />
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className="flex">
-                              <div className="w-1/2  text-[#3B8F51] text-xs mt-2">
-                                Rp {item.total}
-                              </div>
-                              <div className="w-1/2  mt-2 flex justify-end items-end">
+                              <div className="w-1/2  flex justify-end items-end">
                                 {" "}
                                 <button
                                   onClick={() =>
@@ -492,6 +490,23 @@ function TambahKeranjang() {
                                   +
                                 </button>
                               </div>
+                              <div className="w-1/3 ">
+                                <div className="justify-end items-end flex mt-2">
+                                  <button
+                                    className="text-red-600 w-10"
+                                    onClick={() => handleDelete(item.cart_id)}
+                                  >
+                                    <DeleteOutlined />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex">
+                              <div className="w-1/2  text-[#3B8F51] text-xs mt-2">
+                                Rp {item.total}
+                              </div>
+                              
                             </div>
                           </div>
                         </div>

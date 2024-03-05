@@ -257,37 +257,41 @@ function DetailProductChoco() {
       <>
         <div>
           <div className="hidden md:inline lg:inline ">
-            <div className="flex flex-col md:flex-row md:justify-between h-screen w-screen md:p-20 space-x-5  mx-auto sm:w-[89rem]">
+            <div className="flex flex-col md:flex-row md:justify-between  w-screen md:p-20 space-x-5  mx-auto sm:w-[89rem]">
               <div className="flex mt-20 mx-auto w-screen sm:h-[550px] sm:mb- h-auto space-x-5  ">
                 {/* Konten 1 */}
                 <>
                   {product && ( // Pastikan produk ada sebelum mencoba mengakses propertinya
-                    <div className="w-full md:w-1/2 bg-white  p-4 mb-4 md:mb-0 relative">
-                      <h1 className="text-[22px] font-medium">
+                    <div className="w-full md:w-1/2 bg-white flex p-4 mb-4 md:mb-0 relative">
+                    <div>
+                    <h1 className="text-[22px] font-medium">
                         {product.name}
                       </h1>
-                      <img
+                     
+                     <img
                         src={product.image}
                         alt="Gambar Konten"
                         className="w-72 h-72 mb-4 mt-4 rounded-lg"
                       />
-                      <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
+                   
+                      {/* <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
                         <Tag color="red">Potongan Harga 0%</Tag>
-                      </p>
-                      <p className="mt-5 text-md text-red-500 text-xl font-medium">
+                      </p> */}
+                      {/* <p className="mt-5 text-md text-red-500 text-xl font-medium">
                         <s>Rp. 0</s>
-                      </p>
+                      </p> */}
                       <p className=" text-md text-[#3B8F51] text-3xl font-medium">
                         {product.formatted_price}
                       </p>
                       <p className="mt-5 text-md">{product.description}</p>
+                    </div>
                     </div>
                   )}
                 </>
 
                 {/* Konten 2 */}
                 <>
-                  <div className=" md:w-1/3  h-auto  p-4 mb-4 md:mb-0 rounded-lg shadow-xl  ">
+                  <div className=" md:w-1/2  h-auto  p-4 mb-4 md:mb-0 rounded-lg shadow-xl  ">
                     <h1 className="text-md font-medium mb-2 mt-2">Size</h1>
                     <div className="flex flex-wrap gap-2">
                       <button
@@ -448,17 +452,17 @@ function DetailProductChoco() {
                             <hr className="mt-5" />
                             <div className="flex">
                               <div className="w-1/2  justify-center items-center text-base">
-                                <div className="mt-5">Harga</div>
+                                {/* <div className="mt-5">Harga</div> */}
                                 <div className="mt-3">Total Harga</div>
                               </div>
                               <div className="w-1/2 ">
-                                <p className="justify-end items-end flex text-[#E53C3C] ">
+                                {/* <p className="justify-end items-end flex text-[#E53C3C] ">
                                   <s>Rp. 0</s>
                                 </p>
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
                                   Rp. {product.price}
-                                </p>
-                                <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
+                                </p> */}
+                                <p className="justify-end items-end flex text-[#3B8F51] text-[22px] mt-2 font-medium">
                                   Rp.{" "}
                                   {product.discount &&
                                     parseInt(product.price) * count}
@@ -481,9 +485,10 @@ function DetailProductChoco() {
                   </div>
                 </>
               </div>
+             
             </div>
-
-            <div className=" mx-auto w-[89rem]">
+           
+            <div className=" mx-auto w-[85rem]">
               {/* Ulasan Produk */}
               <>
                 <div className="flex flex-col md:flex-row md:justify-between md:ml-20 py-5 px-4  space-x-5 ">
@@ -589,12 +594,13 @@ function DetailProductChoco() {
                     alt="Gambar Konten"
                     className="w-56 h-56  mb-4 rounded-lg border"
                   />
-                  <p className="text-[#E53C3C] font-semibold ">
+                  {/* <p className="text-[#E53C3C] font-semibold ">
                     <s className="text-[10px]">Rp 56.000</s>
-                    <span className="text-[#3B8F51] text-lg font-medium ml-4">
+                   
+                  </p> */}
+                  <span className="text-[#3B8F51] text-xl font-medium ">
                       {product.formatted_price}
                     </span>
-                  </p>
                 </div>
                 <div className="   w-1/3 flex flex-col items-center">
                   <img
@@ -614,7 +620,7 @@ function DetailProductChoco() {
           <>
             {product && (
               <div className="ml-3 mr-2">
-                <h1 className="text-lg font-medium">{product.name}</h1>
+                <div className="text-2xl font-medium">{product.name}</div>
                 <p className="mt-3 text-[#615f5f] text-sm text-justify">
                   {product.description}
                 </p>
@@ -638,7 +644,7 @@ function DetailProductChoco() {
                   <>
                     <div className="   mb-4">
                       <h1 className="text-md font-medium mb-2">Size</h1>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-1">
                         <button
                           className={`border ${
                             selectedSize === "200"
@@ -779,20 +785,20 @@ function DetailProductChoco() {
               </div>
             )}
             <>
-              <div className="flex mt-10 w-full">
-                <div className="w-1/3  flex justify-center items-center">
+              <div className="flex mt-10 w-full ">
+                <div className="w-1/4  flex justify-start items-center pl-3">
                   {" "}
                   <p className="text-black font-semibold">Jumlah</p>
                 </div>
                 <div className="w-1/2  flex justify-center items-center">
                   <div className="flex items-center">
-                    <button onClick={decrement} className="mr-2">
+                    <button onClick={decrement} className="mr-2 px-4 py-2">
                       -
                     </button>
                     <div className="bg-white border border-gray-300 rounded-md px-4 py-2">
                       {count}
                     </div>
-                    <button onClick={increment} className="ml-2">
+                    <button onClick={increment} className="ml-2 px-4 py-2">
                       +
                     </button>
                   </div>
@@ -801,7 +807,7 @@ function DetailProductChoco() {
                   {" "}
                   <button
                     onClick={addToCart}
-                    className="px-4 py-2 bg-[#3B8F51] text-white rounded-full w-full text-[10px]"
+                    className="px-4 py-2 bg-[#3B8F51] text-white rounded-full w-full text-[10px] mt-2"
                   >
                     Tambah Keranjang
                   </button>

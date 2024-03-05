@@ -435,6 +435,7 @@ function ProductCoffee() {
                     {/* Looping untuk menampilkan konten produk */}
                     <>
                       {products.map((product, index) => (
+                         <Link to={`/detailproductt/${product.slug}`}>
                         <div
                           key={product.id}
                           className="bg-white rounded-lg shadow-md p-4"
@@ -452,7 +453,7 @@ function ProductCoffee() {
                             {product.description}
                           </p>
                           <p className="text-[#E53C3C] font-semibold text-[10px]">
-                            <s>{product.discount[0].discount_price} </s>
+                            {/* <s>{product.discount[0].discount_price} </s> */}
                           </p>
                           <div className="mt-2">
                             <div className="text-xs text-[#3B8F51]">
@@ -467,6 +468,7 @@ function ProductCoffee() {
                           </div>
                           {/* Informasi lebih lanjut atau tombol beli */}
                         </div>
+                        </Link>
                       ))}
                     </>
                   </div>

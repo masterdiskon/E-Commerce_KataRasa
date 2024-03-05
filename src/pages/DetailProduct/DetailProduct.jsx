@@ -257,40 +257,42 @@ function DetailProduct() {
       <>
         <div>
           <div className="hidden md:inline lg:inline ">
-            <div className="flex flex-col md:flex-row md:justify-between h-screen w-screen md:p-20 space-x-5  mx-auto sm:w-[89rem]">
+            <div className="flex flex-col md:flex-row md:justify-between  w-screen md:p-20 space-x-5  mx-auto sm:w-[86rem]">
               <div className="flex mt-20 mx-auto w-screen sm:h-[550px] sm:mb- h-auto space-x-5  ">
                 {/* Konten 1 */}
                 <>
                   {product && ( // Pastikan produk ada sebelum mencoba mengakses propertinya
-                    <div className="w-full md:w-1/2 bg-white  p-4 mb-4 md:mb-0 relative">
-                      <h1 className="text-[22px] font-medium">
-                        {product.name}
-                      </h1>
-                      <img
-                        src={product.image}
-                        alt="Gambar Konten"
-                        className="w-72 h-72 mb-4 mt-4 rounded-lg"
-                      />
+                    <div className="w-full md:w-1/2 bg-white flex  p-4 mb-4 md:mb-0 relative">
+                      <div>
+                        <h1 className="text-[22px] font-medium">
+                          {product.name}
+                        </h1>
+                        <img
+                          src={product.image}
+                          alt="Gambar Konten"
+                          className="w-72 h-72 mb-4 mt-4 rounded-lg"
+                        />
 
-                      <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
-                        <Tag color="red">
-                          Potongan Harga {product.discount[0].potongan}%
-                        </Tag>
-                      </p>
-                      <p className="mt-5 text-md text-red-500 text-xl font-medium">
-                        <s>{product.formatted_price}</s>
-                      </p>
-                      <p className=" text-md text-[#3B8F51] text-3xl font-medium">
-                        {product.discount[0].discount_price_formatted}
-                      </p>
-                      <p className="mt-5 text-md">{product.description}</p>
+                        <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
+                            <Tag color="red">
+                              Potongan Harga {product.discount[0].potongan}%
+                            </Tag>
+                        </p>
+                        <p className="mt-5 text-md text-red-500 text-xl font-medium">
+                          <s>{product.formatted_price}</s>
+                        </p>
+                        <p className=" text-md text-[#3B8F51] text-3xl font-medium">
+                          {product.discount[0].discount_price_formatted}
+                        </p>
+                        <p className="mt-5 text-md">{product.description}</p>
+                      </div>
                     </div>
                   )}
                 </>
 
                 {/* Konten 2 */}
                 <>
-                  <div className=" md:w-1/3  h-auto  p-4 mb-4 md:mb-0 rounded-lg shadow-xl  ">
+                  <div className=" md:w-1/2  h-auto  p-4 mb-4 md:mb-0 rounded-lg shadow-xl  ">
                     <h1 className="text-md font-medium mb-2 mt-2">Size</h1>
                     <div className="flex flex-wrap gap-2">
                       <button
@@ -451,20 +453,22 @@ function DetailProduct() {
                             <hr className="mt-5" />
                             <div className="flex">
                               <div className="w-1/2  justify-center items-center text-base">
-                                <div className="mt-5">Harga</div>
-                                <div className="mt-3">Total Harga</div>
+                                {/* <div className="mt-5">Harga</div> */}
+                                <div className="mt-6">Total Harga</div>
                               </div>
                               <div className="w-1/2 ">
                                 <p className="justify-end items-end flex text-[#E53C3C] ">
                                   <s>{product.formatted_price}</s>
                                 </p>
-                                <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
+                                {/* <p className="justify-end items-end flex text-[#3B8F51] text-[16px] mt-1 font-medium">
                                   Rp. {product.price}
-                                </p>
+                                </p> */}
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
                                   Rp.{" "}
                                   {product.discount &&
-                                    parseInt(product.price) * count}
+                                    parseInt(
+                                      product.discount[0].discount_price
+                                    ) * count}
                                 </p>
                               </div>
                             </div>
@@ -490,7 +494,7 @@ function DetailProduct() {
             <br />
             <br />
             <br />
-            <div className=" mx-auto w-[89rem]">
+            <div className=" mx-auto w-[86rem]">
               {/* Ulasan Produk */}
               <>
                 <div className="flex flex-col md:flex-row md:justify-between md:ml-20 py-5 px-4  space-x-5 ">
@@ -596,12 +600,18 @@ function DetailProduct() {
                     alt="Gambar Konten"
                     className="w-56 h-56  mb-4 rounded-lg border"
                   />
-                  <p className="text-[#E53C3C] font-semibold ">
-                    <s className="text-[10px]">Rp 56.000</s>
-                    <span className="text-[#3B8F51] text-lg font-medium ml-4">
-                      {product.formatted_price}
-                    </span>
+                  <p className="mt-1 text-md text-[#3B8F51] text-2xl font-medium">
+                            <Tag color="red">
+                              Potongan Harga {product.discount[0].potongan}%
+                            </Tag>
+                        </p>
+                  <p className="text-[#E53C3C] font-semibold mt-2">
+                    <s className="text-[13px]">{product.formatted_price}</s>
+                    
                   </p>
+                  <div className="text-[#3B8F51] text-2xl font-medium">
+                  {product.discount[0].discount_price_formatted}
+                    </div>
                 </div>
                 <div className="   w-1/3 flex flex-col items-center">
                   <img
@@ -621,7 +631,7 @@ function DetailProduct() {
           <>
             {product && (
               <div className="ml-3 mr-2">
-                <h1 className="text-lg font-medium">{product.name}</h1>
+                <h1 className="text-2xl font-medium">{product.name}</h1>
                 <p className="mt-3 text-[#615f5f] text-sm text-justify">
                   {product.description}
                 </p>

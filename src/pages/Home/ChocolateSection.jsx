@@ -209,14 +209,14 @@ function ChocolateSection() {
                 <div>
                   <div
                     ref={carousel}
-                    className="carousel-container  relative flex gap-1 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+                    className="carousel-container  h-[235px] relative flex gap-3 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                   >
                      {products.slice(0, 5).map((product, index)=> {
                       return (
                         <Link to={`/detailproductt/${product.slug}`}>
                         <div
                           key={index}
-                          className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
+                          className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white "
                         >
                           <a
                             href={product.link}
@@ -228,19 +228,19 @@ function ChocolateSection() {
                               className="w-full rounded-lg"
                             />
                             <div className="ml-2">
-                              <p className="font-bold text-xs">
+                              <p className="font-bold text-xs mt-3">
                               {product.name}
                               </p>
                               <p className="text-slate-400 text-[10px]">
                                 {product.type}
                               </p>
-                              <p className="text-[#E53C3C] font-semibold text-[10px]">
+                              {/* <p className="text-[#E53C3C] font-semibold text-[10px]">
                               <s>{product.discount[0].discount_price}</s>
-                              </p>
+                              </p> */}
                               <div>
                                 <div className="text-sm font-semibold text-[#3B8F51] mt-3">
                                 {product.formatted_price}{" "}
-                                  <span className="text-[#FFCA0C] ml-1">
+                                  <span className="text-[#FFCA0C] ml-4">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
                                       {product.rating}/5

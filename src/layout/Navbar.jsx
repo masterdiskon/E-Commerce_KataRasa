@@ -5,6 +5,7 @@ import IconGoogle from "../../assets/logo/Google.png";
 import IconElogs from "../../assets/logo/Elogs.png";
 import SearchIcon from "../../assets/Search.png";
 import keranjangIcon from "../../assets/Keranjang.png";
+import FotoProfil from "../../assets/Katarasa/DefaultProfil.png";
 import {
   Button,
   Dropdown,
@@ -86,8 +87,6 @@ function Navbar() {
   const togglePasswordVisibilitySignIn = () => {
     setPasswordVisibleSignIn(!setPasswordVisibleSignIn);
   };
-
-
 
   const handleLogout = () => {
     // Clear token (assuming you are storing it in localStorage)
@@ -187,8 +186,9 @@ function Navbar() {
   const [emailRegister, setEmailRegister] = useState("");
   const [passwordRegister, setPasswordRegister] = useState("");
   const [gender, setGender] = useState("");
-
+  const [isActive, setIsActive] = useState(false);
   const handleRegister = () => {
+    setIsActive(!isActive);
     const data = {
       name: name,
       phone_number: phoneNumber,
@@ -365,25 +365,21 @@ function Navbar() {
               </div>
             </Link>
           ) : (
-            <div
-              
-              onClick={handleClick}
-            >
+            <div onClick={handleClick}>
               <img
-              src={keranjangIcon}
-              alt="keranjang"
-              className="w-7 h-6 ml-16"
-            />
+                src={keranjangIcon}
+                alt="keranjang"
+                className="w-7 h-6 ml-16"
+              />
               {/* Notification badge */}
               {localStorage.getItem("token") && (
-                 <span className="absolute top-0 right-10 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
-                 {DataCartAll}
-               </span>
+                <span className="absolute top-0 right-10 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                  {DataCartAll}
+                </span>
               )}
             </div>
           )}
         </div>
-        
       </Menu.Item>
       <br />
       <hr className="border border-[#3B8F51]" />
@@ -437,7 +433,7 @@ function Navbar() {
           {/* Search Layar HP */}
 
           <>
-            <div className="md:hidden mr-20">
+            <div className="sm:hidden mr-20">
               <img
                 src={SearchIcon}
                 alt="order"
@@ -469,31 +465,50 @@ function Navbar() {
               </Modal>
             </div>
           </>
-          <div className="mr-10 ">
+          <div className="pr-[6rem] sm:pr-[2rem] ">
             {/* Logo */}
             <Link to="/home">
               {" "}
               <img
                 src={LogoKatarasa}
                 alt="Logo"
-                className=" h-[59px]  w-[163px] "
+                className=" h-[59px]  w-[165px] justify-start"
               />
             </Link>
           </div>
 
           {/* Tampilkan tab pada layar besar */}
-          <div className="hidden md:flex md:space-x-5">
-            <a
-              className="text-white hover:text-white px-2 py-5 hover:bg-[#3B8F51] hover:border-none rounded-full"
-              style={{ fontFamily: "Special Elite, sans-serif" }}
-            >
-              <Link to="/menu">Home</Link>
-            </a>
-            <a className="text-white hover:text-white rounded-full px-2 py-5 hover:bg-[#3B8F51] hover:border-none">
-              <Link to="/promo" className="mr-1">
-                Promo
-              </Link>
-            </a>
+          <div className="hidden md:flex md:space-x-4">
+            <div className="flex justify-center items-center space-x-3">
+              <a
+                className="text-white hover:text-white rounded-full"
+                style={{
+                  fontFamily: "Special Elite, sans-serif",
+                  transition: "background-color 0.3s",
+                }}
+              >
+                <Link
+                  to="/menu"
+                  className="hover:bg-[#3B8F51] px-5 py-3 rounded-full"
+                >
+                  Home
+                </Link>
+              </a>
+              <a
+                className="text-white hover:text-white  rounded-full"
+                style={{
+                  fontFamily: "Special Elite, sans-serif",
+                  transition: "background-color 0.3s",
+                }}
+              >
+                <Link
+                  to="/promo"
+                  className="hover:bg-[#3B8F51] px-4 py-3  rounded-full"
+                >
+                  Promo
+                </Link>
+              </a>
+            </div>
 
             <Input
               placeholder="Cari disini"
@@ -558,10 +573,12 @@ function Navbar() {
                 </div>
               )}
             </div>
-            <div className="text-white font-bold px-4 py-5">|</div>
+            <div className="text-white font-bold px-2 py-5 flex justify-center items-center ">
+              |
+            </div>
             {/* Tambahkan kondisional untuk menampilkan tombol "Login" */}
             <>
-              <div className="px-2 py-2 ">
+              <div className="px-3 py-2 ">
                 {isLoggedIn ? (
                   <div className="mt-3">
                     <Dropdown
@@ -571,21 +588,24 @@ function Navbar() {
                       placement="bottomRight"
                       arrow
                     >
-                      <span className="text-white cursor-pointer ">
-                        {localStorage.getItem("email")}
-                      </span>
+                      <div className="flex justify-center items-center">
+                        <img src={FotoProfil} alt="" className="w-9 mr-3" />
+                        <span className="text-white cursor-pointer text-[12px]">
+                          {localStorage.getItem("email")}
+                        </span>
+                      </div>
                     </Dropdown>
                   </div>
                 ) : (
                   <>
                     <Button
                       onClick={() => setModalVisible(true)}
-                      className="text-white border h-12 pl-8 pr-8 border-white bg-[#3B8F51] rounded-full px-5 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
+                      className="font-bold text-white border h-12 pl-7 pr-7 border-white bg-[#41644A] rounded-full px-4 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none"
                     >
                       Login
                     </Button>
                     <Button
-                      className="text-[#3B8F51] h-12 bg-white border border-[#3B8F51] rounded-full px-7 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
+                      className="font-bold text-[#41644A] h-12 bg-white border border-[#41644A] rounded-full px-6 py-1 ml-2 transition-colors duration-300 ease-in-out hover:bg-[#3B8F51] hover:border-none"
                       onClick={showModalSignIn}
                     >
                       Sign In
@@ -718,7 +738,7 @@ function Navbar() {
                         setModalVisible(false);
                       }}
                     >
-                      SignIn
+                      Daftar di Sini
                     </span>
                   </div>
                   <Button className="mt-5 justify-center w-full h-[50px] rounded-full border-solid border-black flex items-center">
@@ -766,7 +786,10 @@ function Navbar() {
               <div className="flex space-x-4">
                 <div className="md:mt-10 mt-5 w-1/2">
                   <label className="font-medium md:text-xl">Phone Number</label>
+
                   <Input
+                    prefix={<div>+62</div>}
+                    type="tel"
                     className="mt-3 border-none rounded-[10px] p-3"
                     placeholder="Masukkan Nomor HP Anda"
                     style={{ backgroundColor: "#E1DFDF" }}
@@ -820,10 +843,14 @@ function Navbar() {
                 />
               </div>
               <Button
-                className="mt-6 mb-8 justify-center w-full h-[50px] rounded-full bg-[#3B8F51] text-white hover:bg-transparent hover:border-green-500 hover:text-green-500"
+                className={`mt-6 mb-8 justify-center w-full h-[50px] rounded-full ${
+                  isActive
+                    ? "bg-white text-[#3B8F51] border-[#3B8F51]"
+                    : "bg-[#3B8F51] text-white"
+                } hover:bg-transparent hover:border-green-500 hover:text-green-500`}
                 onClick={handleRegister}
               >
-                Daftar
+                {isActive ? "Daftar" : "Daftar"}
               </Button>
               <br />
               <hr className="border-1 border-solid border-[#3B8F51] " />

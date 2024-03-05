@@ -56,7 +56,7 @@ function Promo() {
       {/* Layar HP */}
       <>
         <div className="sm:inline lg:hidden md:hidden sm:w-screen w-screen  mx-auto justify-start px-4 py-2">
-          <div className="mt-24 p-3">
+          <div className="mt-24 p-4">
             <h1 className="text-[#3B8F51] font-medium text-xl">
               Promo Special Kata Rasa
             </h1>

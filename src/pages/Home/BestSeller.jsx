@@ -182,7 +182,7 @@ const BestSeller = () => {
                         >
                           <img
                             src={PestaDisc}
-                            className="w-full sm:w-[250px] sm:h-[250px] lg:h-[340px]"
+                            className="w-full sm:w-[250px] sm:h-[250px] lg:h-[350px]"
                           />
                           <div
                             style={{
@@ -195,9 +195,9 @@ const BestSeller = () => {
                             <div className="p-5 mt-5">
                               <p className="text-3xl font-bold">Best Seller</p>
                               <p className="text-sm mt-4">Recommendations!</p>
-                              <Button className="mt-8 rounded-full text-xs text-white">
-                                Lihat Semua
-                              </Button>
+                              <Button className="font-bold  border h-10 pl-6 pr-6 border-white bg-[#42382e]  px-2 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none mt-5 rounded-full text-xs text-white">
+                                  Lihat Semua
+                                </Button>
                             </div>
                           </div>
                         </div>
@@ -208,7 +208,7 @@ const BestSeller = () => {
                       <div className="pt-10 " style={{ marginLeft: "-30px" }}>
                         <div
                           ref={carousel}
-                          className="carousel-container  relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
+                          className="carousel-container  relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 sm:h-[330px]"
                         >
                           {products.map((product, index) => {
                             return (

@@ -50,7 +50,7 @@ function Banner() {
           autoplay
           dots={false}
           arrows={false}
-          className="md:pt-20 mt-5 mx-auto flex w-[75rem] rounded-full"
+          className="md:pt-32 mt-5 mx-auto flex w-[75rem] rounded-full"
         >
           {DataBanner.map((banner) => (
             <div key={banner.id} className="flex justify-center">
