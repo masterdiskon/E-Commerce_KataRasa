@@ -109,8 +109,8 @@ function DetailPromo() {
       {/* Layar Besar */}
       <>
         <div className="hidden md:inline lg:inline">
-          <div className="  h-auto w-screen md:p-20 mx-auto sm:w-[85rem]">
-            <div className="w-full flex space-x-6 mt-20 ">
+          <div className="  h-auto w-screen md:p-20 mx-auto sm:w-[83rem]">
+            <div className="w-full flex space-x-6 mt-24 ">
               <div className="w-full rounded-lg shadow-lg ">
                 <div className="p-3">
                   <h1 className="text-[#3B8F51] font-medium text-2xl pl-3">
@@ -119,7 +119,7 @@ function DetailPromo() {
                   <img
                     src={Promo1}
                     alt=""
-                    className="w-[710px] h-[320px] mt-6"
+                    className="w-full h-[320px] mt-6"
                   />
                   <div className="pl-3 mt-4">
                     <p>
@@ -207,7 +207,7 @@ function DetailPromo() {
             <br />
             <br />
             <div>
-              <p className="font-medium text-lg mb-5">Promo Lainnya</p>
+              <p className="font-medium text-lg mb-5 mt-[20px]">Promo Lainnya</p>
               <div className="hidden md:inline lg:inline bg-[#F7FFF1] h-[250px] ">
                 <div style={{ overflow: "hidden", position: "relative" }}>
                   <div

@@ -160,7 +160,11 @@ function Navbar() {
   const items = [
     {
       key: "1",
-      label: <div className="text-base">Akun</div>,
+      label: (
+        <div className="text-base">
+          <Link to={"/akunsaya"}>Akun</Link>
+        </div>
+      ),
     },
     {
       key: "2",

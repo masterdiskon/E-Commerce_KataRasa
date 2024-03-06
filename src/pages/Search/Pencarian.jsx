@@ -189,7 +189,7 @@ function Pencarian() {
       {/* Layar Besar */}
       <>
         <div className="hidden md:inline">
-          <div className=" flex flex-col md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-5  mx-auto sm:w-[85rem]">
+          <div className=" flex flex-col text-lg md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-5  mx-auto sm:w-[85rem]">
             <div className="flex flex-col sm:flex-row mt-24">
               {/* Konten sebelah kiri - Pencarian */}
 
@@ -203,12 +203,36 @@ function Pencarian() {
                     Urutkan Menu
                   </h2>
 
-                  <select className="w-full border rounded-sm px-3 py-2 focus:outline-none focus:border-[#3B8F51] mt-2 border-[#3B8F51] text-[#3B8F51]">
-                    <option value="terfavorite">Ter-Favorite</option>
-                    <option value="kategori1">Kategori 1</option>
-                    <option value="kategori2">Kategori 2</option>
+                  <Select
+                    className="w-full h-[4rem] border-solid-[#3B8F51] text-[#3B8F51]"
+                    defaultValue="terfavorite"
+                    // onChange={handleChange}
+                    suffixIcon={
+                      <svg
+                        viewBox="0 0 1024 1024"
+                        focusable="false"
+                        data-icon="caret-down"
+                        width="18px"
+                        height="18px"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        className="text-[#3B8F51]"
+                      >
+                        <path d="M512 693.248L277.12 458.368a42.667 42.667 0 0 1 60.331-60.331l174.549 174.549 174.549-174.549a42.667 42.667 0 0 1 60.331 60.331z"></path>
+                      </svg>
+                    }
+                  >
+                    <Option value="terfavorite" className="text-base">
+                      Ter-Favorite
+                    </Option>
+                    <Option value="kategori1" className="text-base">
+                      Kategori 1
+                    </Option>
+                    <Option value="kategori2" className="text-base">
+                      Kategori 2
+                    </Option>
                     {/* Tambahkan lebih banyak opsi jika diperlukan */}
-                  </select>
+                  </Select>
 
                   <br />
                   <br />
@@ -309,9 +333,9 @@ function Pencarian() {
                           src={product.image}
                           alt={`Product ${index}`}
                         />
-                        <h3 className="text-md font-semibold mb-2 mt-2">
-                          {product.name}
-                        </h3>
+                       <h3 className="text-md font-semibold mb-2 mt-2 overflow-hidden whitespace-nowrap truncate">
+  {product.name}
+</h3>
                         <p className="text-sm text-gray-600">
                           {product.description}
                         </p>

@@ -270,8 +270,8 @@ function TambahKeranjang() {
       <>
         <div>
           <div className="hidden md:inline lg:inline">
-            <div className="flex flex-col md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-6  mx-auto sm:w-[85rem] ">
-              <div className="mt-20 mx-auto w-screen h-auto space-x-5 ">
+            <div className="flex flex-col md:flex-row md:justify-between h-auto w-screen md:p-20 space-x-6  mx-auto sm:w-[84rem] ">
+              <div className="mt-20 mx-auto w-screen h-auto space-x-1 ">
                 <h1 className="text-3xl font-medium text-[#3B8F51]">
                   Keranjang Anda
                 </h1>
@@ -285,7 +285,7 @@ function TambahKeranjang() {
                             <input
                               value={item.id}
                               type="checkbox"
-                              className="h-6 w-6 text-green-500"
+                              className="h-5 w-5 text-green-500"
                             />
                             <div className="w-1/5 flex justify-center items-center">
                               <img
@@ -351,7 +351,7 @@ function TambahKeranjang() {
                   </>
                   {/* Konten 2 */}
                   <>
-                    <div className="w-1/2 p-4 h-auto bg-white  rounded-lg shadow-xl">
+                  <div className="w-1/2 p-5 bg-white rounded-lg shadow-xl h-fit" style={{ height: 'fit-content' }}>
                       <h1 className="text-2xl font-medium mb-5 text-[#3B8F51]">
                         Detail Pesanan
                       </h1>
@@ -366,39 +366,39 @@ function TambahKeranjang() {
                           </div>
                         </div>
                       ))}
-                      <div className="flex justify-between mb-2">
+                      <div className="flex justify-between ">
                         <div className="w-1/2">
                           <p className="text-lg font-medium">Sub Total</p>
                           <p className="text-gray-400">Item x</p>
                         </div>
-                        <div className="w-1/4 text-[#3B8F51] text-center mt-5 text-xl font-medium">
+                        <div className="w-1/3 text-[#3B8F51] text-end mt-5 text-xl font-medium">
                           Rp {totalPrices}
                         </div>
                       </div>
-                      <div className="flex justify-between mb-4">
+                      <div className="flex justify-between ">
                         <div className="w-1/2">
-                          <p className="text-lg font-medium mt-4">Diskon</p>
+                          <p className="text-lg font-medium mt-5">Diskon</p>
                         </div>
                         <div className="w-1/3 text-red-500 text-end mt-5 text-xl font-medium">
                           - Rp {discount}
                         </div>
                       </div>
-                      <div className="flex justify-between mb-2">
+                      <div className="flex justify-between">
                         <div className="w-1/2">
                           <p className="text-lg font-medium mt-5">
                             Grand Total
                           </p>
                         </div>
-                        <div className="w-1/4 text-[#3B8F51] text-center mt-5 text-xl font-medium">
+                        <div className="w-1/3 text-[#3B8F51] text-end mt-5 mb-5 text-xl font-medium">
                           Rp {totalPrices - discount}
                         </div>
                       </div>
                       <Input
                         placeholder="Silahkan Masukkan Voucher"
-                        className="w-full h-14 mt-3 border border-[#3B8F51] placeholder-[#41644A] font-normal text-base"
+                        className="w-full h-14 border border-[#3B8F51] placeholder-[#41644A] font-normal text-base"
                       />
 
-                      <button className="bg-[#3B8F51] text-white py-2 px-4 rounded-full mt-8 w-full hover:bg-[#41644A]">
+                      <button className="bg-[#3B8F51] h-[50px] text-white py-2 px-4 rounded-full mt-5 w-full hover:bg-[#41644A]">
                         <Link to="/payment">Bayar Sekarang</Link>
                       </button>
                     </div>

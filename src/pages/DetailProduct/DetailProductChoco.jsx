@@ -11,7 +11,7 @@ import Ulasan6 from "../../../assets/Ulasan/Ulasan6.png";
 import Orang1 from "../../../assets/Ulasan/Orang1.png";
 import Orang2 from "../../../assets/Ulasan/Orang2.png";
 import Orang3 from "../../../assets/Ulasan/Orang3.png";
-import { Button, Pagination, Tag } from "antd";
+import { Button, Input, Pagination, Tag } from "antd";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";
@@ -257,34 +257,34 @@ function DetailProductChoco() {
       <>
         <div>
           <div className="hidden md:inline lg:inline ">
-            <div className="flex flex-col md:flex-row md:justify-between  w-screen md:p-20 space-x-5  mx-auto sm:w-[89rem]">
-              <div className="flex mt-20 mx-auto w-screen sm:h-[550px] sm:mb- h-auto space-x-5  ">
+            <div className="flex flex-col md:flex-row md:justify-between  w-screen md:p-20 space-x-5  mx-auto sm:w-[85rem]">
+              <div className="flex mt-24 mx-auto w-screen sm:h-auto  h-auto space-x-5  ">
                 {/* Konten 1 */}
                 <>
                   {product && ( // Pastikan produk ada sebelum mencoba mengakses propertinya
                     <div className="w-full md:w-1/2 bg-white flex p-4 mb-4 md:mb-0 relative">
-                    <div>
-                    <h1 className="text-[22px] font-medium">
-                        {product.name}
-                      </h1>
-                     
-                     <img
-                        src={product.image}
-                        alt="Gambar Konten"
-                        className="w-72 h-72 mb-4 mt-4 rounded-lg"
-                      />
-                   
-                      {/* <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
+                      <div>
+                        <h1 className="text-[22px] font-medium">
+                          {product.name}
+                        </h1>
+
+                        <img
+                          src={product.image}
+                          alt="Gambar Konten"
+                          className="w-72 h-72 mb-4 mt-4 rounded-lg"
+                        />
+
+                        {/* <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
                         <Tag color="red">Potongan Harga 0%</Tag>
                       </p> */}
-                      {/* <p className="mt-5 text-md text-red-500 text-xl font-medium">
+                        {/* <p className="mt-5 text-md text-red-500 text-xl font-medium">
                         <s>Rp. 0</s>
                       </p> */}
-                      <p className=" text-md text-[#3B8F51] text-3xl font-medium">
-                        {product.formatted_price}
-                      </p>
-                      <p className="mt-5 text-md">{product.description}</p>
-                    </div>
+                        <p className=" text-md text-[#3B8F51] text-3xl font-medium">
+                          {product.formatted_price}
+                        </p>
+                        <p className="mt-5 text-md">{product.description}</p>
+                      </div>
                     </div>
                   )}
                 </>
@@ -425,6 +425,13 @@ function DetailProductChoco() {
                         +Choco Box
                       </button>
                     </div>
+
+                    <h1 className="text-md font-medium mt-3 mb-2 text-[#3B8F51]">
+                      Notes
+                    </h1>
+                    <div>
+                      <Input.TextArea rows={4} placeholder="Request di sini.." />
+                    </div>
                   </div>
                 </>
 
@@ -485,13 +492,12 @@ function DetailProductChoco() {
                   </div>
                 </>
               </div>
-             
             </div>
-           
+
             <div className=" mx-auto w-[85rem]">
               {/* Ulasan Produk */}
               <>
-                <div className="flex flex-col md:flex-row md:justify-between md:ml-20 py-5 px-4  space-x-5 ">
+                <div className="flex flex-col md:flex-row md:justify-between md:ml-20  px-4  space-x-5 ">
                   <h1 className="text-3xl font-medium ">
                     Ulasan Produk
                     <p>
@@ -542,7 +548,7 @@ function DetailProductChoco() {
                         <p className="text-[#FFC83C] text-2xl">{item.rating}</p>
                         <p className="text-base font-normal">{item.review}</p>
                       </div>
-                      <div className="w-full md:w-1/6 mr-20 mb-4 md:mb-0 relative">
+                      <div className="w-full md:w-1/4 mr-20 mb-4 md:mb-0 relative">
                         <div className="flex p-4 space-x-1">
                           {item.reviewImages.map((image, imageIndex) => (
                             <img
@@ -559,7 +565,7 @@ function DetailProductChoco() {
                 </div>
 
                 {totalPages > 1 && (
-                  <div className="flex justify-end p-10 mt-4">
+                  <div className="flex justify-end p-10 mr-16 ">
                     {Array.from({ length: totalPages }, (_, index) => (
                       <button
                         key={index}
@@ -599,8 +605,8 @@ function DetailProductChoco() {
                    
                   </p> */}
                   <span className="text-[#3B8F51] text-xl font-medium ">
-                      {product.formatted_price}
-                    </span>
+                    {product.formatted_price}
+                  </span>
                 </div>
                 <div className="   w-1/3 flex flex-col items-center">
                   <img

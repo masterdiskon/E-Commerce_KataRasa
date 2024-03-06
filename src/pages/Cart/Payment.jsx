@@ -243,9 +243,9 @@ function Payment() {
                       Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta
                       <p className="mt-2">Kode Pos: 13750</p>
                     </div>
-                    <div className="w-full sm:w-1/6 p-4 sm:p-2 flex justify-end ">
-                      <div className="rounded-full bg-[#e1eedd] md:w-10 md:h-10 sm:w-10 sm:h-10 px-3 py-1">
-                        <EditOutlined className="mt-3 text-[#41644a] font-bold cursor-pointer" />
+                    <div className="w-full sm:w-1/5 sm:p-2 flex justify-end">
+                      <div className="border-3 border-solid border-[#000000]">
+                        <EditOutlined className="text-[#41644a]  bg-[#e1eedd] px-3 py-3 rounded-full font-bold cursor-pointer " />
                       </div>
                     </div>
                   </div>
@@ -260,12 +260,14 @@ function Payment() {
                           <img src={item.image} alt={item.title} />
                         </div>
                         <div className=" w-full">
-                          <h1 className="font-medium text-lg mb-2">{item.title}</h1>
-                         <Tag color="#41644A">
-                         <p className="text-white text-lg font-normal p-2">
-                            {item.description}
-                          </p>
-                         </Tag>
+                          <h1 className="font-medium text-lg mb-2">
+                            {item.title}
+                          </h1>
+                          <Tag color="#41644A">
+                            <p className="text-white text-lg font-normal p-2">
+                              {item.description}
+                            </p>
+                          </Tag>
                           <p className="text-[#41644A] md:text-lg font-medium mt-2">
                             {item.price} <span> x {item.quantity}</span>
                           </p>
@@ -324,27 +326,24 @@ function Payment() {
                 </div>
 
                 <div className="flex justify-between ">
-                <div className="w-1/2">
+                  <div className="w-1/2">
                     <p className="text-lg font-medium mt-4">Pengiriman </p>
-                  
                   </div>
                   <div className="w-1/4 text-[#3B8F51] text-center mt-5 md:text-base sm:text-sm font-medium">
                     Rp 10.000
                   </div>
                 </div>
                 <div className="flex justify-between ">
-                <div className="w-1/2">
+                  <div className="w-1/2">
                     <p className="text-lg font-medium mt-4">Diskon </p>
-                  
                   </div>
                   <div className="w-1/3 text-red-500 pl-5 text-center mt-5 md:text-base sm:text-sm font-medium">
-                   - Rp 10.000
+                    - Rp 10.000
                   </div>
                 </div>
-                <div className="flex justify-between mb-4 mt-4">
+                <div className="flex justify-between mt-4">
                   <div className="w-1/2">
                     <p className="text-lg font-medium">Grand Total</p>
-                   
                   </div>
                   <div className="w-1/4 text-[#3B8F51] text-center  md:text-lg sm:text-sm font-medium">
                     Rp {totalWithGrab.toLocaleString()}
@@ -353,11 +352,11 @@ function Payment() {
 
                 <Input
                   placeholder="Silahkan Masukkan Voucher"
-                  className="w-full h-14 mt-3 border border-[#3B8F51] placeholder-[#41644A] font-normal text-base"
+                  className="w-full h-[55px] mt-[20px] border border-[#3B8F51] placeholder-[#41644A] font-normal text-base"
                 />
-                <div className="bg-green mt-2 border border-[#3B8F51] rounded-[10px]">
+                <div className="bg-green  border mt-[20px] border-[#3B8F51] rounded-[10px]">
                   <Menu
-                    className="w-full rounded-[10px] text-[#41644A]"
+                    className="w-full rounded-[10px] text-[#41644A] h-[50px]"
                     mode="inline"
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
@@ -365,7 +364,7 @@ function Payment() {
                     {renderMenuItems(items)}
                   </Menu>
                 </div>
-                <button className="bg-[#3B8F51] text-white py-2 px-4 rounded-full mt-8 w-full hover:bg-[#41644A]">
+                <button className="bg-[#3B8F51] h-[50px] text-white py-2 px-4 rounded-full mt-[20px] w-full hover:bg-[#41644A]">
                   Bayar Sekarang
                 </button>
 
@@ -396,8 +395,6 @@ function Payment() {
                 </div>
               </div>
             </div>
-
-           
 
             <div className="mt-8">
               <div className="bg-white rounded-lg shadow-md p-4 sticky top-0">
@@ -462,11 +459,10 @@ function Payment() {
                   </Menu>
                 </div>
                 <br />
-               
               </div>
               <br />
-                <br />
-                <br />
+              <br />
+              <br />
             </div>
           </div>
         </div>
