@@ -84,13 +84,13 @@ function ProductTea() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `${Baseurl}product/get-product?page=1&limit=0&keyword=`
+          `${Baseurl}product/get-product?limit=0&keyword=&&page=0`
         );
         const filteredProducts = response.data.data.data.filter(
-          (product) => product.type === "tea"
+          (product) => product.category === "tea"
         );
         setProducts(filteredProducts);
-        console.log("ini njir", response.data.data.data);
+        console.log("ini data tea", response.data.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -228,7 +228,7 @@ function ProductTea() {
                               {/* Isi konten produk */}
                               <img
                                 className="rounded-md"
-                                src={product.image}
+                                src={product.images}
                                 alt={`Product ${index}`}
                               />
                               <h3 className="text-md font-semibold mb-2 mt-2">
@@ -236,11 +236,18 @@ function ProductTea() {
                               </h3>
                           
                               <p className="text-sm text-gray-600">
-                                {product.description}
+                                {product.category}
                               </p>
-                              <p className="text-[#E53C3C] font-semibold text-sm">
-                                <s>{product.formatted_price} </s>
-                              </p>
+                              {product.discount[0].discount_price !== 0 && (
+                                    <p className="text-[#E53C3C] font-semibold text-sm">
+                                      <s>
+                                        {
+                                          product.discount[0]
+                                            .discount_price_formatted
+                                        }
+                                      </s>
+                                    </p>
+                                  )}
                               <div className="mt-2">
                                 <div className="text-lg font-semibold text-[#3B8F51]">
                                  Rp. {product.discount[0].discount_price}
@@ -423,21 +430,30 @@ function ProductTea() {
                           {/* Isi konten produk */}
                           <img
                             className="rounded-md"
-                            src={product.image}
+                            src={product.images
+                            }
                             alt={`Product ${index}`}
                           />
                           <h3 className="text-base font-semibold mb-2 mt-2">
                             {product.name}
                           </h3>
                           <p className="text-[10px] text-gray-600">
-                            {product.description}
+                            {product.category}
                           </p>
-                          <p className="text-[#E53C3C] font-semibold text-[10px]">
-                            <s>{product.discount[0].discount_price} </s>
-                          </p>
+                         
+                              {product.discount[0].discount_price !== 0 && (
+                                <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                  <s>
+                                    {
+                                      product.formatted_price
+                                    }
+                                  </s>
+                                </p>
+                              )}
                           <div className="mt-2">
                             <div className="text-xs text-[#3B8F51]">
-                              {product.formatted_price}{" "}
+                              {product.discount[0]
+                                        .discount_price_formatted}{" "}
                               <span className="text-[#FFCA0C] ml-8">
                                 &#9733;
                                 <span className="text-xs text-[#3B8F51] ml-2">

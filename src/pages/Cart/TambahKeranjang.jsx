@@ -11,6 +11,7 @@ import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
 import { DeleteOutlined } from "@ant-design/icons";
 import Swal from "sweetalert2";
+const token = localStorage.getItem("token");
 
 function TambahKeranjang() {
   const [quantity, setQuantity] = useState(0);
@@ -20,6 +21,11 @@ function TambahKeranjang() {
   const [jumlah, setJumlah] = useState(0);
   const [clickCount, setClickCount] = useState(0);
   const [DeleteData, setDeleteData] = useState();
+  const [Increase, setIncrease] = useState();
+  const [Decrease, setDecrease] = useState();
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [DataCartAll, setDataCartAll] = useState([]);
+  const [cartItems, setCartItems] = useState(DataCartAll);
 
   const handleRadioClick = (item) => {
     setClickCount((prevCount) => (prevCount + 1) % 3);
@@ -139,9 +145,6 @@ function TambahKeranjang() {
     return sum + price;
   }, 0);
 
-  const [checkedItems, setCheckedItems] = useState([]);
-  const [DataCartAll, setDataCartAll] = useState([]);
-
   const handleClick = (itemId) => {
     // Mencari index dari item yang diklik
     const index = checkedItems.indexOf(itemId);
@@ -227,40 +230,103 @@ function TambahKeranjang() {
     }
   };
 
-  const [cartItems, setCartItems] = useState(DataCartAll);
+  const handleIncreaseQuantity = (itemId) => {};
 
-  const handleIncreaseQuantity = (itemId) => {
-    const updatedCartItems = cartItems.map((item) => {
-      if (item.id === itemId) {
-        const updatedQty = item.qty + 1;
-        const updatedTotal = item.price * updatedQty; // Menghitung total harga baru
-        // Memperbarui data item
-        return { ...item, qty: updatedQty, total: updatedTotal };
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
-  };
-
-  const handleDecreaseQuantity = (itemId) => {
-    const updatedCartItems = cartItems.map((item) => {
-      if (item.id === itemId && item.qty > 0) {
-        const updatedQty = item.qty - 1;
-        const updatedTotal = item.price * updatedQty; // Menghitung total harga baru
-        // Memperbarui data item
-        return { ...item, qty: updatedQty, total: updatedTotal };
-      }
-      return item;
-    });
-    setCartItems(updatedCartItems);
-  };
+  const handleDecreaseQuantity = (itemId) => {};
 
   const totalPrices = DataCartAll.reduce(
     (accumulator, order) => accumulator + order.total,
     0
   );
 
-  const discount = 0;
+  const DataCeklist = async (cartId) => {
+    const token = localStorage.getItem("token");
+    try {
+      let config = {
+        method: "put",
+        maxBodyLength: Infinity,
+        url: `https://api.katarasa.id/cart/set-select-cart?cart_id=${cartId}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      GetTambahKeranjang();
+
+      console.log("Data ceklist", response.data);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  const totalDiscount = DataCartAll.reduce((acc, item) => {
+    // Jika item tidak dicentang, kembalikan nilai 0 untuk diskon
+    if (item.is_checked !== 1) {
+      return acc;
+    }
+    return item.discount.length > 0
+      ? acc + item.discount[0].discount_price
+      : acc;
+  }, 0);
+
+  const subtotal = DataCartAll.reduce(
+    (total, item) => (item.is_checked === 1 ? total + item.total : total),
+    0
+  );
+
+  const grandTotal = subtotal - totalDiscount;
+
+  const [masingQTY, setmasingQTY] = useState("");
+
+  async function UpdateQty(tambagKurang, qty) {
+    // console.log(tambagKurang, qty);
+    if (tambagKurang == "kurang") {
+      console.log(`ini kurang`, qty.qty - 1);
+      await updateQty(qty, "kurang");
+    } else {
+      console.log(`ini tambah`, qty.qty + 1);
+      await updateQty(qty, "tambah");
+    }
+  }
+
+  async function updateQty(qty, tambahKurang) {
+    console.log(`ini api`, qty);
+    let qtyok = "";
+    if (tambahKurang == "kurang") {
+      qtyok = parseInt(qty.qty) - 1;
+    } else {
+      qtyok = parseInt(qty.qty) + 1;
+    }
+    const body = {
+      cart_id: qty.cart_id,
+      qty: qtyok,
+    };
+
+    try {
+      const response = await axios.put(`${Baseurl}cart/update-qty-cart`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json", // Set header Content-Type
+        },
+      });
+
+      // Tambahkan kode untuk menangani respons dari API
+      console.log(response.data); // Tampilkan data respons untuk pemeriksaan
+
+      // Jika respons berhasil, panggil fungsi GetTambahKeranjang
+      GetTambahKeranjang();
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      // Tambahkan kode untuk menangani kesalahan, jika diperlukan
+    }
+  }
 
   return (
     <div className="w-full h-screen">
@@ -283,13 +349,14 @@ function TambahKeranjang() {
                         <div key={item.id} className="w-full p-4">
                           <div className="flex items-center">
                             <input
-                              value={item.id}
                               type="checkbox"
                               className="h-5 w-5 text-green-500"
+                              onChange={() => DataCeklist(item.cart_id)}
+                              checked={item.is_checked === 1}
                             />
                             <div className="w-1/5 flex justify-center items-center">
                               <img
-                                src={`https://api.katarasa.id/` + item.image}
+                                src={item.image}
                                 className="w-28 h-24 ml-5 rounded-md"
                                 alt="Coffee Beans"
                               />
@@ -300,14 +367,15 @@ function TambahKeranjang() {
                                   {item.product}
                                 </p>
                                 <p className="text-[#41644A] mt-2 text-sm font-medium">
-                                  <Tag color="#455048">
-                                    {item.formated_price}
+                                  <Tag color="#41644A">
+                                    {item.size}gr , {item.gula},{" "}
+                                    {item.packaging}
                                   </Tag>
                                 </p>
                                 <div className="flex items-center mt-3">
                                   <button
-                                    onClick={() =>
-                                      handleDecreaseQuantity(item.id)
+                                    onClick={(data, index) =>
+                                      UpdateQty("kurang", item, data, index)
                                     }
                                     className={`px-3 py-1 rounded-full mr-2 ${
                                       item.quantity > 0
@@ -319,8 +387,8 @@ function TambahKeranjang() {
                                   </button>
                                   <p className="text-[#3B8F51]">{item.qty}</p>
                                   <button
-                                    onClick={() =>
-                                      handleIncreaseQuantity(item.id)
+                                    onClick={(data, index) =>
+                                      UpdateQty("tambah", item, data, index)
                                     }
                                     className={`px-3 py-1 rounded-full ml-2 ${
                                       item.quantity > 0
@@ -351,11 +419,14 @@ function TambahKeranjang() {
                   </>
                   {/* Konten 2 */}
                   <>
-                  <div className="w-1/2 p-5 bg-white rounded-lg shadow-xl h-fit" style={{ height: 'fit-content' }}>
+                    <div
+                      className="w-1/2 p-5 bg-white rounded-lg shadow-xl h-fit"
+                      style={{ height: "fit-content" }}
+                    >
                       <h1 className="text-2xl font-medium mb-5 text-[#3B8F51]">
                         Detail Pesanan
                       </h1>
-                      {DataCartAll.map((order, index) => (
+                      {/* {DataCartAll.map((order, index) => (
                         <div className="flex justify-between mb-4" key={index}>
                           <div className="w-[230px]">
                             <p className="truncate text-lg">{order.product}</p>
@@ -365,38 +436,67 @@ function TambahKeranjang() {
                             {order.formated_price_total}
                           </div>
                         </div>
+                      ))} */}
+                      {DataCartAll.map((item) => (
+                        <>
+                          {item.is_checked == 1 && (
+                            <div>
+                              <div className="flex justify-between ">
+                                <div className="w-1/2">
+                                  <p className="text-lg font-medium">
+                                    {item.product}
+                                  </p>
+                                  <p className="text-gray-400">
+                                    Item x {item.qty}
+                                  </p>
+                                </div>
+                                <div className="w-1/3 text-[#3B8F51] text-end mt-5 text-xl font-medium">
+                                  Rp {item.total}
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </>
                       ))}
-                      <div className="flex justify-between ">
+                      <div className="flex justify-between">
                         <div className="w-1/2">
-                          <p className="text-lg font-medium">Sub Total</p>
-                          <p className="text-gray-400">Item x</p>
+                          <p className="text-lg font-medium mt-5">Sub Total</p>
                         </div>
-                        <div className="w-1/3 text-[#3B8F51] text-end mt-5 text-xl font-medium">
-                          Rp {totalPrices}
+                        <div className="w-1/3 text-[#3B8F51] text-end mt-5  text-xl font-medium">
+                          Rp{" "}
+                          {DataCartAll.reduce(
+                            (total, item) =>
+                              item.is_checked === 1
+                                ? total + item.total
+                                : total,
+                            0
+                          )}
                         </div>
                       </div>
                       <div className="flex justify-between ">
                         <div className="w-1/2">
                           <p className="text-lg font-medium mt-5">Diskon</p>
                         </div>
+
                         <div className="w-1/3 text-red-500 text-end mt-5 text-xl font-medium">
-                          - Rp {discount}
+                          - Rp {totalDiscount}
                         </div>
                       </div>
                       <div className="flex justify-between">
                         <div className="w-1/2">
-                          <p className="text-lg font-medium mt-5">
+                          <p className="text-xl font-medium mt-5">
                             Grand Total
                           </p>
                         </div>
-                        <div className="w-1/3 text-[#3B8F51] text-end mt-5 mb-5 text-xl font-medium">
-                          Rp {totalPrices - discount}
+                        <div className="w-1/3 text-[#3B8F51] text-end mt-5 mb-5 text-2xl font-medium">
+                          Rp {grandTotal}
                         </div>
                       </div>
-                      <Input
+
+                      {/* <Input
                         placeholder="Silahkan Masukkan Voucher"
                         className="w-full h-14 border border-[#3B8F51] placeholder-[#41644A] font-normal text-base"
-                      />
+                      /> */}
 
                       <button className="bg-[#3B8F51] h-[50px] text-white py-2 px-4 rounded-full mt-5 w-full hover:bg-[#41644A]">
                         <Link to="/payment">Bayar Sekarang</Link>
@@ -413,33 +513,31 @@ function TambahKeranjang() {
       {/* Layar HP */}
       <>
         <div className="sm:inline lg:hidden md:hidden sm:w-screen w-screen mx-auto justify-start px-4 py-2 ">
-          <div className="  mt-24 text-black p-4">
+          <div className="  mt-24 text-black p-3">
             <h1 className="text-[#3B8F51] text-lg font-medium">Your Chart</h1>
             <br />
 
             <>
               <div className=" h-[41rem] overflow-auto">
-                <div className="w-full md:w-2/3">
+                <div className="w-full">
                   {DataCartAll.map((item) => (
-                    
                     <div key={item.id} className="w-full">
-                     
                       <div className="w-full p-2">
                         <div className="flex items-center">
                           <div
                             key={item.id}
                             className="flex items-center space-x-4"
                           >
-                            
                             <input
-                              value={item.id}
                               type="checkbox"
-                              className="h-4 w-4 text-green-500"
+                              className="h-5 w-5 text-green-500"
+                              onChange={() => DataCeklist(item.cart_id)}
+                              checked={item.is_checked === 1}
                             />
                           </div>
                           <div className="w-1/3">
                             <img
-                              src={`https://api.katarasa.id/` + item.image}
+                              src={item.image}
                               className="w-16 h-16 ml-2 rounded-md"
                               alt="Coffee Beans"
                             />
@@ -447,7 +545,7 @@ function TambahKeranjang() {
                           <div className="w-full  ">
                             <div className=" flex">
                               <div className="w-full ">
-                                <p className="text-xs font-medium">
+                                <p className="text-sm font-medium">
                                   {item.product}
                                 </p>
                               </div>
@@ -455,18 +553,18 @@ function TambahKeranjang() {
                             <div className=" flex">
                               <div className="w-1/2 ">
                                 <p className="text-[#41644A] mt-2 text-[10px] font-medium">
-                                  <Tag color="#455048">
-                                    {item.formated_price}
+                                  <Tag color="#41644A">
+                                    {item.size}gr , {item.gula},{" "}
+                                    {item.packaging}
                                   </Tag>
                                 </p>
                               </div>
-                              <div className="w-1/2  flex justify-end items-end">
-                                {" "}
+                              <div className="flex justify-center w-full items-center mt-1">
                                 <button
-                                  onClick={() =>
-                                    handleDecreaseQuantity(item.id)
+                                  onClick={(data, index) =>
+                                    UpdateQty("kurang", item, data, index)
                                   }
-                                  className={`px-2 py-0 rounded-full mr-2 ${
+                                  className={`px-2 py-1 rounded-full mr-1 text-xs ${
                                     item.quantity > 0
                                       ? "bg-[#3B8F51] text-white"
                                       : "bg-gray-300"
@@ -474,14 +572,14 @@ function TambahKeranjang() {
                                 >
                                   -
                                 </button>
-                                <p className="text-[#3B8F51]">
-                                  {item.quantity}
+                                <p className="text-[#3B8F51] text-xs">
+                                  {item.qty}
                                 </p>
                                 <button
-                                  onClick={() =>
-                                    handleIncreaseQuantity(item.id)
+                                  onClick={(data, index) =>
+                                    UpdateQty("tambah", item, data, index)
                                   }
-                                  className={`px-2 py-0 rounded-full ml-2 ${
+                                  className={`px-2 py-1 rounded-full ml-1 text-xs ${
                                     item.quantity > 0
                                       ? "bg-[#3B8F51] text-white"
                                       : "bg-gray-300"
@@ -490,7 +588,8 @@ function TambahKeranjang() {
                                   +
                                 </button>
                               </div>
-                              <div className="w-1/3 ">
+
+                              <div className="w-1/4 ">
                                 <div className="justify-end items-end flex mt-2">
                                   <button
                                     className="text-red-600 w-10"
@@ -503,10 +602,9 @@ function TambahKeranjang() {
                             </div>
 
                             <div className="flex">
-                              <div className="w-1/2  text-[#3B8F51] text-xs mt-2">
+                              <div className="w-1/2  text-[#3B8F51] text-sm font-semibold">
                                 Rp {item.total}
                               </div>
-                              
                             </div>
                           </div>
                         </div>
@@ -525,7 +623,8 @@ function TambahKeranjang() {
           <div className="w-full mx-auto bg-[#3B8F51] p-4">
             <div className="w-full flex mt-1">
               <div className="w-1/2  text-lg text-white">
-                <p className="text-[#F7FFF1] text-xs">Total</p>Rp {totalPrices}
+                <p className="text-[#F7FFF1] text-xs">Total</p>
+                Rp {totalPrices}
               </div>
               <div className="w-1/2  ">
                 <Link to="/payment">

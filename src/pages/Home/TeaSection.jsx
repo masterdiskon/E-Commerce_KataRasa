@@ -107,7 +107,7 @@ function TeaSection() {
           `${Baseurl}product/get-product?page=1&limit=999&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
-          (product) => product.type === "tea"
+          (product) => product.category === "tea"
         );
         setProducts(filteredProducts);
         console.log("ini njir", response.data.data.data);
@@ -157,7 +157,7 @@ function TeaSection() {
                         >
                           <img
                             className="rounded-md"
-                            src={product.image}
+                            src={product.images}
                             alt={`Product ${index}`}
                           />
                           <div className="ml-2 p-[10px]">
@@ -165,7 +165,8 @@ function TeaSection() {
                               {product.name}
                             </p>
                             <p className="text-slate-400 text-xs">
-                              {product.type}
+                              {product.category
+}
                             </p>
                             <p className="text-[#E53C3C] font-semibold text-sm">
                               <s>  {product.formatted_price}</s>
@@ -225,7 +226,7 @@ function TeaSection() {
                             className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
                           >
                             <img
-                              src={product.image}
+                              src={product.images}
                               alt={product.title}
                               className="w-full rounded-lg"
                             />
@@ -234,7 +235,7 @@ function TeaSection() {
                                 {product.name}
                               </p>
                               <p className="text-slate-400 text-[10px]">
-                                {product.type}
+                                {product.category}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-[10px]">
                                 <s> {product.formatted_price}</s>

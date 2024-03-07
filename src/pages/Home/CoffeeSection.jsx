@@ -98,7 +98,7 @@ function CoffeeSection() {
       ? carousel.current.scrollWidth - carousel.current.offsetWidth
       : 0;
   }, []);
-  
+
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -108,7 +108,7 @@ function CoffeeSection() {
           `${Baseurl}product/get-product?page=1&limit=999&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
-          (product) => product.type === "coffe"
+          (product) => product.category === "coffe"
         );
         setProducts(filteredProducts);
         console.log("ini njir", response.data.data.data);
@@ -150,40 +150,49 @@ function CoffeeSection() {
                   <div className="flex">
                     <div className="w-full flex space-x-4">
                       {/* Konten produk di kolom kiri */}
-                      {products.slice(12,17).map((product, index) => (
-                         <Link to={`/detailproductt/${product.slug}`}>
+                      {products.slice(0, 5).map((product, index) => (
+                        <Link to={`/detailproductt/${product.slug}`}>
                           <div
-                          key={index}
-                          className="shadow-2xl md:w-[200px] md:h-[300px] mt-2 bg-white rounded-lg"
-                        >
-                          <img
-                            className="rounded-md"
-                            src={product.image}
-                            alt={`Product ${index}`}
-                          />
-                          <div className="ml-2 p-[10px]">
-                            <p className="font-bold text-sm text-black mt-2">
-                              {product.name}
-                            </p>
-                            <p className="text-slate-400 text-xs">
-                              {product.type}
-                            </p>
-                            <p className="text-[#E53C3C] font-semibold text-sm">
-                            <s> {product.discount[0].discount_price_formatted}</s>
-                            </p>
-                            <div>
-                              <div className="text-lg font-semibold text-[#3B8F51]">
-                                {product.formatted_price}{" "}
-                                <span className="text-[#FFCA0C]  ml-10">
-                                  &#9733;
-                                  <span className="text-sm text-[#3B8F51] ml-1">
-                                    {product.rating}/5
+                            key={index}
+                            className="shadow-2xl md:w-[200px] md:h-[300px] mt-2 bg-white rounded-lg"
+                          >
+                            <img
+                              className="rounded-md"
+                              src={product.images}
+                              alt={`Product ${index}`}
+                            />
+                            <div className="ml-2 p-[10px]">
+                              <p className="font-bold text-sm text-black mt-2">
+                                {product.name}
+                              </p>
+                              <p className="text-slate-400 text-xs mb-1s">
+                                {product.category}
+                              </p>
+                              
+                              {product.discount[0].discount_price !== 0 && (
+                                <p className="text-[#E53C3C] font-semibold text-sm">
+                                  <s>
+                                    {
+                                      product.discount[0]
+                                        .discount_price_formatted
+                                    }
+                                  </s>
+                                </p>
+                              )}
+
+                              <div>
+                                <div className="text-lg font-semibold text-[#3B8F51]">
+                                  {product.formatted_price}{" "}
+                                  <span className="text-[#FFCA0C]  ml-10">
+                                    &#9733;
+                                    <span className="text-sm text-[#3B8F51] ml-1">
+                                      {product.rating}/5
+                                    </span>
                                   </span>
-                                </span>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
                         </Link>
                       ))}
                     </div>
@@ -213,49 +222,54 @@ function CoffeeSection() {
                     ref={carousel}
                     className="carousel-container h-[235px] relative flex gap-3 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                   >
-                    {products.slice(12,17).map((product, index)=> {
+                    {products.slice(0, 5).map((product, index) => {
                       return (
                         <Link to={`/detailproductt/${product.slug}`}>
-                        <div
-                          key={index}
-                          className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
-                        >
-                          <a
-                            href={product.link}
-                            className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
+                          <div
+                            key={index}
+                            className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
                           >
-                            <img
-                              src={product.image}
-                              alt={product.title}
-                              className="w-full rounded-lg"
-                            />
-                            <div className="ml-2">
-                              <p className="font-bold text-xs mt-2">
-                              {product.name}
-                              </p>
-                              <p className="text-slate-400 text-[10px]">
-                                {product.type}
-                              </p>
-                              {/* <p className="text-[#E53C3C] font-semibold text-[10px]">
-                              <s>{product.discount[0].discount_price}</s>
-                              </p> */}
-                              <div>
-                                <div className="text-sm font-semibold text-[#3B8F51] mt-3">
-                                {product.formatted_price}{" "}
-                                  <span className="text-[#FFCA0C] ml-1">
-                                    &#9733;
-                                    <span className="text-sm text-[#3B8F51] ml-1">
-                                      {product.rating}/5
+                            <a
+                              href={product.link}
+                              className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
+                            >
+                              <img
+                                src={product.images}
+                                alt={product.title}
+                                className="w-full rounded-lg"
+                              />
+                              <div className="ml-2">
+                                <p className="font-bold text-xs mt-2">
+                                  {product.name}
+                                </p>
+                                <p className="text-slate-400 text-[10px]">
+                                  {product.category}
+                                </p>
+                                {product.discount[0].discount_price !== 0 && (
+                                <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                  <s>
+                                    {
+                                      product.formatted_price
+                                    }
+                                  </s>
+                                </p>
+                              )}
+                                <div>
+                                  <div className="text-sm font-semibold text-[#3B8F51] mt-3">
+                                    {product.formatted_price}{" "}
+                                    <span className="text-[#FFCA0C] ml-4">
+                                      &#9733;
+                                      <span className="text-sm text-[#3B8F51] ml-1">
+                                        {product.rating}/5
+                                      </span>
                                     </span>
-                                  </span>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </a>
-                        </div>
+                            </a>
+                          </div>
                         </Link>
                       );
-
                     })}
                   </div>
                 </div>

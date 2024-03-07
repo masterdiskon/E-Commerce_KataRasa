@@ -119,7 +119,7 @@ function ProductCoffee() {
           `${Baseurl}product/get-product?page=1&limit=0&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
-          (product) => product.type === "coffe"
+          (product) => product.category === "coffe"
         );
         setProducts(filteredProducts);
         console.log("ini njir", response.data.data.data);
@@ -240,39 +240,44 @@ function ProductCoffee() {
                           {/* Looping untuk menampilkan konten produk */}
                           <>
                             {products.map((product, index) => (
-                                <Link to={`/detailproductt/${product.slug}`}>
-                              <div
-                                key={product.id}
-                                className="bg-white rounded-lg shadow-xl p-4"
-                              >
-                                {/* Isi konten produk */}
-                                <img
-                                  className="rounded-md"
-                                  src={product.image}
-                                  alt={`Product ${index}`}
-                                />
-                                <h3 className="text-md font-semibold mb-2 mt-2">
-                                  {product.name}
-                                </h3>
-                                <p className="text-sm text-gray-600">
-                                  {product.description}
-                                </p>
-                                <p className="text-[#E53C3C] font-semibold text-sm">
-                                  <s>{product.discount[0].discount_price_formatted} </s>
-                                </p>
-                                <div className="mt-2">
-                                  <div className="text-lg font-semibold text-[#3B8F51]">
-                                    {product.formatted_price}{" "}
-                                    <span className="text-[#FFCA0C] ml-5">
-                                      &#9733;
-                                      <span className="text-sm text-[#3B8F51] ml-1">
-                                        {product.rating}/5
+                              <Link to={`/detailproductt/${product.slug}`}>
+                                <div
+                                  key={product.id}
+                                  className="bg-white rounded-lg shadow-xl p-4"
+                                >
+                                  {/* Isi konten produk */}
+                                  <img
+                                    className="rounded-md"
+                                    src={product.images}
+                                    alt={`Product ${index}`}
+                                  />
+                                  <h3 className="text-md font-semibold mb-2 mt-2">
+                                    {product.name}
+                                  </h3>
+
+                                  {product.discount[0].discount_price !== 0 && (
+                                    <p className="text-[#E53C3C] font-semibold text-sm">
+                                      <s>
+                                        {
+                                          product.discount[0]
+                                            .discount_price_formatted
+                                        }
+                                      </s>
+                                    </p>
+                                  )}
+                                  <div className="mt-2">
+                                    <div className="text-lg font-semibold text-[#3B8F51]">
+                                      {product.formatted_price}{" "}
+                                      <span className="text-[#FFCA0C] ml-5">
+                                        &#9733;
+                                        <span className="text-sm text-[#3B8F51] ml-1">
+                                          {product.rating}/5
+                                        </span>
                                       </span>
-                                    </span>
+                                    </div>
                                   </div>
+                                  {/* Informasi lebih lanjut atau tombol beli */}
                                 </div>
-                                {/* Informasi lebih lanjut atau tombol beli */}
-                              </div>
                               </Link>
                             ))}
                           </>
@@ -435,39 +440,46 @@ function ProductCoffee() {
                     {/* Looping untuk menampilkan konten produk */}
                     <>
                       {products.map((product, index) => (
-                         <Link to={`/detailproductt/${product.slug}`}>
-                        <div
-                          key={product.id}
-                          className="bg-white rounded-lg shadow-md p-4"
-                        >
-                          {/* Isi konten produk */}
-                          <img
-                            className="rounded-md"
-                            src={product.image}
-                            alt={`Product ${index}`}
-                          />
-                          <h3 className="text-base font-semibold mb-2 mt-2">
-                            {product.name}
-                          </h3>
-                          <p className="text-[10px] text-gray-600">
-                            {product.description}
-                          </p>
-                          <p className="text-[#E53C3C] font-semibold text-[10px]">
-                            {/* <s>{product.discount[0].discount_price} </s> */}
-                          </p>
-                          <div className="mt-2">
-                            <div className="text-xs text-[#3B8F51]">
-                              {product.formatted_price}{" "}
-                              <span className="text-[#FFCA0C] ml-8">
-                                &#9733;
-                                <span className="text-xs text-[#3B8F51] ml-2">
-                                  {product.rating}/5
+                        <Link to={`/detailproductt/${product.slug}`}>
+                          <div
+                            key={product.id}
+                            className="bg-white rounded-lg shadow-md p-4"
+                          >
+                            {/* Isi konten produk */}
+                            <img
+                              className="rounded-md"
+                              src={product.images}
+                              alt={`Product ${index}`}
+                            />
+                            <h3 className="text-base font-semibold mb-2 mt-2">
+                              {product.name}
+                            </h3>
+                            <p className="text-[10px] text-gray-600">
+                              {product.category}
+                            </p>
+                            {product.discount[0].discount_price !== 0 && (
+                                    <p className="text-[#E53C3C] font-semibold text-sm">
+                                      <s>
+                                        {
+                                          product.discount[0]
+                                            .discount_price_formatted
+                                        }
+                                      </s>
+                                    </p>
+                                  )}
+                            <div className="mt-2">
+                              <div className="text-xs text-[#3B8F51]">
+                                {product.formatted_price}{" "}
+                                <span className="text-[#FFCA0C] ml-8">
+                                  &#9733;
+                                  <span className="text-xs text-[#3B8F51] ml-2">
+                                    {product.rating}/5
+                                  </span>
                                 </span>
-                              </span>
+                              </div>
                             </div>
+                            {/* Informasi lebih lanjut atau tombol beli */}
                           </div>
-                          {/* Informasi lebih lanjut atau tombol beli */}
-                        </div>
                         </Link>
                       ))}
                     </>

@@ -268,7 +268,7 @@ function DetailProduct() {
                           {product.name}
                         </h1>
                         <img
-                          src={product.image}
+                          src={product.images}
                           alt="Gambar Konten"
                           className="w-72 h-72 mb-4 mt-4 rounded-lg"
                         />
@@ -596,7 +596,7 @@ function DetailProduct() {
               <>
                 <div className="w-full   p-4 mb-4 md:mb-0 relative">
                   <img
-                    src={product.image}
+                    src={product.images}
                     alt="Gambar Konten"
                     className="w-56 h-56  mb-4 rounded-lg border"
                   />

@@ -107,7 +107,7 @@ function ChocolateSection() {
           `${Baseurl}product/get-product?page=1&limit=999&keyword=`
         );
         const filteredProducts = response.data.data.data.filter(
-          (product) => product.type === "choco"
+          (product) => product.category === "chocolate"
         );
         setProducts(filteredProducts);
         console.log("ini njir", response.data.data.data);
@@ -156,7 +156,7 @@ function ChocolateSection() {
                         >
                           <img
                             className="rounded-md"
-                            src={product.image}
+                            src={product.images}
                             alt={`Product ${index}`}
                           />
                           <div className="ml-2 p-[10px]">
@@ -164,11 +164,19 @@ function ChocolateSection() {
                               {product.name}
                             </p>
                             <p className="text-slate-400 text-xs">
-                              {product.type}
+                              {product.category}
                             </p>
-                            <p className="text-[#E53C3C] font-semibold text-sm">
-                              <s>{product.discount[0].discount_price_formatted}</s>
-                            </p>
+                           
+                              {product.discount[0].discount_price !== 0 && (
+                                <p className="text-[#E53C3C] font-semibold text-sm">
+                                  <s>
+                                    {
+                                      product.discount[0]
+                                        .discount_price_formatted
+                                    }
+                                  </s>
+                                </p>
+                              )}
                             <div>
                               <div className="text-lg font-semibold text-[#3B8F51]">
                                 {product.formatted_price}{" "}
@@ -223,7 +231,7 @@ function ChocolateSection() {
                             className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
                           >
                             <img
-                              src={product.image}
+                              src={product.images}
                               alt={product.title}
                               className="w-full rounded-lg"
                             />
@@ -232,11 +240,17 @@ function ChocolateSection() {
                               {product.name}
                               </p>
                               <p className="text-slate-400 text-[10px]">
-                                {product.type}
+                                {product.category}
                               </p>
-                              {/* <p className="text-[#E53C3C] font-semibold text-[10px]">
-                              <s>{product.discount[0].discount_price}</s>
-                              </p> */}
+                              {product.discount[0].discount_price !== 0 && (
+                                <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                  <s>
+                                    {
+                                      product.formatted_price
+                                    }
+                                  </s>
+                                </p>
+                              )}
                               <div>
                                 <div className="text-sm font-semibold text-[#3B8F51] mt-3">
                                 {product.formatted_price}{" "}
