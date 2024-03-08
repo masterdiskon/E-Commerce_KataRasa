@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../layout/Navbar";
 import Footer from "../../layout/Footer";
 import { EditOutlined } from "@ant-design/icons";
@@ -18,11 +18,57 @@ import {
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
+import Alamat from "./Alamat";
+import AlamatPage from "./Alamat";
 
 function Payment() {
   const [priceRange, setPriceRange] = useState([0, 100000]);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
   const [openKeys, setOpenKeys] = useState([]);
+  const [DataCheckoutAll, setDataCheckoutAll] = useState([]);
+  const [DataSummaryAll, setDataSummaryAll] = useState([]);
+  const [DataAlamat, setDataAlamat] = useState({});
+  const [selectedShipping, setSelectedShipping] = useState("");
+  const [shippingCost, setShippingCost] = useState(null);
+
+  const GetDataCheckout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${Baseurl}checkout/data-checkout`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDataCheckoutAll(response.data.data.items);
+      setDataSummaryAll(response.data.data.summary);
+      console.log("Data checkout:", response.data.data.items);
+      console.log("Data summary:", response.data.data.summary);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  const GetDataAlamat = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${Baseurl}profile/data-alamat`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDataAlamat(response.data.data[0]);
+      console.log("Data Alamat:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetDataCheckout();
+    GetDataAlamat();
+  }, []);
 
   const onOpenChange = (keys) => {
     setOpenKeys(keys);
@@ -139,66 +185,6 @@ function Payment() {
     });
   };
 
-  const handlePaymentMethodChange = (event) => {
-    setSelectedPaymentMethod(event.target.value);
-  };
-
-  const handlePaymentSubmit = (event) => {
-    event.preventDefault();
-    // Handle payment submission logic based on selectedPaymentMethod
-  }; // Nilai awal untuk range harga
-
-  const handlePriceRangeChange = (value) => {
-    // Mengatur range harga yang dipilih
-    setPriceRange(value);
-  };
-
-  const deliveryOptions = [
-    {
-      id: 1,
-      name: "Grab Instant",
-      estimate: "Estimasi 20 menit",
-      price: "Rp 20.000",
-      logo: LogoGrab,
-    },
-    // Tambahkan opsi pengiriman lainnya di sini jika diperlukan
-  ];
-
-  const dataItems = [
-    {
-      id: 1,
-      image: Image1,
-      title: "Coffee Beans - Robusta Temanggung",
-      description: "500gr, Exclude, Plastics",
-      price: "Rp 24.000",
-      quantity: 1,
-    },
-    {
-      id: 1,
-      image: Image1,
-      title: "Coffee Beans - Robusta Temanggung",
-      description: "500gr, Exclude, Plastics",
-      price: "Rp 24.000",
-      quantity: 1,
-    },
-    // Tambahkan item lainnya di sini jika diperlukan
-  ];
-
-  const DataDetailPesanan = [
-    {
-      id: 1,
-      title: "Coffee Beans - Robusta Te..",
-      quantity: 1,
-      price: "Rp24.000",
-    },
-    {
-      id: 2,
-      title: "Tea Leaves - Green",
-      quantity: 2,
-      price: "Rp20.000",
-    },
-  ];
-
   const orderDetails = [
     {
       name: "Coffee Beans - Robusta Temanggung",
@@ -222,6 +208,55 @@ function Payment() {
   const totalWithGrab =
     totalPrice + parseFloat(grabInstantDeliveryCost.replace(".", ""));
 
+  const handleShippingChange = (event) => {
+    setSelectedShipping(event.target.value);
+    // Ambil harga pengiriman dari data JSON
+    const selectedCost = selectPrice.find(
+      (cost) => cost.service === event.target.value
+    );
+    if (selectedCost) {
+      setShippingCost(selectedCost.cost[0].value);
+    } else {
+      setShippingCost(null);
+    }
+  };
+
+  const selectPrice = [
+    {
+      service: "OKE",
+      description: "Ongkos Kirim Ekonomis",
+      cost: [
+        {
+          value: 53000,
+          etd: "4-5",
+          note: "",
+        },
+      ],
+    },
+    {
+      service: "REG",
+      description: "Layanan Reguler",
+      cost: [
+        {
+          value: 62000,
+          etd: "3-4",
+          note: "",
+        },
+      ],
+    },
+  ];
+
+  const subtotal = DataSummaryAll.subTotalNumber;
+
+  // Fungsi untuk menghitung grand total
+  function calculateGrandTotal(subtotal, shippingCost) {
+    return subtotal + shippingCost;
+  }
+
+  // Menghitung grand total
+  const grandTotal = calculateGrandTotal(subtotal, shippingCost);
+  
+
   return (
     <div className=" w-full h-screen">
       <Navbar />
@@ -238,10 +273,29 @@ function Payment() {
                   </h1>
                   <h1 className="text-xl font-medium mt-5">Alamat Anda</h1>
                   <div className="flex flex-col sm:flex-row mt-2 border rounded-lg border-[#41644A] bg-[#fbfff1]">
-                    <div className="w-full sm:w-5/6 p-4 text-[#41644A] text-base  font-medium">
-                      Jl. Raya Poncol No.36 8 9, RT.8/RW.9, Susukan, Kec.
-                      Ciracas, Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta
-                      <p className="mt-2">Kode Pos: 13750</p>
+                    <div className="w-full sm:w-full p-4 text-[#41644A] text-base  font-medium">
+                      <div>
+                        <p>
+                          {DataAlamat.receiver_name}
+                          <span>({DataAlamat.address_as})</span>
+                        </p>
+                        {DataAlamat && (
+                          <p>
+                            {DataAlamat.complete_address},{" "}
+                            {DataAlamat.district && DataAlamat.district.name},{" "}
+                            {DataAlamat.sub_district &&
+                              DataAlamat.sub_district.name}
+                            , {DataAlamat.city && DataAlamat.city.name},
+                            {DataAlamat.province && DataAlamat.province.name}
+                          </p>
+                        )}
+                        <p className="mt-2">
+                          No.Telp : {DataAlamat.phone_number}
+                        </p>
+                        <p className="mt-2">
+                          Kode Pos: {DataAlamat.postal_code}
+                        </p>
+                      </div>
                     </div>
                     <div className="w-full sm:w-1/5 sm:p-2 flex justify-end">
                       <div className="border-3 border-solid border-[#000000]">
@@ -252,24 +306,24 @@ function Payment() {
                 </div>
 
                 <div className="mt-10 ">
-                  <h1 className="text-xl font-medium">Pesanan Anda</h1>
+                  <h1 className="text-xl font-medium">Detail Pesanan </h1>
                   <>
-                    {dataItems.map((item) => (
-                      <div key={item.id} className="mt-5 w-full flex">
+                    {DataCheckoutAll.map((item) => (
+                      <div key={item.id} className="mt-5 w-full flex space-x-3">
                         <div className=" w-1/6">
-                          <img src={item.image} alt={item.title} />
+                          <img src={item.image} alt={item.name} />
                         </div>
                         <div className=" w-full">
                           <h1 className="font-medium text-lg mb-2">
-                            {item.title}
+                            {item.name}
                           </h1>
                           <Tag color="#41644A">
                             <p className="text-white text-lg font-normal p-2">
-                              {item.description}
+                              {item.size}gr, {item.gula}, {item.packaging}
                             </p>
                           </Tag>
                           <p className="text-[#41644A] md:text-lg font-medium mt-2">
-                            {item.price} <span> x {item.quantity}</span>
+                            {item.priceFormated} <span> x {item.qtyCart}</span>
                           </p>
                         </div>
                       </div>
@@ -285,68 +339,73 @@ function Payment() {
 
                 <div className="mt-2">
                   <h1 className="text-lg font-medium">Pilih Pengiriman Anda</h1>
-                  <Select
-                    className="mt-2 w-full h-auto"
-                    defaultValue={deliveryOptions[0].name}
+                  <select
+                    className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg"
+                    value={selectedShipping}
+                    onChange={handleShippingChange}
                   >
-                    {deliveryOptions.map((option) => (
-                      <Option key={option.id} value={option.name}>
-                        <div className="flex flex-col sm:flex-row items-center p-2">
-                          <div className="flex justify-center items-center w-20 h-12 sm:mr-5">
-                            <img
-                              src={option.logo}
-                              alt={option.name}
-                              className="w-full h-full"
-                            />
-                          </div>
-                          <div className="flex flex-col flex-grow">
-                            <div className="font-medium text-base">
-                              {option.name}
-                            </div>
-                            <p className="text-xs text-[#787878]">
-                              {option.estimate}
-                            </p>
-                          </div>
-                          <div className="flex items-center justify-center md:ml-auto text-[#41644A] text-base font-medium">
-                            {option.price}
-                          </div>
-                        </div>
-                      </Option>
-                    ))}
-                  </Select>
+                    <option value="">Pilih pengiriman</option>
+                    <option value="OKE">Ongkos Kirim Ekonomis (OKE)</option>
+                    <option value="REG">Layanan Reguler (REG)</option>
+                  </select>
                 </div>
-                <div className="flex justify-between mt-4">
+                <div className="flex justify-between mt-2">
                   <div className="w-1/2">
                     <p className="text-lg font-medium mt-2">SubTotal </p>
-                    <p className="text-gray-400">Items {orderDetails.length}</p>
+                    <p className="text-gray-400">
+                      Items {DataSummaryAll.totalItems}
+                    </p>
                   </div>
-                  <div className="w-1/4 text-[#3B8F51] text-center mt-5 md:text-base sm:text-sm font-medium">
-                    Rp {totalWithGrab.toLocaleString()}
+                  <div className="w-1/4 text-[#3B8F51] text-end mt-8 md:text-base sm:text-sm font-medium">
+                    {DataSummaryAll.subTotal}
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex justify-between ">
+                    <div className="w-1/2">
+                      <p className="text-lg font-medium mt-4">
+                        {" "}
+                        <h2>Detail Pengiriman</h2>{" "}
+                      </p>
+                    </div>
+                    {selectedShipping && (
+                      <div className="w-1/4 text-[#3B8F51] text-end mt-5 md:text-base sm:text-sm font-medium">
+                        <p>{selectedShipping}</p>
+                      </div>
+                    )}
+                    {/* Anda bisa menambahkan detail lainnya sesuai kebutuhan, seperti cost, etd, note, dsb. */}
                   </div>
                 </div>
 
                 <div className="flex justify-between ">
                   <div className="w-1/2">
-                    <p className="text-lg font-medium mt-4">Pengiriman </p>
+                    <p className="text-lg font-medium mt-4">
+                      Harga Pengiriman{" "}
+                    </p>
                   </div>
-                  <div className="w-1/4 text-[#3B8F51] text-center mt-5 md:text-base sm:text-sm font-medium">
-                    Rp 10.000
+                  <div className="w-1/4 text-[#3B8F51] text-end mt-5 md:text-base sm:text-sm font-medium">
+                    {shippingCost !== null && (
+                      <p> Rp {shippingCost.toLocaleString("id-ID")}</p>
+                    )}
                   </div>
                 </div>
-                <div className="flex justify-between ">
+                {/* <div className="flex justify-between ">
                   <div className="w-1/2">
                     <p className="text-lg font-medium mt-4">Diskon </p>
                   </div>
                   <div className="w-1/3 text-red-500 pl-5 text-center mt-5 md:text-base sm:text-sm font-medium">
                     - Rp 10.000
                   </div>
-                </div>
-                <div className="flex justify-between mt-4">
+                </div> */}
+                <br />
+                <hr />
+                <div className="flex justify-between mt-5">
                   <div className="w-1/2">
                     <p className="text-lg font-medium">Grand Total</p>
                   </div>
                   <div className="w-1/4 text-[#3B8F51] text-center  md:text-lg sm:text-sm font-medium">
-                    Rp {totalWithGrab.toLocaleString()}
+                    Rp {grandTotal.toLocaleString("id-ID")}
                   </div>
                 </div>
 
@@ -354,9 +413,9 @@ function Payment() {
                   placeholder="Silahkan Masukkan Voucher"
                   className="w-full h-[55px] mt-[20px] border border-[#3B8F51] placeholder-[#41644A] font-normal text-base"
                 />
-                <div className="bg-green  border mt-[20px] border-[#3B8F51] rounded-[10px]">
+                <div className="bg-green mt-2 border border-[#3B8F51] rounded-[10px]">
                   <Menu
-                    className="w-full rounded-[10px] text-[#41644A] h-[50px]"
+                    className="w-full rounded-[10px] text-[#41644A]"
                     mode="inline"
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
@@ -385,15 +444,42 @@ function Payment() {
             <p className="text-black text-sm ">Alamat Anda</p>
             <div className="flex  mt-2 border rounded-lg border-[#41644A] bg-[#fbfff1]">
               <div className="w-full  p-4 text-[#41644A] text-[10px]  font-medium">
-                Jl. Raya Poncol No.36 8 9, RT.8/RW.9, Susukan, Kec. Ciracas,
-                Kota Jakarta Timur, Daerah Khusus Ibukota Jakarta
-                <p className="mt-2">Kode Pos: 13750</p>
+                <div>
+                  <p>
+                    {DataAlamat.receiver_name}
+                    <span>({DataAlamat.address_as})</span>
+                  </p>
+                  {DataAlamat && (
+                    <p>
+                      {DataAlamat.complete_address},{" "}
+                      {DataAlamat.district && DataAlamat.district.name},{" "}
+                      {DataAlamat.sub_district && DataAlamat.sub_district.name},{" "}
+                      {DataAlamat.city && DataAlamat.city.name},
+                      {DataAlamat.province && DataAlamat.province.name}
+                    </p>
+                  )}
+                  <p className="mt-2">No.Telp : {DataAlamat.phone_number}</p>
+                  <p className="mt-2">Kode Pos: {DataAlamat.postal_code}</p>
+                </div>
               </div>
               <div className="w-1/6   flex justify-center ">
                 <div className="rounded-full bg-[#e1eedd] px-3 py-0 h-9 mt-2 mr-1">
                   <EditOutlined className="mt-3 text-[#41644a] font-bold cursor-pointer" />
                 </div>
               </div>
+            </div>
+
+            <div className="mt-5">
+              <h1 className="text-sm font-medium">Pilih Pengiriman Anda</h1>
+              <select
+                className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg text-sm"
+                value={selectedShipping}
+                onChange={handleShippingChange}
+              >
+                <option value="">Pilih pengiriman</option>
+                <option value="OKE">Ongkos Kirim Ekonomis (OKE)</option>
+                <option value="REG">Layanan Reguler (REG)</option>
+              </select>
             </div>
 
             <div className="mt-8">
@@ -404,42 +490,93 @@ function Payment() {
                 <h2 className="text-sm text-[#41644A] font-medium  mb-4">
                   Detail Pesanan
                 </h2>
-                {orderDetails.map((order, index) => (
-                  <div className="flex justify-between mb-4" key={index}>
+                {DataCheckoutAll.map((order, index) => (
+                  <div
+                    className="flex justify-between mb-4 space-x-4"
+                    key={index}
+                  >
+                    <div className=" w-1/6">
+                      <img src={order.image} alt={order.name} />
+                    </div>
                     <div className="w-[230px]">
                       <p className="truncate text-sm">{order.name}</p>
+                      <Tag color="#41644A">
+                        <p className="text-white text-xs font-normal ">
+                          {order.size}gr, {order.gula}, {order.packaging}
+                        </p>
+                      </Tag>
                       <p className="text-gray-400 text-[12px]">
-                        {order.quantity}
+                        Item x {order.qtyCart}
                       </p>
                     </div>
                     <div className="w-1/4 text-[#3B8F51] text-end mt-4 text-[12px]">
-                      {order.price}
+                      <p>
+                        Rp{" "}
+                        {(order.finalPrice * order.qtyCart).toLocaleString(
+                          "id-ID"
+                        )}
+                      </p>
                     </div>
                   </div>
                 ))}
-                <div className="flex justify-between mb-4">
+                <div className="flex justify-between ">
                   {" "}
-                  <div className="w-[230px]">
+                  <div className="w-1/2">
                     {" "}
-                    <p className="truncate text-xs text-[#3B8F51] ">
+                    <p className="text-sm font-medium mt-4">
                       {" "}
-                      Grab Instant{" "}
-                    </p>{" "}
-                    <p className="text-[#3B8F51] text-xs">Pengiriman</p>{" "}
+                      <h2>SubTotal</h2>{" "}
+                    </p>
                   </div>{" "}
-                  <div className="w-1/4 text-[#3B8F51] text-end mt-4 text-xs">
-                    Rp {grabInstantDeliveryCost}
+                  <div className=" text-[#3B8F51] text-end mt-4  text-xs">
+                    {DataSummaryAll.subTotal}
+                  </div>{" "}
+                </div>
+                <div className="flex justify-between ">
+                  {" "}
+                  <div className="w-1/2">
+                    {" "}
+                    <p className="text-sm font-medium mt-4">
+                      {" "}
+                      <h2>Detail Pengiriman</h2>{" "}
+                    </p>
+                  </div>{" "}
+                  <div className=" text-[#3B8F51] text-end  text-xs">
+                    {selectedShipping && (
+                      <div className="w-1/4 text-[#3B8F51] text-end mt-5 md:text-base sm:text-sm font-medium">
+                        <p>{selectedShipping}</p>
+                      </div>
+                    )}
                   </div>{" "}
                 </div>
                 <div className="flex justify-between mb-4">
+                  {" "}
                   <div className="w-1/2">
-                    <p className="text-xs font-medium">Total Pesanan</p>
-                    <p className="text-gray-400 text-sm">
-                      Items {orderDetails.length}
+                    {" "}
+                    <p className="text-sm font-medium mt-4">
+                      {" "}
+                      <h2> Harga Pengiriman </h2>{" "}
                     </p>
+                  </div>{" "}
+                  <div className=" text-[#3B8F51] text-end  text-xs">
+                    {selectedShipping && (
+                      <div className=" text-[#3B8F51] text-end mt-5 md:text-base sm:text-sm font-medium">
+                        {shippingCost !== null && (
+                          <p> Rp {shippingCost.toLocaleString("id-ID")}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>{" "}
+                </div>
+                <hr />
+                <div className="flex justify-between mb-4 mt-2">
+                  <div className="w-1/2">
+                    <p className="text-base font-medium">Grand Total</p>
                   </div>
-                  <div className="w-1/3 text-[#3B8F51] text-center mt-4 text-base font-medium">
-                    Rp {totalWithGrab.toLocaleString()}
+                  <div className="w-1/3 text-[#3B8F51] text-center  text-base font-medium">
+                    <div className="text-[#3B8F51] text-end text-base font-medium">
+                      Rp {grandTotal.toLocaleString("id-ID")}
+                    </div>
                   </div>
                 </div>
 
@@ -474,8 +611,7 @@ function Payment() {
           <div className="w-full mx-auto bg-[#3B8F51] p-4">
             <div className="w-full flex mt-1">
               <div className="w-1/2  text-lg text-white">
-                <p className="text-[#F7FFF1] text-xs">Total</p> Rp{" "}
-                {totalWithGrab.toLocaleString()}
+                <p className="text-[#F7FFF1] text-xs">Total</p>   Rp {grandTotal.toLocaleString("id-ID")}
               </div>
               <div className="w-1/2  ">
                 <Link to="/payment">

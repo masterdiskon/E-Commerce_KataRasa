@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Segmented, Tabs } from "antd";
 import Navbar from "../../layout/Navbar";
 import FotoAkun from "../../../assets/Katarasa/akun.png";
@@ -6,6 +6,9 @@ import EditDataProfile from "../../../assets/Katarasa/pen.png";
 import { Link } from "react-router-dom";
 import DataProfile from "./DataProfile";
 import Footer from "../../layout/Footer";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
+import AlamatPage from "../Cart/Alamat";
 
 const onChange = (key) => {
   console.log(key);
@@ -24,16 +27,7 @@ const items = [
 ];
 
 const sections = [
-  {
-    title: "Alamat Utama",
-    content: [
-      {
-        label:
-          "Jl. Raya H.Jiung Prapanca, Kec. Duren, Kel. Babaturan, Jakarta Pusat.17292",
-        path: "/alamat-utama",
-      },
-    ],
-  },
+  
   {
     title: "Transaksi",
     content: [
@@ -61,6 +55,25 @@ const sections = [
 ];
 
 function AkunPage() {
+  const [DataProfill, setDataProfill] = useState({});
+  const GetDataAlamat = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${Baseurl}profile/data-profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDataProfill(response.data.data);
+      console.log("Data profil:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetDataAlamat();
+  }, []);
   return (
     <div className="w-full h-screen">
       <>
@@ -96,13 +109,26 @@ function AkunPage() {
                                     </div>
                                   </div>
                                   <div>
-                                    Noor Maya
-                                    <p>Noormaya@gmail.com</p>
+                                    <div>
+                                      <p> {DataProfill.name}</p>{" "}
+                                      {/* Menggunakan data nama */}
+                                      <p>{DataProfill.email}</p>{" "}
+                                      {/* Menggunakan data email */}
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </>
                             <>
+                            <br />
+                            <div>
+                            <div className="text-[#3B8F51] text-base">
+                                    Alamat Utama
+                                  </div> 
+                                  <div className="text-base mt-2">
+                                    <AlamatPage/>
+                                  </div>
+                            </div>
                               {sections.map((section, index) => (
                                 <div key={index}>
                                   <br />

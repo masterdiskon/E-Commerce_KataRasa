@@ -271,15 +271,54 @@ function TambahKeranjang() {
     if (item.is_checked !== 1) {
       return acc;
     }
-    return item.discount.length > 0
-      ? acc + item.discount[0].discount_price
-      : acc;
+
+    // Periksa apakah diskon berupa persentase
+    if (
+      item.discount.length > 0 &&
+      item.discount[0].type_potongan === "percent"
+    ) {
+      // Hitung diskon berdasarkan persentase
+      const discountAmount = item.price * (item.discount[0].potongan / 100);
+      return acc + discountAmount;
+    }
+
+    return acc;
+  }, 0);
+  const totalPercentDiscount = DataCartAll.reduce((acc, item) => {
+    if (
+      item.is_checked !== 1 ||
+      item.discount.length === 0 ||
+      item.discount[0].type_potongan !== "percent"
+    ) {
+      return acc;
+    }
+
+    const discountAmount = item.price * (item.discount[0].potongan / 100);
+    return acc + discountAmount;
   }, 0);
 
-  const subtotal = DataCartAll.reduce(
-    (total, item) => (item.is_checked === 1 ? total + item.total : total),
-    0
-  );
+  // const subtotal = DataCartAll.reduce(
+  //   (total, item) => (item.is_checked === 1 ? total + item.total : total),
+  //   0
+  // );
+  const subtotal = DataCartAll.reduce((subtotal, item) => {
+    return subtotal + item.total;
+  }, 0);
+
+  const totalHarga = DataCartAll.reduce((total, item) => {
+    if (item.is_checked === 1) {
+      const potongan = item.discount[0].potongan;
+      if (potongan !== 0) {
+        // Jika potongan tidak nol, gunakan discount_price * qty
+        return total + item.discount[0].discount_price;
+      } else {
+        // Jika potongan nol, gunakan total
+        return total + item.total;
+      }
+    } else {
+      return total;
+    }
+  }, 0);
 
   const grandTotal = subtotal - totalDiscount;
 
@@ -450,46 +489,66 @@ function TambahKeranjang() {
                                     Item x {item.qty}
                                   </p>
                                 </div>
-                                <div className="w-1/3 text-[#3B8F51] text-end mt-5 text-xl font-medium">
-                                  Rp {item.total}
+                                <div className="w-1/2 ">
+                                  <div className="text-center mt-5">
+                                    <div className="justify-center items-center text-red-500">
+                                      {item.discount[0].potongan !== 0 &&
+                                        "disc"}{" "}
+                                      {item.discount[0].potongan !== 0
+                                        ? `${item.discount[0].potongan}%`
+                                        : ""}
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="w-1/3 text-[#3B8F51] text-end mt- text-xl font-medium">
+                                  {item.discount[0].potongan !== 0 ? (
+                                    <div className=" text-red-500 text-end text-sm font-medium">
+                                      <s>{item.formated_price_total}</s>
+                                    </div>
+                                  ) : null}
+                                  {/* Tambahkan logika untuk menentukan nilai yang ditampilkan */}
+                                  {item.discount[0].potongan !== 0
+                                    ? item.discount[0].discount_price_formatted
+                                    : item.formated_price_total}
                                 </div>
                               </div>
+                              <br />
                             </div>
                           )}
                         </>
                       ))}
-                      <div className="flex justify-between">
+                      <hr />
+                      {/* <div className="flex justify-between">
                         <div className="w-1/2">
-                          <p className="text-lg font-medium mt-5">Sub Total</p>
+                          <p className="text-lg font-medium ">Sub Total</p>
                         </div>
-                        <div className="w-1/3 text-[#3B8F51] text-end mt-5  text-xl font-medium">
-                          Rp{" "}
-                          {DataCartAll.reduce(
-                            (total, item) =>
-                              item.is_checked === 1
-                                ? total + item.total
-                                : total,
-                            0
-                          )}
+                        <div className="w-1/3 text-[#3B8F51] text-end  text-xl font-medium">
+                          Rp {subtotal}
                         </div>
-                      </div>
-                      <div className="flex justify-between ">
+                      </div> */}
+                      {/* <div className="flex justify-between ">
                         <div className="w-1/2">
                           <p className="text-lg font-medium mt-5">Diskon</p>
                         </div>
 
                         <div className="w-1/3 text-red-500 text-end mt-5 text-xl font-medium">
-                          - Rp {totalDiscount}
+                          - Rp 
                         </div>
-                      </div>
-                      <div className="flex justify-between">
+                      </div> */}
+                      <div
+                        className="flex justify-between"
+                        id="grandTotalContainer"
+                      >
                         <div className="w-1/2">
                           <p className="text-xl font-medium mt-5">
                             Grand Total
                           </p>
                         </div>
-                        <div className="w-1/3 text-[#3B8F51] text-end mt-5 mb-5 text-2xl font-medium">
-                          Rp {grandTotal}
+                        <div
+                          className="w-1/3 text-[#3B8F51] text-end mt-5 mb-5 text-2xl font-medium"
+                          id="grandTotalValue"
+                        >
+                          Rp {totalHarga.toLocaleString("id-ID")}
                         </div>
                       </div>
 
@@ -499,7 +558,7 @@ function TambahKeranjang() {
                       /> */}
 
                       <button className="bg-[#3B8F51] h-[50px] text-white py-2 px-4 rounded-full mt-5 w-full hover:bg-[#41644A]">
-                        <Link to="/payment">Bayar Sekarang</Link>
+                        <Link to="/payment">Checkout</Link>
                       </button>
                     </div>
                   </>
@@ -603,7 +662,14 @@ function TambahKeranjang() {
 
                             <div className="flex">
                               <div className="w-1/2  text-[#3B8F51] text-sm font-semibold">
-                                Rp {item.total}
+                                Rp {item.total}{" "}
+                                <span className="text-red-500 ml-5">
+                                  {" "}
+                                  {item.discount[0].potongan !== 0 && ""}{" "}
+                                  {item.discount[0].potongan !== 0
+                                    ? `${item.discount[0].potongan}%`
+                                    : ""}
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -616,6 +682,7 @@ function TambahKeranjang() {
             </>
           </div>
         </div>
+        
       </>
 
       <div className=" md:hidden lg:hidden">
@@ -624,12 +691,12 @@ function TambahKeranjang() {
             <div className="w-full flex mt-1">
               <div className="w-1/2  text-lg text-white">
                 <p className="text-[#F7FFF1] text-xs">Total</p>
-                Rp {totalPrices}
+                Rp {totalHarga.toLocaleString("id-ID")}
               </div>
               <div className="w-1/2  ">
                 <Link to="/payment">
                   <Button className="bg-white rounded-full text-[#3B8F51] w-full text-xs h-full">
-                    Selanjutnya
+                    CheckOut
                   </Button>
                 </Link>
               </div>
