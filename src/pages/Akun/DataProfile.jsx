@@ -115,7 +115,7 @@ function DataProfile() {
               <label className="font-bold">Nomor Telepon</label>
               <Input
                 prefix={<div>+62</div>}
-                type="tel"
+                type="number"
                 placeholder="812-3290-2390"
                 value={DataProfill.phone_number}
                 className="h-11 rounded-full mt-2 placeholder-black"

@@ -9,6 +9,10 @@ import Footer from "../../layout/Footer";
 import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
 import AlamatPage from "../Cart/Alamat";
+import AlamatPages from "./AlamatPages";
+
+
+
 
 const onChange = (key) => {
   console.log(key);
@@ -22,7 +26,7 @@ const items = [
   {
     key: "2",
     label: "Alamat anda",
-    children: "Content of Tab Pane 2",
+    children: <AlamatPages/>,
   },
 ];
 
