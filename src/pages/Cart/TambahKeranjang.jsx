@@ -393,14 +393,24 @@ function TambahKeranjang() {
                               onChange={() => DataCeklist(item.cart_id)}
                               checked={item.is_checked === 1}
                             />
-                            <div className="w-1/5 flex justify-center items-center">
+                            <div className="w-1/5 flex justify-center items-center relative">
+                              {/* Gambar */}
                               <img
                                 src={item.image}
                                 className="w-28 h-24 ml-5 rounded-md"
                                 alt="Coffee Beans"
                               />
+                              {/* Tulisan diskon */}
+                              {item.discount[0].potongan !== 0 &&
+                                item.discount[0].type_potongan ===
+                                  "percent" && (
+                                  <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-md text-xs">
+                                    {item.discount[0].potongan}%
+                                  </div>
+                                )}
                             </div>
-                            <div className="w-1/2 ml-6">
+
+                            <div className="w-1/3 ml-6">
                               <div className="ml-2">
                                 <p className="text-base font-medium">
                                   {item.product}
@@ -411,37 +421,75 @@ function TambahKeranjang() {
                                     {item.packaging}
                                   </Tag>
                                 </p>
-                                <div className="flex items-center mt-3">
-                                  <button
-                                    onClick={(data, index) =>
-                                      UpdateQty("kurang", item, data, index)
-                                    }
-                                    className={`px-3 py-1 rounded-full mr-2 ${
-                                      item.quantity > 0
-                                        ? "bg-[#3B8F51] text-white"
-                                        : "bg-gray-300"
-                                    }`}
-                                  >
-                                    -
-                                  </button>
-                                  <p className="text-[#3B8F51]">{item.qty}</p>
-                                  <button
-                                    onClick={(data, index) =>
-                                      UpdateQty("tambah", item, data, index)
-                                    }
-                                    className={`px-3 py-1 rounded-full ml-2 ${
-                                      item.quantity > 0
-                                        ? "bg-[#3B8F51] text-white"
-                                        : "bg-gray-300"
-                                    }`}
-                                  >
-                                    +
-                                  </button>
-                                  <span className="ml-6 text-[#3B8F51] font-semibold">
-                                    Rp {item.total}
-                                  </span>
+                                <div className="flex mt-2">
+                                  {item.discount[0].potongan !== 0 ? (
+                                    <div className=" text-red-600 mr-2  font-medium">
+                                      <s>{item.formated_price}</s>
+                                    </div>
+                                  ) : null}
+                                  <div className="font-bold text-[#41644A]">
+                                    Rp
+                                    <span className="ml-1">
+                                      {item.discount[0].potongan !== 0
+                                        ? item.discount[0].type_potongan ===
+                                          "percent"
+                                          ? // Potongan dalam persentase
+                                            (
+                                              item.price -
+                                              (item.price *
+                                                item.discount[0].potongan) /
+                                                100
+                                            ).toLocaleString("id-ID")
+                                          : // Potongan dalam nilai tetap
+                                            (
+                                              item.price -
+                                              item.discount[0].potongan
+                                            ).toLocaleString("id-ID")
+                                        : // Tidak ada potongan
+                                          item.price.toLocaleString("id-ID")}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
+                            </div>
+
+                            <div className="w-1/5">
+                              <div className="flex items-center mt-3">
+                                <button
+                                  onClick={(data, index) =>
+                                    UpdateQty("kurang", item, data, index)
+                                  }
+                                  className={`px-3 py-1 rounded-full mr-2 ${
+                                    item.quantity > 0
+                                      ? "bg-[#3B8F51] text-white"
+                                      : "bg-gray-300"
+                                  }`}
+                                >
+                                  -
+                                </button>
+                                <p className="text-[#3B8F51]">{item.qty}</p>
+                                <button
+                                  onClick={(data, index) =>
+                                    UpdateQty("tambah", item, data, index)
+                                  }
+                                  className={`px-3 py-1 rounded-full ml-2 ${
+                                    item.quantity > 0
+                                      ? "bg-[#3B8F51] text-white"
+                                      : "bg-gray-300"
+                                  }`}
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="w-1/3 text-center">
+                              <p>Total Harga</p>
+                              <span className=" text-[#3B8F51] text-lg font-bold">
+                                {item.discount[0].potongan !== 0
+                                  ? item.discount[0].discount_price_formatted
+                                  : item.formated_price_total}
+                              </span>
                             </div>
                             <div>
                               <button
@@ -476,7 +524,7 @@ function TambahKeranjang() {
                           </div>
                         </div>
                       ))} */}
-                      {DataCartAll.map((item) => (
+                      {/* {DataCartAll.map((item) => (
                         <>
                           {item.is_checked == 1 && (
                             <div>
@@ -506,7 +554,7 @@ function TambahKeranjang() {
                                       <s>{item.formated_price_total}</s>
                                     </div>
                                   ) : null}
-                                  {/* Tambahkan logika untuk menentukan nilai yang ditampilkan */}
+                                  
                                   {item.discount[0].potongan !== 0
                                     ? item.discount[0].discount_price_formatted
                                     : item.formated_price_total}
@@ -516,7 +564,7 @@ function TambahKeranjang() {
                             </div>
                           )}
                         </>
-                      ))}
+                      ))} */}
                       <hr />
                       {/* <div className="flex justify-between">
                         <div className="w-1/2">
@@ -594,12 +642,19 @@ function TambahKeranjang() {
                               checked={item.is_checked === 1}
                             />
                           </div>
-                          <div className="w-1/3">
+                          <div className="w-1/3 flex justify-center items-center relative">
                             <img
                               src={item.image}
                               className="w-16 h-16 ml-2 rounded-md"
                               alt="Coffee Beans"
                             />
+                              {item.discount[0].potongan !== 0 &&
+                                item.discount[0].type_potongan ===
+                                  "percent" && (
+                                  <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-md text-[8px]">
+                                    {item.discount[0].potongan}%
+                                  </div>
+                                )}
                           </div>
                           <div className="w-full  ">
                             <div className=" flex">
@@ -662,14 +717,23 @@ function TambahKeranjang() {
 
                             <div className="flex">
                               <div className="w-1/2  text-[#3B8F51] text-sm font-semibold">
-                                Rp {item.total}{" "}
+                                {/* {item.discount[0].potongan !== 0 ? (
+                                  <div className=" text-red-500  text-sm font-medium">
+                                    <s>{item.formated_price_total}</s>
+                                  </div>
+                                ) : null} */}
+
+                                {item.discount[0].potongan !== 0
+                                  ? item.discount[0].discount_price_formatted
+                                  : item.formated_price_total}
+                                {/* Rp {item.total}{" "}
                                 <span className="text-red-500 ml-5">
                                   {" "}
                                   {item.discount[0].potongan !== 0 && ""}{" "}
                                   {item.discount[0].potongan !== 0
                                     ? `${item.discount[0].potongan}%`
                                     : ""}
-                                </span>
+                                </span> */}
                               </div>
                             </div>
                           </div>
@@ -682,7 +746,6 @@ function TambahKeranjang() {
             </>
           </div>
         </div>
-        
       </>
 
       <div className=" md:hidden lg:hidden">

@@ -43,7 +43,12 @@ function Payment() {
       });
       setDataCheckoutAll(response.data.data.items);
       setDataSummaryAll(response.data.data.summary);
+
+      response.data.data.items.forEach((item) => {
+        console.log("data diskon", item.discount);
+      });
       console.log("Data checkout:", response.data.data.items);
+
       console.log("Data summary:", response.data.data.summary);
     } catch (error) {
       console.error("Error fetching cart data:", error);
@@ -255,7 +260,6 @@ function Payment() {
 
   // Menghitung grand total
   const grandTotal = calculateGrandTotal(subtotal, shippingCost);
-  
 
   return (
     <div className=" w-full h-screen">
@@ -310,20 +314,37 @@ function Payment() {
                   <>
                     {DataCheckoutAll.map((item) => (
                       <div key={item.id} className="mt-5 w-full flex space-x-3">
-                        <div className=" w-1/6">
+                        <div className=" w-1/6 flex justify-center items-center relative">
                           <img src={item.image} alt={item.name} />
+                          {item.discount && (
+                            <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-md text-sm">
+                              {item.discount[0].potongan}%
+                            </div>
+                          )}
                         </div>
                         <div className=" w-full">
                           <h1 className="font-medium text-lg mb-2">
                             {item.name}
                           </h1>
                           <Tag color="#41644A">
-                            <p className="text-white text-lg font-normal p-2">
+                            <p className="text-white text-xs font-normal p-2">
                               {item.size}gr, {item.gula}, {item.packaging}
                             </p>
                           </Tag>
                           <p className="text-[#41644A] md:text-lg font-medium mt-2">
-                            {item.priceFormated} <span> x {item.qtyCart}</span>
+                            <p>
+                              Rp{" "}
+                              {item.price !== null && item.discount !== null
+                                ? (
+                                    item.price -
+                                    (item.price * item.discount[0].potongan) /
+                                      100
+                                  ).toLocaleString("id-ID")
+                                : item.price !== null
+                                ? item.price.toLocaleString("id-ID")
+                                : null}
+                              <span> x {item.qtyCart}</span>
+                            </p>
                           </p>
                         </div>
                       </div>
@@ -495,8 +516,13 @@ function Payment() {
                     className="flex justify-between mb-4 space-x-4"
                     key={index}
                   >
-                    <div className=" w-1/6">
+                    <div className=" w-1/6 flex justify-center items-center relative">
                       <img src={order.image} alt={order.name} />
+                      {order.discount && (
+                            <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] px-2 py-1 rounded-md">
+                              {order.discount[0].potongan}%
+                            </div>
+                          )}
                     </div>
                     <div className="w-[230px]">
                       <p className="truncate text-sm">{order.name}</p>
@@ -611,7 +637,8 @@ function Payment() {
           <div className="w-full mx-auto bg-[#3B8F51] p-4">
             <div className="w-full flex mt-1">
               <div className="w-1/2  text-lg text-white">
-                <p className="text-[#F7FFF1] text-xs">Total</p>   Rp {grandTotal.toLocaleString("id-ID")}
+                <p className="text-[#F7FFF1] text-xs">Total</p> Rp{" "}
+                {grandTotal.toLocaleString("id-ID")}
               </div>
               <div className="w-1/2  ">
                 <Link to="/payment">

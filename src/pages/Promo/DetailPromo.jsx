@@ -15,8 +15,12 @@ import DetailPromosi1 from "../../../assets/Promo/detailpromo1.png";
 import DetailPromosi2 from "../../../assets/Promo/detailpromo2.png";
 import DetailPromosi3 from "../../../assets/Promo/detailpromo3.png";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 function DetailPromo() {
+  const { id_promo } = useParams();
   const promoDetails = [
     { label: "Waktu Periode", value: "12 - 24 Januari 2024" },
     { label: "Waktu Pemakaian", value: "Kapanpun" },
@@ -102,6 +106,24 @@ function DetailPromo() {
     setScrollPosition(newPosition < 0 ? 0 : newPosition);
   };
 
+  const GetPromoAll = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${Baseurl}promo/get-promo-detail?id_promo=${id_promo}&page=1&limit=5&keyword=`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Detail PROMO CUK:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetPromoAll();
+  }, [id_promo]);
+
   return (
     <div className="w-full h-screen ">
       <Navbar />
@@ -112,6 +134,7 @@ function DetailPromo() {
           <div className="  h-auto w-screen md:p-20 mx-auto sm:w-[83rem]">
             <div className="w-full flex space-x-6 mt-24 ">
               <div className="w-full rounded-lg shadow-lg ">
+                
                 <div className="p-3">
                   <h1 className="text-[#3B8F51] font-medium text-2xl pl-3">
                     Chinese New Year bundling discount!

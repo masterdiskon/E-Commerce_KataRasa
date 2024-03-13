@@ -8,11 +8,15 @@ import PC4 from "../../../assets/ProductChocolate/productChocolateJar4.png";
 import data from "../../data.json";
 import { Button } from "antd";
 import Navbar from "../../layout/Navbar";
+import axios from "axios";
+import Baseurl from "../../Api/BaseUrl";
+import { Link } from "react-router-dom";
 
 const BestSeller = () => {
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
+  const [DataAllBest, setDataAllBest] = useState([]);
 
   const movePrev = () => {
     if (currentIndex > 0) {
@@ -115,6 +119,25 @@ const BestSeller = () => {
     },
   ];
 
+  const GetBestSeller = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${Baseurl}dashboard/get-best-product`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setDataAllBest(response.data.data);
+      console.log("Data best:", response.data.data);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetBestSeller();
+  }, []);
+
   return (
     <div>
       {/* Layar Besar */}
@@ -158,7 +181,6 @@ const BestSeller = () => {
                       className="h-12 w-20 -ml-5"
                       fill="none"
                       viewBox="0 0 30 30"
-                      
                       stroke="currentColor"
                       strokeWidth={2}
                     >
@@ -196,8 +218,8 @@ const BestSeller = () => {
                               <p className="text-3xl font-bold">Best Seller</p>
                               <p className="text-sm mt-4">Recommendations!</p>
                               <Button className="font-bold  border h-10 pl-6 pr-6 border-white bg-[#42382e]  px-2 py-1 transition-colors duration-300 ease-in-out hover:bg-white hover:border-none mt-5 rounded-full text-xs text-white">
-                                  Lihat Semua
-                                </Button>
+                                Lihat Semua
+                              </Button>
                             </div>
                           </div>
                         </div>
@@ -210,46 +232,68 @@ const BestSeller = () => {
                           ref={carousel}
                           className="carousel-container  relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 sm:h-[330px]"
                         >
-                          {products.map((product, index) => {
+                          {DataAllBest.map((product, index) => {
                             return (
-                              <div
-                                key={index}
-                                className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white"
+                              <Link
+                                to={`/detailproductt/${product.product.slug}`}
                               >
-                                <a
-                                  href={product.link}
-                                  className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
+                                <div
+                                  key={index}
+                                  className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white"
                                 >
-                                  <img
-                                    src={product.image}
-                                    alt={product.title}
-                                    className="w-full rounded-lg"
-                                  />
-                                  <div className="ml-2 p-[10px]">
-                                    <p className="font-bold text-sm">
-                                      {product.title}
-                                    </p>
-                                    <p className="text-slate-400 text-xs">
-                                      {product.type}
-                                    </p>
-                                    <p className="text-[#E53C3C] font-semibold text-sm">
-                                      <s>{product.originalPrice}</s>
-                                    </p>
-                                    <div>
-                                      <div className="text-lg font-semibold text-[#3B8F51] mt-3">
-                                        {product.discountedPrice}{" "}
-                                        <span className="text-[#FFCA0C]  ml-6">
-                                          &#9733;
-                                          <span className="text-sm text-[#3B8F51] ml-1">
-                                            {product.rating}/5
-                                          </span>
-                                        </span>
+                                  <a
+                                    href={product.link}
+                                    className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
+                                  >
+                                    <img
+                                      src={product.product.url}
+                                      alt={product.product.category}
+                                      className="w-full rounded-lg"
+                                    />
+                                    <div className="ml-2 p-[14px]">
+                                      <p className="font-bold text-sm">
+                                        {product.product.name}
+                                      </p>
+                                      <p className="text-slate-400 text-xs">
+                                        {product.product.category}
+                                      </p>
+
+                                      <div>
+                                        <div className="text-lg font-semibold text-[#3B8F51] mt-1">
+                                          {product.product.discount[0]
+                                            .potongan !== 0 ? (
+                                            <span className="text-[#E53C3C] text-sm">
+                                              <s>
+                                                Rp{" "}
+                                                {product.product.price.toLocaleString()}
+                                              </s>
+                                            </span>
+                                          ) : (
+                                            <br />
+                                          )}
+                                          <div className="w-full flex">
+                                            <div className="w-1/2">
+                                              {product.product.discount[0]
+                                                .potongan !== 0
+                                                ? `Rp ${product.product.discount[0].discount_price.toLocaleString()} `
+                                                : `Rp ${product.product.price.toLocaleString()}`}
+                                            </div>
+                                            <div className="w-1/2">
+                                              <div className="text-[#FFCA0C] text-end">
+                                                &#9733;
+                                                <span className="text-sm text-[#3B8F51] ml-1">
+                                                  {product.product.rating}/5
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <div className="text-lg font-semibold text-[#3B8F51] mt-3"></div>
                                       </div>
                                     </div>
-                                  </div>
-                                </a>
+                                  </a>
 
-                                {/* <a
+                                  {/* <a
              href={product.link}
              className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-blue-800/75 z-10"
            >
@@ -257,7 +301,8 @@ const BestSeller = () => {
                {product.title}
              </h3>
            </a> */}
-                              </div>
+                                </div>
+                              </Link>
                             );
                           })}
                         </div>

@@ -9,11 +9,36 @@ import Promo4 from "../../../assets/Promo/promo4.png";
 import Promo5 from "../../../assets/Promo/promo5.png";
 import { Card, Carousel } from "antd";
 import { Link } from "react-router-dom";
+import Baseurl from "../../Api/BaseUrl";
+import axios from "axios";
 
 function Cupon() {
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
+  const [DataPromoAll, setDataPromoAll] = useState([]);
+
+  const GetCuponAll = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${Baseurl}promo/get-promo?page=1&limit=999&keyword=`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setDataPromoAll(response.data.data.data);
+      console.log("Data PROMO:", response.data.data.data);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetCuponAll();
+  }, []);
 
   const movePrev = () => {
     if (currentIndex > 0) {
@@ -113,32 +138,38 @@ function Cupon() {
             </p>
           </div>
 
-          <div className="relative overflow-hidden scroll-smooth" style={{ maxWidth: "100%", scrollBehavior: "smooth" }}>
+          <div
+            className="relative overflow-hidden scroll-smooth"
+            style={{ maxWidth: "100%", scrollBehavior: "smooth" }}
+          >
             <div
               className="flex overflow-hidden w-[75rem] ml-4"
               style={{ maxWidth: "100%" }}
               ref={sliderRef}
             >
-              {promos.map((promo, index) => (
-                <div
-                  key={index}
-                  className="justify-start mt-2"
-                  style={{
-                    position: "relative",
-                    flex: "0 0 auto",
-                    marginRight: "10px",
-                  }}
-                >
-                  <img
-                    src={promo.image}
-                    alt={`Promo ${index}`}
-                    className="w-full md:w-[270px] h-[150px]"
-                  />
-                </div>
+              {DataPromoAll.map((promo, index) => (
+                <Link to={`/detailpromosi/${promo.id_promo}`}>
+                  <div
+                    key={index}
+                    className="justify-start mt-2"
+                    style={{
+                      position: "relative",
+                      flex: "0 0 auto",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <img
+                      src={`https://api.katarasa.id` + promo.images}
+                      // src={promo.images}
+                      alt={`Promo ${index}`}
+                      className="w-full md:w-[270px] h-[150px]"
+                    />
+                    <p></p>
+                  </div>
+                </Link>
               ))}
             </div>
             <button
-            
               className="absolute   top-0 bottom-0 left-0 bg-transparent text-[#3B8F51] px-2 py-1"
               onClick={scrollLeft}
             >

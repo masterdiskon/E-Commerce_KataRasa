@@ -37,7 +37,7 @@ const AppRouter = () => {
       <Route path="/product/chocolate" element={<ProductChocolate />} />
       <Route path="/product/tea" element={<ProductTea />} />
       <Route path="/product/merch" element={<ProductMerchen />} />
-      <Route path="/detailpromosi" element={<DetailPromo />} />
+      <Route path="/detailpromosi/:id_promo" element={<DetailPromo />} />
       <Route path="/akunsaya" element={<AkunPage />} />
       <Route path="*" element={<App />} />
     </Routes>

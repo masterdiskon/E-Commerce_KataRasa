@@ -18,6 +18,7 @@ function Promo() {
     { image: Promo5, name: "Promo Sumpah Pemuda - Discount 28%!" },
     { image: Promo6, name: "Buy 2 Get 1 - Independence day" },
   ];
+  
 
   return (
     <div className="w-full h-screen">
