@@ -30,8 +30,9 @@ function DetailPromo() {
   ];
 
   const [copied, setCopied] = useState(false);
+  const [codeToCopy, setcodeToCopy] = useState();
 
-  const codeToCopy = "GONGXI2024";
+  const codeToCopyy = "GONGXI2024";
 
   const handleCopyClick = () => {
     navigator.clipboard.writeText(codeToCopy);
@@ -109,20 +110,31 @@ function DetailPromo() {
   const GetPromoAll = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${Baseurl}promo/get-promo-detail?id_promo=${id_promo}&page=1&limit=5&keyword=`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${Baseurl}promo/get-promo-detail?id_promo=${id_promo}&page=1&limit=5&keyword=`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setDetailPromoAll(response.data.data);
       console.log("Detail PROMO CUK:", response.data.data);
+
+      // Update codeToCopy with the code_coupon from the API response
+      // const codeToCopy = response.data.data.code_coupon;
+      setcodeToCopy(response.data.data.code_coupon);
+      console.log("Code to copy:", codeToCopy);
     } catch (error) {
-      console.error("Error fetching cart data:", error);
+      console.error("Error fetching promo data:", error);
     }
   };
 
   useEffect(() => {
     GetPromoAll();
   }, [id_promo]);
+
+  const [DetailPromoAll, setDetailPromoAll] = useState([]);
 
   return (
     <div className="w-full h-screen ">
@@ -134,18 +146,18 @@ function DetailPromo() {
           <div className="  h-auto w-screen md:p-20 mx-auto sm:w-[83rem]">
             <div className="w-full flex space-x-6 mt-24 ">
               <div className="w-full rounded-lg shadow-lg ">
-                
                 <div className="p-3">
                   <h1 className="text-[#3B8F51] font-medium text-2xl pl-3">
-                    Chinese New Year bundling discount!
+                    {DetailPromoAll.name}
                   </h1>
                   <img
-                    src={Promo1}
+                    src={`https://api.katarasa.id` + DetailPromoAll.images}
                     alt=""
                     className="w-full h-[320px] mt-6"
                   />
                   <div className="pl-3 mt-4">
-                    <p>
+                    {DetailPromoAll.description}
+                    {/* <p>
                       Katarasa kasih kamu paket hemat untuk merayakan Chinese
                       New Year 2024 ini loh 🤩 Kamu bisa mendapatkan potongan
                       harga up to 50% 😍
@@ -160,7 +172,7 @@ function DetailPromo() {
                     <p className="mt-4">
                       Available on Go-Food
                       <p>“Kedai Kopi Kata & Rasa, Ciracas, Jakarta Timur”</p>
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               </div>
@@ -168,7 +180,37 @@ function DetailPromo() {
                 <div className="bg-white h-auto rounded-lg shadow-lg">
                   <p className="p-2 font-medium text-lg">Ketentuan Promo</p>
                   <div className="p-2 text-[#41644A] text-base">
-                    {promoDetails.map((detail, index) => (
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">Waktu Periode</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">{DetailPromoAll.start_date}</div>
+                    </div>
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">End Periode</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">{DetailPromoAll.end_date}</div>
+                    </div>
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">Jenis Promo</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">
+                        Discount up to {DetailPromoAll.nominal_potongan}%
+                      </div>
+                    </div>
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">Min Transaksi</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">{DetailPromoAll.minimum}</div>
+                    </div>
+                    {/* {promoDetails.map((detail, index) => (
                       <div key={index} className="w-full flex mb-3">
                         <div className="w-1/3">{detail.label}</div>
                         <div className="w-1/6 flex justify-center items-center">
@@ -176,7 +218,7 @@ function DetailPromo() {
                         </div>
                         <div className="w-1/2">{detail.value}</div>
                       </div>
-                    ))}
+                    ))} */}
                   </div>
 
                   <div className="mt-1 p-2 font-medium text-lg">Kode Promo</div>
@@ -230,7 +272,9 @@ function DetailPromo() {
             <br />
             <br />
             <div>
-              <p className="font-medium text-lg mb-5 mt-[20px]">Promo Lainnya</p>
+              <p className="font-medium text-lg mb-5 mt-[20px]">
+                Promo Lainnya
+              </p>
               <div className="hidden md:inline lg:inline bg-[#F7FFF1] h-[250px] ">
                 <div style={{ overflow: "hidden", position: "relative" }}>
                   <div

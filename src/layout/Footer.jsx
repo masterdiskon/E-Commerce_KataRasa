@@ -48,7 +48,9 @@ function Footer() {
             </Link>
 
             <p className="mt-2 cursor-pointer">Team Katarasa</p>
-            <p className="mt-2 cursor-pointer">Help</p>
+           <Link to="/bantuan">
+           <p className="mt-2 cursor-pointer">Help</p>
+           </Link>
             <p className="mt-2 cursor-pointer">Careers</p>
             <p className="mt-2 cursor-pointer">Privacy</p>
             <p className="mt-2 cursor-pointer">Terms and Condition</p>
