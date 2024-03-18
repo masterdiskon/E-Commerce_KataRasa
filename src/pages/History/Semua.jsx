@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import IMG1 from "../../../assets/ProductCoffeeBeans/product coffee beans-2.png";
 import { Button, Tag } from "antd";
+import axios from "axios";
+import Baseurl from "../../Api/BaseUrl";
 
 function Semua() {
+  const [DataAllOrder, setDataAllOrder] = useState([])
   const data = [
     {
       date: "09-12-2023",
@@ -52,10 +55,31 @@ function Semua() {
     // Tambahkan data lainnya sesuai kebutuhan
   ];
 
+  const GetDataOrderAll = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${Baseurl}order/data-order?page=1&limit=10&status=`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      
+      console.log("Data Order:", response.data.data.items);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    GetDataOrderAll();
+  }, []);
+
+  
+
   return (
     <div>
-      <div className="  h-auto w-full mx-auto ">
-        <div className="mt-5">
+      <div className="h-auto  w-full mx-auto ">
+        <div className="mt-5  h-[70rem] overflow-auto">
           {data.map((item, index) => (
             <div className="shadow-lg mb-4 rounded-3xl">
               <div
@@ -66,6 +90,7 @@ function Semua() {
                     : ""
                 }`}
               >
+                
                 <div className=" flex text-[#000000] font-medium">
                   <div className="w-1/2 ">{item.datee}</div>
                   <div className="w-1/2  text-end">{item.NoResi}</div>

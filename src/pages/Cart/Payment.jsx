@@ -22,6 +22,7 @@ import Baseurl from "../../Api/BaseUrl";
 import axios from "axios";
 import Alamat from "./Alamat";
 import AlamatPage from "./Alamat";
+import Swal from "sweetalert2";
 
 function Payment() {
   const [priceRange, setPriceRange] = useState([0, 100000]);
@@ -32,6 +33,60 @@ function Payment() {
   const [DataAlamat, setDataAlamat] = useState({});
   const [selectedShipping, setSelectedShipping] = useState("");
   const [shippingCost, setShippingCost] = useState(null);
+  const [districAlamat, setdistricAlamat] = useState();
+  const [cari, setcari] = useState("");
+  const [SelectOngkir, setSelectOngkir] = useState();
+  const token = localStorage.getItem("token");
+  const [DataCheckOut, setDataCheckOut] = useState(null);
+
+  const HandleCheckOutData = async () => {
+    try {
+      const response = await axios.post(
+        "https://api.katarasa.id/checkout/add-to-checkout",
+        {
+          address_id: cari.id,
+          payment: "Transfer",
+          promo_code: "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        // Tampilkan Sweet Alert 2 dengan pesan sukses
+        await Swal.fire({
+          icon: "success",
+          title: "Checkout Berhasil!",
+          text: "Pesanan Anda berhasil diproses.",
+          showCancelButton: false,
+          showConfirmButton: true,
+          confirmButtonText: "OK",
+        }).then((result) => {
+          // Jika pengguna menekan tombol "OK", arahkan ke halaman /history
+          if (result.isConfirmed) {
+            window.location.href = "/history";
+          }
+        });
+      } else {
+        throw new Error("Gagal melakukan checkout.");
+      }
+    } catch (error) {
+      console.error("Error checking out: ", error);
+      // Tampilkan Sweet Alert 2 dengan pesan error
+      await Swal.fire({
+        icon: "error",
+        title: "Checkout Gagal!",
+        text: "Terjadi kesalahan saat melakukan proses checkout. Silakan coba lagi nanti.",
+        showCancelButton: false,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+      });
+    }
+  };
 
   const GetDataCheckout = async () => {
     try {
@@ -63,7 +118,11 @@ function Payment() {
           Authorization: `Bearer ${token}`,
         },
       });
-      setDataAlamat(response.data.data[0]);
+      setDataAlamat(response?.data?.data);
+      const caris = response?.data?.data?.find((item) => item.isPrimary);
+      setcari(caris);
+      await ShippingData(caris);
+      console.log(`diatas`, cari);
       console.log("Data Alamat:", response.data.data);
     } catch (error) {
       console.error("Error fetching cart data:", error);
@@ -74,6 +133,30 @@ function Payment() {
     GetDataCheckout();
     GetDataAlamat();
   }, []);
+
+  const ShippingData = async (caris) => {
+    let formData = new URLSearchParams();
+    formData.append("muat", 154);
+    formData.append("bongkar", caris?.district?.id);
+    formData.append("berat", 10);
+
+    try {
+      const response = await axios.post(
+        "https://api.katarasa.id/shipping/check-shipping",
+        formData.toString(), // Convert formData to string
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+      setSelectOngkir(response.data);
+      console.log(response.data, "select");
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
 
   const onOpenChange = (keys) => {
     setOpenKeys(keys);
@@ -156,100 +239,63 @@ function Payment() {
 
   const renderMenuItems = (items) => {
     return items.map((item) => {
-      if (item.children) {
+      if (item.subPayment) {
         return (
-          <Menu.SubMenu key={item.key} title={item.label}>
-            {renderMenuItems(item.children)}
+          <Menu.SubMenu
+            key={item.id_payment_method_category}
+            title={item.payment_type_label}
+          >
+            {renderMenuItems(item.subPayment)}
           </Menu.SubMenu>
         );
       } else {
         return (
-          <Menu.Item
-            key={item.key}
-            icon={
-              <img
-                src={item.image}
-                alt={item.label}
-                style={{ width: "36px", height: "24px", marginRight: "10px" }}
-              />
-            }
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
+          <Menu>
+            <Menu.Item
+              key={item.payment_sub}
+              icon={
+                <img
+                  src={item.icon}
+                  alt={item.payment_sub_label}
+                  style={{ width: "36px", height: "24px", marginRight: "10px" }}
+                />
+              }
             >
-              <span>{item.label}</span>
-              <span style={{ marginLeft: "auto" }}>Pilih</span>
-            </div>
-          </Menu.Item>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span>{item.payment_sub_label}</span>
+                <span style={{ marginLeft: "auto" }}>Pilih</span>
+              </div>
+            </Menu.Item>
+          </Menu>
         );
       }
     });
   };
 
-  const orderDetails = [
-    {
-      name: "Coffee Beans - Robusta Temanggung",
-      quantity: "Item x 1",
-      price: "Rp 24.000",
-    },
-    {
-      name: "Hazelnut Chocobar",
-      quantity: "Item x 1",
-      price: "Rp 24.000",
-    },
-  ];
+  // const handleShippingChange = (event, o, w) => {
+  //   console.log(event, o, w);
+  //   setSelectedShipping(event);
+  //   setSelectOngkir(o?.option?.cost?.[0]?.value);
+  //   setShippingCost(o?.option?.cost?.[0]?.value);
+  //   setSelectOngkir(null);
+  // };
 
-  const grabInstantDeliveryCost = "20.000"; // Assuming Grab Instant delivery cost is fixed
+  const handleShippingChange = (event, o, w) => {
+    console.log(event, o, w);
+    setSelectedShipping(event);
 
-  const totalPrice = orderDetails.reduce((sum, order) => {
-    const price = parseFloat(order.price.replace("Rp ", "").replace(".", ""));
-    return sum + price;
-  }, 0);
+    // Tidak perlu mengatur SelectOngkir ke null, biarkan nilainya tetap seperti sebelumnya
+    // Jadi opsi yang dipilih tidak akan hilang dari daftar
 
-  const totalWithGrab =
-    totalPrice + parseFloat(grabInstantDeliveryCost.replace(".", ""));
-
-  const handleShippingChange = (event) => {
-    setSelectedShipping(event.target.value);
     // Ambil harga pengiriman dari data JSON
-    const selectedCost = selectPrice.find(
-      (cost) => cost.service === event.target.value
-    );
-    if (selectedCost) {
-      setShippingCost(selectedCost.cost[0].value);
-    } else {
-      setShippingCost(null);
-    }
+    setShippingCost(o?.option?.cost?.[0]?.value);
   };
-
-  const selectPrice = [
-    {
-      service: "OKE",
-      description: "Ongkos Kirim Ekonomis",
-      cost: [
-        {
-          value: 53000,
-          etd: "4-5",
-          note: "",
-        },
-      ],
-    },
-    {
-      service: "REG",
-      description: "Layanan Reguler",
-      cost: [
-        {
-          value: 62000,
-          etd: "3-4",
-          note: "",
-        },
-      ],
-    },
-  ];
 
   const subtotal = DataSummaryAll.subTotalNumber;
 
@@ -258,8 +304,30 @@ function Payment() {
     return subtotal + shippingCost;
   }
 
-  // Menghitung grand total
   const grandTotal = calculateGrandTotal(subtotal, shippingCost);
+  console.log(`cari`, cari);
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://api.katarasa.id/order/data-method-payment",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className=" w-full h-screen">
@@ -279,26 +347,22 @@ function Payment() {
                   <div className="flex flex-col sm:flex-row mt-2 border rounded-lg border-[#41644A] bg-[#fbfff1]">
                     <div className="w-full sm:w-full p-4 text-[#41644A] text-base  font-medium">
                       <div>
-                        <p>
-                          {DataAlamat.receiver_name}
-                          <span>({DataAlamat.address_as})</span>
-                        </p>
-                        {DataAlamat && (
-                          <p>
-                            {DataAlamat.complete_address},{" "}
-                            {DataAlamat.district && DataAlamat.district.name},{" "}
-                            {DataAlamat.sub_district &&
-                              DataAlamat.sub_district.name}
-                            , {DataAlamat.city && DataAlamat.city.name},
-                            {DataAlamat.province && DataAlamat.province.name}
-                          </p>
+                        {cari && (
+                          <div>
+                            <p>
+                              {cari.receiver_name} ({cari.address_as})
+                            </p>
+                            <p>
+                              {cari.complete_address},{" "}
+                              {cari.district && cari.district.name},{" "}
+                              {cari.sub_district && cari.sub_district.name},{" "}
+                              {cari.city && cari.city.name},
+                              {cari.province && cari.province.name}
+                            </p>
+                            <p>{cari.phone_number}</p>
+                            <p>{cari.postal_code}</p>
+                          </div>
                         )}
-                        <p className="mt-2">
-                          No.Telp : {DataAlamat.phone_number}
-                        </p>
-                        <p className="mt-2">
-                          Kode Pos: {DataAlamat.postal_code}
-                        </p>
                       </div>
                     </div>
                     <div className="w-full sm:w-1/5 sm:p-2 flex justify-end">
@@ -360,15 +424,24 @@ function Payment() {
 
                 <div className="mt-2">
                   <h1 className="text-lg font-medium">Pilih Pengiriman Anda</h1>
-                  <select
+                  <Select
                     className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg"
                     value={selectedShipping}
-                    onChange={handleShippingChange}
+                    onChange={(e, option, w) =>
+                      handleShippingChange(e, option, w)
+                    }
                   >
-                    <option value="">Pilih pengiriman</option>
-                    <option value="OKE">Ongkos Kirim Ekonomis (OKE)</option>
-                    <option value="REG">Layanan Reguler (REG)</option>
-                  </select>
+                    {SelectOngkir &&
+                      SelectOngkir?.selectPrice.map((item, index) => (
+                        <Select.Option
+                          key={item?.service}
+                          option={item}
+                          value={item.service}
+                        >
+                          {item?.service} ({item?.description})
+                        </Select.Option>
+                      ))}
+                  </Select>
                 </div>
                 <div className="flex justify-between mt-2">
                   <div className="w-1/2">
@@ -441,10 +514,13 @@ function Payment() {
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
                   >
-                    {renderMenuItems(items)}
+                    {renderMenuItems(data)}
                   </Menu>
                 </div>
-                <button className="bg-[#3B8F51] h-[50px] text-white py-2 px-4 rounded-full mt-[20px] w-full hover:bg-[#41644A]">
+                <button
+                  onClick={HandleCheckOutData}
+                  className="bg-[#3B8F51] h-[50px] text-white py-2 px-4 rounded-full mt-[20px] w-full hover:bg-[#41644A]"
+                >
                   Bayar Sekarang
                 </button>
 
@@ -466,21 +542,22 @@ function Payment() {
             <div className="flex  mt-2 border rounded-lg border-[#41644A] bg-[#fbfff1]">
               <div className="w-full  p-4 text-[#41644A] text-[10px]  font-medium">
                 <div>
-                  <p>
-                    {DataAlamat.receiver_name}
-                    <span>({DataAlamat.address_as})</span>
-                  </p>
-                  {DataAlamat && (
-                    <p>
-                      {DataAlamat.complete_address},{" "}
-                      {DataAlamat.district && DataAlamat.district.name},{" "}
-                      {DataAlamat.sub_district && DataAlamat.sub_district.name},{" "}
-                      {DataAlamat.city && DataAlamat.city.name},
-                      {DataAlamat.province && DataAlamat.province.name}
-                    </p>
+                  {cari && (
+                    <div>
+                      <p>
+                        {cari.receiver_name} ({cari.address_as})
+                      </p>
+                      <p>
+                        {cari.complete_address},{" "}
+                        {cari.district && cari.district.name},{" "}
+                        {cari.sub_district && cari.sub_district.name},{" "}
+                        {cari.city && cari.city.name},
+                        {cari.province && cari.province.name}
+                      </p>
+                      <p>{cari.phone_number}</p>
+                      <p>{cari.postal_code}</p>
+                    </div>
                   )}
-                  <p className="mt-2">No.Telp : {DataAlamat.phone_number}</p>
-                  <p className="mt-2">Kode Pos: {DataAlamat.postal_code}</p>
                 </div>
               </div>
               <div className="w-1/6   flex justify-center ">
@@ -492,15 +569,24 @@ function Payment() {
 
             <div className="mt-5">
               <h1 className="text-sm font-medium">Pilih Pengiriman Anda</h1>
-              <select
-                className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg text-sm"
-                value={selectedShipping}
-                onChange={handleShippingChange}
-              >
-                <option value="">Pilih pengiriman</option>
-                <option value="OKE">Ongkos Kirim Ekonomis (OKE)</option>
-                <option value="REG">Layanan Reguler (REG)</option>
-              </select>
+              <Select
+                    className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg"
+                    value={selectedShipping}
+                    onChange={(e, option, w) =>
+                      handleShippingChange(e, option, w)
+                    }
+                  >
+                    {SelectOngkir &&
+                      SelectOngkir?.selectPrice.map((item, index) => (
+                        <Select.Option
+                          key={item?.service}
+                          option={item}
+                          value={item.service}
+                        >
+                          {item?.service} ({item?.description})
+                        </Select.Option>
+                      ))}
+                  </Select>
             </div>
 
             <div className="mt-8">
@@ -519,10 +605,10 @@ function Payment() {
                     <div className=" w-1/6 flex justify-center items-center relative">
                       <img src={order.image} alt={order.name} />
                       {order.discount && (
-                            <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] px-2 py-1 rounded-md">
-                              {order.discount[0].potongan}%
-                            </div>
-                          )}
+                        <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] px-2 py-1 rounded-md">
+                          {order.discount[0].potongan}%
+                        </div>
+                      )}
                     </div>
                     <div className="w-[230px]">
                       <p className="truncate text-sm">{order.name}</p>
@@ -612,13 +698,13 @@ function Payment() {
                 />
 
                 <div className="bg-green mt-2 border border-[#3B8F51] rounded-[10px]">
-                  <Menu
+                <Menu
                     className="w-full rounded-[10px] text-[#41644A]"
                     mode="inline"
                     openKeys={openKeys}
                     onOpenChange={onOpenChange}
                   >
-                    {renderMenuItems(items)}
+                    {renderMenuItems(data)}
                   </Menu>
                 </div>
                 <br />
@@ -641,11 +727,11 @@ function Payment() {
                 {grandTotal.toLocaleString("id-ID")}
               </div>
               <div className="w-1/2  ">
-                <Link to="/payment">
-                  <Button className="bg-white rounded-full text-[#3B8F51] w-full text-xs h-full">
+                {/* <Link to="/payment"> */}
+                  <Button  onClick={HandleCheckOutData} className="bg-white rounded-full text-[#3B8F51] w-full text-xs h-full">
                     Bayar Sekarang
                   </Button>
-                </Link>
+                {/* </Link> */}
               </div>
             </div>
           </div>
