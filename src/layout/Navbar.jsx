@@ -248,19 +248,22 @@ function Navbar() {
   const handleLogin = () => {
     // Kirim permintaan login ke API
     // Gantikan "email" dan "password" dengan nilai yang sesuai
-    fetch("https://api.katarasa.id/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
+    axios
+      .post(
+        "https://api.katarasa.id/auth/login",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
         // Tangani respons dari API
+        const data = response.data;
         if (data.status.code === 200) {
           // Jika login berhasil, tampilkan pesan berhasil menggunakan SweetAlert
           Swal.fire({
@@ -498,7 +501,7 @@ function Navbar() {
                   Home
                 </Link>
               </a>
-              
+
               <a
                 className="text-white hover:text-white  rounded-full"
                 style={{

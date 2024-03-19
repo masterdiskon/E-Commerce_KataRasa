@@ -4,9 +4,9 @@ import EditData from "../../../assets/Katarasa/pen.png";
 import { Button, Input, Select } from "antd";
 import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";
+import Swal from "sweetalert2";
 
 function DataProfile() {
-  const [DataProfill, setDataProfill] = useState({});
   const GetDataAlamat = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -25,6 +25,53 @@ function DataProfile() {
   useEffect(() => {
     GetDataAlamat();
   }, []);
+
+  const [DataProfill, setDataProfill] = useState({
+    name: "",
+    gender_id: "",
+    birth_date: "",
+    email: "",
+    phone_number: "",
+  });
+
+  const token = localStorage.getItem("token");
+
+  const handleSaveProfile = () => {
+    const requestBody = {
+      namaLengkap: DataProfill.name,
+      nip: "P2580",
+      corporate: "RajaCepat, PT",
+      department: "IT Developer",
+      tanggalLahir: DataProfill.birth_date,
+      phoneNumber: DataProfill.phone_number,
+      gender: DataProfill.gender_id,
+    };
+
+    axios
+      .put("https://api.katarasa.id/profile/edit-profile", requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        // Handle success response
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Profile successfully updated',
+        });
+        console.log("Profile successfully updated:", response.data);
+      })
+      .catch((error) => {
+        // Handle error
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to update profile',
+        });
+        console.error("Error updating profile:", error);
+      });
+  };
 
   return (
     <div>
@@ -65,6 +112,9 @@ function DataProfile() {
               <Input
                 placeholder="Noor Maya"
                 value={DataProfill.name}
+                onChange={(e) =>
+                  setDataProfill({ ...DataProfill, name: e.target.value })
+                }
                 className="h-11 rounded-full mt-2 placeholder-black"
               />
             </div>
@@ -75,25 +125,22 @@ function DataProfile() {
                 placeholder="Pilih gender"
                 value={DataProfill.gender_id}
                 className="h-11 rounded-full mt-2 w-full placeholder-black"
-                onChange={(selectedOption) => {
-                  // Mengupdate nilai gender_id berdasarkan opsi yang dipilih
-                  if (selectedOption === "Perempuan") {
-                    setDataProfill({ ...DataProfill, gender_id: 2 });
-                  } else if (selectedOption === "Laki-laki") {
-                    setDataProfill({ ...DataProfill, gender_id: 1 });
-                  }
-                }}
+                onChange={(value) =>
+                  setDataProfill({ ...DataProfill, gender_id: value })
+                }
               >
-                <option value={1}>Laki-laki</option>
-                <option value={2}>Perempuan</option>
+                <Select.Option value={1}>Laki-laki</Select.Option>
+                <Select.Option value={2}>Perempuan</Select.Option>
               </Select>
             </div>
             <br />
             <div>
               <label className="font-bold">Tanggal Lahir</label>
               <Input
-                placeholder="22 Agustus 1998"
                 value={DataProfill.birth_date}
+                onChange={(e) =>
+                  setDataProfill({ ...DataProfill, birth_date: e.target.value })
+                }
                 className="h-11 rounded-full mt-2 placeholder-black"
               />
             </div>
@@ -106,7 +153,9 @@ function DataProfile() {
               <label className="font-bold">Alamat Email</label>
               <Input
                 value={DataProfill.email}
-                placeholder="Noormaya@gmail.com"
+                onChange={(e) =>
+                  setDataProfill({ ...DataProfill, email: e.target.value })
+                }
                 className="h-11 rounded-full mt-2 placeholder-black"
               />
             </div>
@@ -116,8 +165,13 @@ function DataProfile() {
               <Input
                 prefix={<div>+62</div>}
                 type="number"
-                placeholder="812-3290-2390"
                 value={DataProfill.phone_number}
+                onChange={(e) =>
+                  setDataProfill({
+                    ...DataProfill,
+                    phone_number: e.target.value,
+                  })
+                }
                 className="h-11 rounded-full mt-2 placeholder-black"
                 suffix={
                   <div>
@@ -128,10 +182,13 @@ function DataProfile() {
             </div>
             <div className="flex mt-3 justify-end">
               <div className="space-x-2">
-                <Button className="rounded-full border-[#3B8F51] h-12 px-5 text-[#3B8F51]">
+                {/* <Button className="rounded-full border-[#3B8F51] h-12 px-5 text-[#3B8F51]">
                   Sign Up
-                </Button>
-                <Button className="rounded-full bg-[#3B8F51] h-12 px-5 text-white">
+                </Button> */}
+                <Button
+                  onClick={handleSaveProfile}
+                  className="rounded-full bg-[#3B8F51] h-12 px-5 text-white"
+                >
                   Simpan
                 </Button>
               </div>

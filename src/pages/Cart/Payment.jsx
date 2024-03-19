@@ -38,6 +38,7 @@ function Payment() {
   const [SelectOngkir, setSelectOngkir] = useState();
   const token = localStorage.getItem("token");
   const [DataCheckOut, setDataCheckOut] = useState(null);
+  const [data, setData] = useState([]);
 
   const HandleCheckOutData = async () => {
     try {
@@ -307,7 +308,7 @@ function Payment() {
   const grandTotal = calculateGrandTotal(subtotal, shippingCost);
   console.log(`cari`, cari);
 
-  const [data, setData] = useState([]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
