@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Select, Menu, Button, Checkbox } from "antd";
+import { Form, Input, Select, Menu, Button, Checkbox, Modal } from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";
 import Swal from "sweetalert2";
+import TambahAlamat from "./AlamatPage/TambahAlamat";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
@@ -16,6 +18,7 @@ function AlamatPages() {
   const [selectedKabupaten, setSelectedKabupaten] = useState(null);
   const [selectedKecamatan, setSelectedKecamatan] = useState(null);
   const [editData, setEditData] = useState({});
+  const [visible, setVisible] = useState(false);
 
   const GetDataAlamatAll = async () => {
     try {
@@ -140,6 +143,61 @@ function AlamatPages() {
     }
   };
 
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = () => {
+    setVisible(false);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem("token");
+
+    // Show confirmation prompt before deleting the item
+    const confirmation = await Swal.fire({
+      title: "Confirmation",
+      text: "Are you sure you want to delete this item?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (confirmation.isConfirmed) {
+      try {
+        const response = await fetch(
+          `https://api.katarasa.id/profile/delete-alamat?id_address=${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            },
+          }
+        );
+
+        if (response.ok) {
+          // Item deleted successfully
+          Swal.fire("Success", "Item deleted successfully!", "success");
+          GetDataAlamatAll();
+          // You can also update the state or perform any other actions as needed
+        } else {
+          // Handle error response
+          Swal.fire("Error", "Failed to delete item!", "error");
+        }
+      } catch (error) {
+        // Handle fetch error
+        console.error("Error deleting item:", error);
+        Swal.fire("Error", "Failed to delete item!", "error");
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <Menu
@@ -158,6 +216,24 @@ function AlamatPages() {
             className="rounded border border-solid border-[#3B8F51] mb-4"
           >
             <div style={{ padding: "16px" }}>
+              <div className="mb-10">
+                <div className="flex items-center ">
+                  <input
+                    value={alamat.isPrimary}
+                    type="checkbox"
+                    checked={alamat.isPrimary === 1}
+                    onChange={(e) =>
+                      handleInputChange(
+                        { target: { value: e.target.checked ? 1 : 0 } }, // mimic input event
+                        alamat.id,
+                        "isPrimary"
+                      )
+                    }
+                    className="mr-2"
+                  />
+                  <label htmlFor="priority">Set as Priority</label>
+                </div>
+              </div>
               <div>
                 <div className="w-full flex space-x-4">
                   <div className="w-1/2">
@@ -222,6 +298,12 @@ function AlamatPages() {
                 <div className="w-1/2 ">
                   <div className="font-semibold">Provinsi</div>
                   <Select
+                    showSearch // Add showSearch prop here
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
                     value={selectedProvinsi || alamat.province.id}
                     className="mt-4 border border-solid border-[#3B8F51] w-full rounded-lg h-[32px]"
                     onChange={handleProvinsiChange}
@@ -243,6 +325,12 @@ function AlamatPages() {
                 <div className="w-1/2 ">
                   <div className="font-semibold">Kota</div>
                   <Select
+                   showSearch // Add showSearch prop here
+                   filterOption={(input, option) =>
+                     option.children
+                       .toLowerCase()
+                       .indexOf(input.toLowerCase()) >= 0
+                   }
                     value={selectedKota || alamat.city.name}
                     className="border border-solid mt-4 border-[#3B8F51] w-full rounded-lg h-[32px]"
                     onChange={handleKotaChange}
@@ -264,6 +352,12 @@ function AlamatPages() {
                 <div className="w-1/2 ">
                   <div className="font-semibold">Kabupaten</div>
                   <Select
+                   showSearch // Add showSearch prop here
+                   filterOption={(input, option) =>
+                     option.children
+                       .toLowerCase()
+                       .indexOf(input.toLowerCase()) >= 0
+                   }
                     value={selectedKabupaten || alamat.district.name}
                     className="border border-solid mt-4 border-[#3B8F51] w-full rounded-lg h-[32px]"
                     onChange={handleKabupatenChange}
@@ -286,6 +380,12 @@ function AlamatPages() {
                 <div className="w-1/2 ">
                   <div className="font-semibold">Kecamatan</div>
                   <Select
+                   showSearch // Add showSearch prop here
+                   filterOption={(input, option) =>
+                     option.children
+                       .toLowerCase()
+                       .indexOf(input.toLowerCase()) >= 0
+                   }
                     value={selectedKecamatan || alamat.sub_district.name}
                     className="border border-solid mt-4 border-[#3B8F51] w-full rounded-lg h-[32px]"
                     onChange={handleKecamatanChange}
@@ -319,10 +419,16 @@ function AlamatPages() {
                 </div>
                 {/*  */}
               </div>
-              <div className="flex mt-3 justify-end">
+              <div className="flex mt-3 justify-end space-x-2">
+                <Button
+                  onClick={() => handleDelete(alamat.id)}
+                  className="rounded-full h-10 hover:bg-white bg-white hover:text-black text-red-600 border-red-600"
+                >
+                  Delete
+                </Button>
                 <Button
                   onClick={() => handleSaveAddress(alamat.id)}
-                  className="rounded-full bg-[#3B8F51] h-12 px-5 text-white"
+                  className="rounded-full bg-[#3B8F51] h-10 px-5 text-white"
                 >
                   Simpan
                 </Button>
@@ -333,8 +439,37 @@ function AlamatPages() {
       </Menu>
 
       <div className="mb-5 ">
-        <Button className="rounded-full h-11">Tambah Alamat</Button>
+        <Button
+          className="rounded-full h-11 hover:bg-white bg-green-700 hover:text-black text-white"
+          onClick={showModal}
+        >
+          Tambah Alamat
+        </Button>
       </div>
+      <Modal
+        width={700}
+        title={
+          <span className="font-semibold text-2xl">
+            Tambah Alamat
+            <hr className="mt-2" />
+          </span>
+        }
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={false}
+
+        // footer={[
+        //   <Button key="cancel" onClick={handleCancel}>
+        //     Batal
+        //   </Button>,
+        //   <Button key="submit" type="primary" onClick={handleOk}>
+        //     Simpan
+        //   </Button>,
+        // ]}
+      >
+        <TambahAlamat />
+      </Modal>
     </div>
   );
 }

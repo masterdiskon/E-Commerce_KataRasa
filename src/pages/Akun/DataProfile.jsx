@@ -1,12 +1,75 @@
 import React, { useEffect, useState } from "react";
 import FotoProfile from "../../../assets/Katarasa/akun.png";
 import EditData from "../../../assets/Katarasa/pen.png";
-import { Button, Input, Select } from "antd";
+import { Button, Input, Modal, Select } from "antd";
 import axios from "axios";
 import Baseurl from "../../Api/BaseUrl";
 import Swal from "sweetalert2";
 
 function DataProfile() {
+  const [visible, setVisible] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+
+  const handleOk = () => {
+    // Kirim permintaan API untuk mengubah kata sandi di sini
+    const token = localStorage.getItem("token"); // Ganti dengan token Anda
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const requestData = {
+      passwordBaru: newPassword,
+    };
+
+    axios.put('https://api.katarasa.id/profile/update-password', requestData, config)
+    .then(response => {
+      console.log(response.data);
+      setVisible(false);
+
+      // Tampilkan SweetAlert ketika penggantian kata sandi berhasil
+      Swal.fire({
+        icon: 'success',
+        title: 'Sukses!',
+        text: 'Kata sandi berhasil diubah.',
+        confirmButtonColor: '#3B8F51'
+      });
+    })
+    .catch(error => {
+      console.error(error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        // Terdapat kesalahan validasi dari server
+        const errorMessages = error.response.data.errors.map(err => err.message).join('<br>');
+        Swal.fire({
+          icon: 'error',
+          title: 'Validation Error',
+          html: errorMessages,
+        });
+      } else {
+        // Terjadi kesalahan selain dari validasi server
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Terjadi kesalahan. Mohon coba lagi nanti.',
+        });
+      }
+    });
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
+  const handleChange = (e) => {
+    setNewPassword(e.target.value);
+  };
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
   const GetDataAlamat = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -56,22 +119,53 @@ function DataProfile() {
       .then((response) => {
         // Handle success response
         Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'Profile successfully updated',
+          icon: "success",
+          title: "Success",
+          text: "Profile successfully updated",
         });
         console.log("Profile successfully updated:", response.data);
       })
       .catch((error) => {
         // Handle error
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Failed to update profile',
+          icon: "error",
+          title: "Error",
+          text: "Failed to update profile",
         });
         console.error("Error updating profile:", error);
       });
   };
+
+  // const handleEditPassword = () => {
+  //   const requestBody = {
+  //     passwordBaru: "123456",
+  //   };
+
+  //   axios
+  //     .put("https://api.katarasa.id/profile/update-password", requestBody, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // Handle success response
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Success",
+  //         text: "Password successfully updated",
+  //       });
+  //       console.log("Password successfully updated:", response.data);
+  //     })
+  //     .catch((error) => {
+  //       // Handle error
+  //       Swal.fire({
+  //         icon: "error",
+  //         title: "Error",
+  //         text: "Failed to update profile",
+  //       });
+  //       console.error("Error updating profile:", error);
+  //     });
+  // };
 
   return (
     <div>
@@ -94,7 +188,10 @@ function DataProfile() {
 
             <div className="p-4">
               <div className="text-lg font-semibold">Keamanan</div>
-              <Button className="w-full rounded-full bg-[#3B8F51] text-white mt-2 h-12 text-base">
+              <Button
+                onClick={showModal}
+                className="w-full rounded-full bg-[#3B8F51] text-white mt-2 h-12 text-base"
+              >
                 Ganti Password Akun
               </Button>
               <Button className="w-full rounded-full border-[#3B8F51] text-[#3B8F51] mt-2 h-12 text-base">
@@ -196,6 +293,49 @@ function DataProfile() {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      <Modal
+        width={500}
+        title={
+          <>
+            <span className="font-semibold text-xl">Ganti Password Baru</span>
+            <hr className="mt-2" />
+          </>
+        }
+        visible={visible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={false}
+      >
+        <div className="mt-2">
+          <p className="font-semibold"> Email Anda </p>
+          <Input
+            readOnly
+            value={DataProfill.email}
+            className="border-green-600 h-11 rounded-full mt-2 placeholder-black"
+          />
+        </div>
+        <div className="mt-2">
+          <p className="font-semibold">Masukkan Password Baru Anda :</p>
+          <Input
+
+            className="w-full mt-2 border-green-600 h-11 rounded-full"
+            placeholder="Masukkan password baru yang akan anda gunakan "
+            value={newPassword}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="flex justify-end items-end">
+          <Button
+            onClick={handleOk}
+            className="rounded-full mt-2 h-11 w-28 bg-green-700 text-white hover:bg-white"
+          >
+            Simpan
+          </Button>
+        </div>
+      </Modal>
     </div>
   );
 }
