@@ -298,7 +298,7 @@ function Payment() {
     setShippingCost(o?.option?.cost?.[0]?.value);
   };
 
-  const subtotal = DataSummaryAll.subTotalNumber;
+  const subtotal = DataSummaryAll.total;
 
   // Fungsi untuk menghitung grand total
   function calculateGrandTotal(subtotal, shippingCost) {
@@ -307,8 +307,6 @@ function Payment() {
 
   const grandTotal = calculateGrandTotal(subtotal, shippingCost);
   console.log(`cari`, cari);
-
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -360,8 +358,8 @@ function Payment() {
                               {cari.city && cari.city.name},
                               {cari.province && cari.province.name}
                             </p>
-                            <p>{cari.phone_number}</p>
-                            <p>{cari.postal_code}</p>
+                            {/* <p>{cari.phone_number}</p> */}
+                            {/* <p>{cari.postal_code}</p> */}
                           </div>
                         )}
                       </div>
@@ -381,7 +379,7 @@ function Payment() {
                       <div key={item.id} className="mt-5 w-full flex space-x-3">
                         <div className=" w-1/6 flex justify-center items-center relative">
                           <img src={item.image} alt={item.name} />
-                          {item.discount && (
+                          {item.discount !== 0 && (
                             <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-md text-sm">
                               {item.discount[0].potongan}%
                             </div>
@@ -398,7 +396,21 @@ function Payment() {
                           </Tag>
                           <p className="text-[#41644A] md:text-lg font-medium mt-2">
                             <p>
-                              Rp{" "}
+                              {item.discount === 0 ? (
+                                <span>{item.totalFormatted}</span>
+                              ) : (
+                                <span>
+                                  {/* <s className="text-red-600">
+                                            {item.priceProductFormated}
+                                          </s>{" "} */}
+                                  Rp{" "}
+                                  {(
+                                    item.discount[0].discount_price *
+                                    item.qtyCart
+                                  ).toLocaleString("id-ID")}
+                                </span>
+                              )}
+                              {/* Rp{" "}
                               {item.price !== null && item.discount !== null
                                 ? (
                                     item.price -
@@ -407,7 +419,7 @@ function Payment() {
                                   ).toLocaleString("id-ID")
                                 : item.price !== null
                                 ? item.price.toLocaleString("id-ID")
-                                : null}
+                                : null} */}
                               <span> x {item.qtyCart}</span>
                             </p>
                           </p>
@@ -452,7 +464,7 @@ function Payment() {
                     </p>
                   </div>
                   <div className="w-1/4 text-[#3B8F51] text-end mt-8 md:text-base sm:text-sm font-medium">
-                    {DataSummaryAll.subTotal}
+                    {DataSummaryAll.totalFormatted}
                   </div>
                 </div>
 
@@ -555,7 +567,7 @@ function Payment() {
                         {cari.city && cari.city.name},
                         {cari.province && cari.province.name}
                       </p>
-                      <p>{cari.phone_number}</p>
+                      {/* <p>{cari.phone_number}</p> */}
                       <p>{cari.postal_code}</p>
                     </div>
                   )}
@@ -571,23 +583,21 @@ function Payment() {
             <div className="mt-5">
               <h1 className="text-sm font-medium">Pilih Pengiriman Anda</h1>
               <Select
-                    className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg"
-                    value={selectedShipping}
-                    onChange={(e, option, w) =>
-                      handleShippingChange(e, option, w)
-                    }
-                  >
-                    {SelectOngkir &&
-                      SelectOngkir?.selectPrice.map((item, index) => (
-                        <Select.Option
-                          key={item?.service}
-                          option={item}
-                          value={item.service}
-                        >
-                          {item?.service} ({item?.description})
-                        </Select.Option>
-                      ))}
-                  </Select>
+                className="h-12 p-2 w-full mt-2 border border-solid-[#3B8F51] text-[#3B8F51] rounded-lg"
+                value={selectedShipping}
+                onChange={(e, option, w) => handleShippingChange(e, option, w)}
+              >
+                {SelectOngkir &&
+                  SelectOngkir?.selectPrice.map((item, index) => (
+                    <Select.Option
+                      key={item?.service}
+                      option={item}
+                      value={item.service}
+                    >
+                      {item?.service} ({item?.description})
+                    </Select.Option>
+                  ))}
+              </Select>
             </div>
 
             <div className="mt-8">
@@ -605,10 +615,11 @@ function Payment() {
                   >
                     <div className=" w-1/6 flex justify-center items-center relative">
                       <img src={order.image} alt={order.name} />
-                      {order.discount && (
-                        <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] px-2 py-1 rounded-md">
+
+                      {order.discount !== 0 && (
+                        <span className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-full text-[8px]">
                           {order.discount[0].potongan}%
-                        </div>
+                        </span>
                       )}
                     </div>
                     <div className="w-[230px]">
@@ -624,10 +635,20 @@ function Payment() {
                     </div>
                     <div className="w-1/4 text-[#3B8F51] text-end mt-4 text-[12px]">
                       <p>
-                        Rp{" "}
-                        {(order.finalPrice * order.qtyCart).toLocaleString(
-                          "id-ID"
-                        )}
+                      {order.discount === 0 ? (
+                                <span>{order.totalFormatted}</span>
+                              ) : (
+                                <span>
+                                  {/* <s className="text-red-600">
+                                            {order.priceProductFormated}
+                                          </s>{" "} */}
+                                  Rp{" "}
+                                  {(
+                                    order.discount[0].discount_price *
+                                    order.qtyCart
+                                  ).toLocaleString("id-ID")}
+                                </span>
+                              )}
                       </p>
                     </div>
                   </div>
@@ -642,7 +663,7 @@ function Payment() {
                     </p>
                   </div>{" "}
                   <div className=" text-[#3B8F51] text-end mt-4  text-xs">
-                    {DataSummaryAll.subTotal}
+                    {DataSummaryAll.totalFormatted}
                   </div>{" "}
                 </div>
                 <div className="flex justify-between ">
@@ -699,7 +720,7 @@ function Payment() {
                 />
 
                 <div className="bg-green mt-2 border border-[#3B8F51] rounded-[10px]">
-                <Menu
+                  <Menu
                     className="w-full rounded-[10px] text-[#41644A]"
                     mode="inline"
                     openKeys={openKeys}
@@ -729,9 +750,12 @@ function Payment() {
               </div>
               <div className="w-1/2  ">
                 {/* <Link to="/payment"> */}
-                  <Button  onClick={HandleCheckOutData} className="bg-white rounded-full text-[#3B8F51] w-full text-xs h-full">
-                    Bayar Sekarang
-                  </Button>
+                <Button
+                  onClick={HandleCheckOutData}
+                  className="bg-white rounded-full text-[#3B8F51] w-full text-xs h-full"
+                >
+                  Bayar Sekarang
+                </Button>
                 {/* </Link> */}
               </div>
             </div>

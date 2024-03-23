@@ -274,15 +274,15 @@ function DetailProduct() {
                         />
 
                         <p className="mt-5 text-md text-[#3B8F51] text-2xl font-medium">
-                            <Tag color="red">
+                            {/* <Tag color="red">
                               Potongan Harga {product.discount[0].potongan}%
-                            </Tag>
+                            </Tag> */}
                         </p>
-                        <p className="mt-5 text-md text-red-500 text-xl font-medium">
+                        {/* <p className="mt-5 text-md text-red-500 text-xl font-medium">
                           <s>{product.formatted_price}</s>
-                        </p>
+                        </p> */}
                         <p className=" text-md text-[#3B8F51] text-3xl font-medium">
-                          {product.discount[0].discount_price_formatted}
+                          {product.formatted_price}
                         </p>
                         <p className="mt-5 text-md">{product.description}</p>
                       </div>
@@ -387,6 +387,16 @@ function DetailProduct() {
                       </button>
                       <button
                         className={`border ${
+                          selectedButton === "Yes"
+                            ? "bg-[#3B8F51] text-white"
+                            : "border-[#3B8F51] text-[#3B8F51]"
+                        } py-2 px-4 rounded-full mt-2 hover:bg-[#41644A] hover:text-white`}
+                        onClick={() => handleButtonClick("Yes")}
+                      >
+                        Yes
+                      </button>
+                      {/* <button
+                        className={`border ${
                           selectedButton === "+500gr Robusta"
                             ? "bg-[#3B8F51] text-white"
                             : "border-[#3B8F51] text-[#3B8F51]"
@@ -424,7 +434,7 @@ function DetailProduct() {
                         onClick={() => handleButtonClick("+Choco Box")}
                       >
                         +Choco Box
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </>
@@ -457,17 +467,17 @@ function DetailProduct() {
                                 <div className="mt-6">Total Harga</div>
                               </div>
                               <div className="w-1/2 ">
-                                <p className="justify-end items-end flex text-[#E53C3C] ">
+                                {/* <p className="justify-end items-end flex text-[#E53C3C] ">
                                   <s>{product.formatted_price}</s>
-                                </p>
-                                {/* <p className="justify-end items-end flex text-[#3B8F51] text-[16px] mt-1 font-medium">
-                                  Rp. {product.price}
                                 </p> */}
+                                <p className="justify-end items-end flex text-[#3B8F51] text-[16px] mt-1 font-medium">
+                                 {product.formatted_price}
+                                </p>
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
                                   Rp.{" "}
-                                  {product.discount &&
+                                  {product.price &&
                                     parseInt(
-                                      product.discount[0].discount_price
+                                      product.price
                                     ) * count}
                                 </p>
                               </div>
@@ -601,16 +611,16 @@ function DetailProduct() {
                     className="w-56 h-56  mb-4 rounded-lg border"
                   />
                   <p className="mt-1 text-md text-[#3B8F51] text-2xl font-medium">
-                            <Tag color="red">
+                            {/* <Tag color="red">
                               Potongan Harga {product.discount[0].potongan}%
-                            </Tag>
+                            </Tag> */}
                         </p>
                   <p className="text-[#E53C3C] font-semibold mt-2">
                     <s className="text-[13px]">{product.formatted_price}</s>
                     
                   </p>
                   <div className="text-[#3B8F51] text-2xl font-medium">
-                  {product.discount[0].discount_price_formatted}
+                  {/* {product.discount[0].discount_price_formatted} */}
                     </div>
                 </div>
                 <div className="   w-1/3 flex flex-col items-center">
@@ -749,6 +759,16 @@ function DetailProduct() {
                           No
                         </button>
                         <button
+                        className={`border ${
+                          selectedButton === "Yes"
+                            ? "bg-[#3B8F51] text-white"
+                            : "border-[#3B8F51] text-[#3B8F51]"
+                        } py-2 px-4 rounded-full mt-2 hover:bg-[#41644A] hover:text-white`}
+                        onClick={() => handleButtonClick("Yes")}
+                      >
+                        Yes
+                      </button>
+                        {/* <button
                           className={`border ${
                             selectedButton === "+500gr Robusta"
                               ? "bg-[#3B8F51] text-white"
@@ -787,7 +807,7 @@ function DetailProduct() {
                           onClick={() => handleButtonClick("+Choco Box")}
                         >
                           +Choco Box
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </>

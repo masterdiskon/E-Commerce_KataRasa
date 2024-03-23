@@ -51,15 +51,13 @@ function Promo() {
       {/* Layar Besar */}
       <>
         <div className="hidden md:inline lg:inline">
-          <div className="  h-auto w-screen md:p-20 mx-auto sm:w-[85rem]">
+          <div className="  h-auto w-full md:p-20 mx-auto sm:w-[85rem]">
             <div className="mt-20">
               <h1 className="text-[#3B8F51] font-medium text-2xl">
                 Promo Special Kata Rasa
               </h1>
-            </div>
-
-            <div className="mt-10 w-full">
-              <div className="flex flex-wrap justify-between">
+              <div className="mt-10">
+              <div className="flex flex-wrap space-x-3">
                 {DataPromoAll.map((promo, index) => (
                   <div className="w-1/3 mb-5 " key={index}>
                     <Link to={`/detailpromosi/${promo.id_promo}`}>
@@ -74,6 +72,9 @@ function Promo() {
                 ))}
               </div>
             </div>
+            </div>
+
+           
           </div>
         </div>
       </>
@@ -89,11 +90,11 @@ function Promo() {
           
           <div className="mt-5 w-full">
               <div className="flex flex-wrap justify-between">
-                {promoData.map((promo, index) => (
+                {DataPromoAll.map((promo, index) => (
                   <div className="w-full mb-5 " key={index}>
-                    <Link to="/detailpromosi">
+                    <Link to={`/detailpromosi/${promo.id_promo}`}>
                       <div className="bg-white rounded-lg shadow-md p-1">
-                        <img src={promo.image} alt={`Promo ${index + 1}`} />
+                      <img src={`https://api.katarasa.id` + promo.images} alt={`Promo ${index + 1}`} />
                         <p className="mb-4 ml-2 font-medium text-lg">
                           {promo.name}
                         </p>

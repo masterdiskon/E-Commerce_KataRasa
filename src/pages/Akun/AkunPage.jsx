@@ -42,7 +42,6 @@ const sections = [
   {
     title: "Akun",
     content: [
-    
       { label: "Tambah Alamat", path: "/akunsaya" },
       { label: "Ulasan Saya", path: "/ulasan-saya" },
     ],
@@ -136,8 +135,8 @@ function AkunPage() {
   };
   return (
     <div className="w-full h-screen">
+      <Navbar />
       <>
-        <Navbar />
         <div className="hidden md:inline">
           <div className=" flex flex-col h-auto w-full mx-auto">
             <div className="mt-40 ">
@@ -162,7 +161,6 @@ function AkunPage() {
                                     </div>
                                     <div className="flex justify-center items-center text-center">
                                       <img
-                                      
                                         src={EditDataProfile}
                                         alt=""
                                         className="w-3 h-3 cursor-pointer"
@@ -216,12 +214,10 @@ function AkunPage() {
                         width={700}
                         title={
                           <>
-                          <span className="font-semibold text-xl">
-                           
-                            Edit Data Profile
-                           
-                          </span>
-                          <hr className="mt-2"/>
+                            <span className="font-semibold text-xl">
+                              Edit Data Profile
+                            </span>
+                            <hr className="mt-2" />
                           </>
                         }
                         visible={visible}
@@ -358,6 +354,25 @@ function AkunPage() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </>
+
+      <>
+        <div className="sm:inline lg:hidden md:hidden sm:w-full w-full mx-auto justify-start px-4 py-2 ">
+          <div className="h-auto w-full mx-auto">
+            <div className="mt-28">
+              {" "}
+              <>
+                <div className="w-full">
+                  <Tabs
+                    defaultActiveKey="1"
+                    items={items}
+                    onChange={onChange}
+                  />
+                </div>
+              </>
             </div>
           </div>
         </div>

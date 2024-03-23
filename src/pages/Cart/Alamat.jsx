@@ -35,8 +35,8 @@ function AlamatPage() {
           {DataAlamat.province && DataAlamat.province.name}
         </p>
       )}
-      <p className="mt-2">No.Telp : {DataAlamat.phone_number}</p>
-      <p className="mt-2">Kode Pos: {DataAlamat.postal_code}</p>
+      {/* <p className="mt-2">No.Telp : {DataAlamat.phone_number}</p> */}
+      {/* <p className="mt-2">Kode Pos: {DataAlamat.postal_code}</p> */}
     </div>
   );
 }

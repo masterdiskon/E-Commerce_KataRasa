@@ -230,15 +230,6 @@ function TambahKeranjang() {
     }
   };
 
-  const handleIncreaseQuantity = (itemId) => {};
-
-  const handleDecreaseQuantity = (itemId) => {};
-
-  const totalPrices = DataCartAll.reduce(
-    (accumulator, order) => accumulator + order.total,
-    0
-  );
-
   const DataCeklist = async (cartId) => {
     const token = localStorage.getItem("token");
     try {
@@ -266,36 +257,36 @@ function TambahKeranjang() {
     }
   };
 
-  const totalDiscount = DataCartAll.reduce((acc, item) => {
-    // Jika item tidak dicentang, kembalikan nilai 0 untuk diskon
-    if (item.is_checked !== 1) {
-      return acc;
-    }
+  // const totalDiscount = DataCartAll.reduce((acc, item) => {
 
-    // Periksa apakah diskon berupa persentase
-    if (
-      item.discount.length > 0 &&
-      item.discount[0].type_potongan === "percent"
-    ) {
-      // Hitung diskon berdasarkan persentase
-      const discountAmount = item.price * (item.discount[0].potongan / 100);
-      return acc + discountAmount;
-    }
+  //   if (item.is_checked !== 1) {
+  //     return acc;
+  //   }
 
-    return acc;
-  }, 0);
-  const totalPercentDiscount = DataCartAll.reduce((acc, item) => {
-    if (
-      item.is_checked !== 1 ||
-      item.discount.length === 0 ||
-      item.discount[0].type_potongan !== "percent"
-    ) {
-      return acc;
-    }
+  //   // Periksa apakah diskon berupa persentase
+  //   if (
+  //     item.discount.length > 0 &&
+  //     item.discount[0].type_potongan === "percent"
+  //   ) {
+  //     // Hitung diskon berdasarkan persentase
+  //     const discountAmount = item.price * (item.discount[0].potongan / 100);
+  //     return acc + discountAmount;
+  //   }
 
-    const discountAmount = item.price * (item.discount[0].potongan / 100);
-    return acc + discountAmount;
-  }, 0);
+  //   return acc;
+  // }, 0);
+  // const totalPercentDiscount = DataCartAll.reduce((acc, item) => {
+  //   if (
+  //     item.is_checked !== 1 ||
+  //     item.discount.length === 0 ||
+  //     item.discount[0].type_potongan !== "percent"
+  //   ) {
+  //     return acc;
+  //   }
+
+  //   const discountAmount = item.price * (item.discount[0].potongan / 100);
+  //   return acc + discountAmount;
+  // }, 0);
 
   // const subtotal = DataCartAll.reduce(
   //   (total, item) => (item.is_checked === 1 ? total + item.total : total),
@@ -305,24 +296,20 @@ function TambahKeranjang() {
     return subtotal + item.total;
   }, 0);
 
-  const totalHarga = DataCartAll.reduce((total, item) => {
-    if (item.is_checked === 1) {
-      const potongan = item.discount[0].potongan;
-      if (potongan !== 0) {
-        // Jika potongan tidak nol, gunakan discount_price * qty
-        return total + item.discount[0].discount_price;
-      } else {
-        // Jika potongan nol, gunakan total
-        return total + item.total;
-      }
-    } else {
-      return total;
-    }
-  }, 0);
-
-  const grandTotal = subtotal - totalDiscount;
-
-  const [masingQTY, setmasingQTY] = useState("");
+  // const totalHarga = DataCartAll.reduce((total, item) => {
+  //   if (item.is_checked === 1) {
+  //     const potongan = item.discount[0].potongan;
+  //     if (potongan !== 0) {
+  //       // Jika potongan tidak nol, gunakan discount_price * qty
+  //       return total + item.discount[0].discount_price;
+  //     } else {
+  //       // Jika potongan nol, gunakan total
+  //       return total + item.total;
+  //     }
+  //   } else {
+  //     return total;
+  //   }
+  // }, 0);
 
   async function UpdateQty(tambagKurang, qty) {
     // console.log(tambagKurang, qty);
@@ -367,6 +354,21 @@ function TambahKeranjang() {
     }
   }
 
+  const totalHargaa = DataCartAll.reduce((total, item) => {
+    if (item.is_checked === 1) {
+      const diskon = item.discount;
+      if (diskon !== 0) {
+        // Jika ada diskon, gunakan discount_price * qty
+        return total + (item.discount[0].discount_price * item.qty);
+      } else {
+        // Jika diskon nol, gunakan total
+        return total + item.total;
+      }
+    } else {
+      return total;
+    }
+  }, 0);
+
   return (
     <div className="w-full h-screen">
       <Navbar />
@@ -400,16 +402,20 @@ function TambahKeranjang() {
                                 className="w-28 h-24 ml-5 rounded-md"
                                 alt="Coffee Beans"
                               />
+                              {item.discount !== 0 && (
+                                <span className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-full">
+                                  {item.discount[0].potongan}%
+                                </span>
+                              )}
                               {/* Tulisan diskon */}
-                              {item.discount[0].potongan !== 0 &&
+                              {/* {item.discount[0].potongan !== 0 &&
                                 item.discount[0].type_potongan ===
                                   "percent" && (
                                   <div className="absolute top-0 right-0 bg-red-500 text-white px-2 py-1 rounded-md text-xs">
                                     {item.discount[0].potongan}%
                                   </div>
-                                )}
+                                )} */}
                             </div>
-
                             <div className="w-1/3 ml-6">
                               <div className="ml-2">
                                 <p className="text-base font-medium">
@@ -422,37 +428,49 @@ function TambahKeranjang() {
                                   </Tag>
                                 </p>
                                 <div className="flex mt-2">
-                                  {item.discount[0].potongan !== 0 ? (
+                                  {/* {item.discount[0].potongan !== 0 ? (
                                     <div className=" text-red-600 mr-2  font-medium">
                                       <s>{item.formated_price}</s>
                                     </div>
-                                  ) : null}
+                                  ) : 0} */}
                                   <div className="font-bold text-[#41644A]">
-                                    Rp
                                     <span className="ml-1">
-                                      {item.discount[0].potongan !== 0
+                                      {item.discount === 0 ? (
+                                        <span>{item.formated_price}</span>
+                                      ) : (
+                                        <span>
+                                          <s className="text-red-600">
+                                            {item.formated_price}
+                                          </s>{" "}
+                                          {
+                                            item.discount[0]
+                                              .discount_price_formatted
+                                          }
+                                        </span>
+                                      )}
+
+                                      {/* {item.discount[0].potongan !== 0
                                         ? item.discount[0].type_potongan ===
                                           "percent"
-                                          ? // Potongan dalam persentase
+                                          ?
                                             (
                                               item.price -
                                               (item.price *
                                                 item.discount[0].potongan) /
                                                 100
                                             ).toLocaleString("id-ID")
-                                          : // Potongan dalam nilai tetap
+                                          :
                                             (
                                               item.price -
                                               item.discount[0].potongan
                                             ).toLocaleString("id-ID")
-                                        : // Tidak ada potongan
-                                          item.price.toLocaleString("id-ID")}
+                                        :
+                                          item.price.toLocaleString("id-ID")} */}
                                     </span>
                                   </div>
                                 </div>
                               </div>
                             </div>
-
                             <div className="w-1/5">
                               <div className="flex items-center mt-3">
                                 <button
@@ -482,15 +500,26 @@ function TambahKeranjang() {
                                 </button>
                               </div>
                             </div>
-
                             <div className="w-1/3 text-center">
                               <p>Total Harga</p>
                               <span className=" text-[#3B8F51] text-lg font-bold">
-                                {item.discount[0].potongan !== 0
+                                {
+                                  item.discount === 0
+                                    ? `Rp ${(
+                                        item.price * item.qty
+                                      ).toLocaleString("id-ID")}` // Jika diskon adalah 0, gunakan harga tanpa diskon
+                                    : `Rp ${(
+                                        item.discount[0].discount_price *
+                                        item.qty
+                                      ).toLocaleString("id-ID")}` // Jika ada diskon, gunakan harga diskon
+                                }
+
+                                {/* {item.discount[0].potongan !== 0
                                   ? item.discount[0].discount_price_formatted
-                                  : item.formated_price_total}
+                                  : item.formated_price_total} */}
                               </span>
                             </div>
+
                             <div>
                               <button
                                 className="text-red-600 w-10"
@@ -596,7 +625,7 @@ function TambahKeranjang() {
                           className="w-1/3 text-[#3B8F51] text-end mt-5 mb-5 text-2xl font-medium"
                           id="grandTotalValue"
                         >
-                          Rp {totalHarga.toLocaleString("id-ID")}
+                          Rp {totalHargaa.toLocaleString("id-ID")}
                         </div>
                       </div>
 
@@ -648,13 +677,18 @@ function TambahKeranjang() {
                               className="w-16 h-16 ml-2 rounded-md"
                               alt="Coffee Beans"
                             />
-                              {item.discount[0].potongan !== 0 &&
+                              {item.discount !== 0 && (
+                                <span className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-full text-[8px]" >
+                                  {item.discount[0].potongan}%
+                                </span>
+                              )}
+                            {/* {item.discount[0].potongan !== 0 &&
                                 item.discount[0].type_potongan ===
                                   "percent" && (
                                   <div className="absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-md text-[8px]">
                                     {item.discount[0].potongan}%
                                   </div>
-                                )}
+                                )} */}
                           </div>
                           <div className="w-full  ">
                             <div className=" flex">
@@ -717,15 +751,31 @@ function TambahKeranjang() {
 
                             <div className="flex">
                               <div className="w-1/2  text-[#3B8F51] text-sm font-semibold">
+                              {item.discount === 0 ? (
+                                        <span>{item.formated_price}</span>
+                                      ) : (
+                                        <span>
+                                          <s className="text-red-600">
+                                            {item.formated_price}
+                                          </s>{" "}
+                                          <br />
+                                          {
+                                            item.discount[0]
+                                              .discount_price_formatted
+                                          }
+                                        </span>
+                                      )}
+                                     
+
                                 {/* {item.discount[0].potongan !== 0 ? (
                                   <div className=" text-red-500  text-sm font-medium">
                                     <s>{item.formated_price_total}</s>
                                   </div>
                                 ) : null} */}
 
-                                {item.discount[0].potongan !== 0
+                                {/* {item.discount[0].potongan !== 0
                                   ? item.discount[0].discount_price_formatted
-                                  : item.formated_price_total}
+                                  : item.formated_price_total} */}
                                 {/* Rp {item.total}{" "}
                                 <span className="text-red-500 ml-5">
                                   {" "}
@@ -754,7 +804,7 @@ function TambahKeranjang() {
             <div className="w-full flex mt-1">
               <div className="w-1/2  text-lg text-white">
                 <p className="text-[#F7FFF1] text-xs">Total</p>
-                Rp {totalHarga.toLocaleString("id-ID")}
+                Rp {totalHargaa.toLocaleString("id-ID")}
               </div>
               <div className="w-1/2  ">
                 <Link to="/payment">

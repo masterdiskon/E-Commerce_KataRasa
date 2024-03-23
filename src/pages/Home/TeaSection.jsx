@@ -168,12 +168,12 @@ function TeaSection() {
                               {product.category
 }
                             </p>
-                            <p className="text-[#E53C3C] font-semibold text-sm">
+                            {/* <p className="text-[#E53C3C] font-semibold text-sm">
                               <s>  {product.formatted_price}</s>
-                            </p>
+                            </p> */}
                             <div>
                               <div className="text-lg font-semibold text-[#3B8F51]">
-                               {" "} {product.discount[0].discount_price_formatted}
+                               {" "} {product.formatted_price}
                                 <span className="text-[#FFCA0C]  ml-10">
                                   &#9733;
                                   <span className="text-sm text-[#3B8F51] ml-1">
@@ -238,11 +238,11 @@ function TeaSection() {
                                 {product.category}
                               </p>
                               <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                <s> {product.formatted_price}</s>
+                                {/* <s> {product.formatted_price}</s> */}
                               </p>
                               <div>
                                 <div className="text-sm font-semibold text-[#3B8F51] mt-2">
-                                 {" "}{product.discount[0].discount_price_formatted}
+                                 {" "}{product.formatted_price}
                                   <span className="text-[#FFCA0C] ml-5">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">

@@ -261,10 +261,10 @@ function ProductChocolate() {
                                 {product.discount[0].discount_price !== 0 && (
                                   <p className="text-[#E53C3C] font-semibold text-sm">
                                     <s>
-                                      {
+                                      {/* {
                                         product.discount[0]
                                           .discount_price_formatted
-                                      }
+                                      } */}
                                     </s>
                                   </p>
                                 )}

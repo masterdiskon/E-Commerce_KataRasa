@@ -32,9 +32,9 @@ function Banner() {
 
   const GetDataBanner = async () => {
     try {
-      const respons = await axios.get(`${Baseurl}nimda/other/data-banner`);
-      setDataBanner(respons.data.data);
-      console.log("ini data banner", respons.data.data);
+      const respons = await axios.get(`${Baseurl}nimda/banner/get-banner?page=0&limit=0&keyword=`);
+      setDataBanner(respons.data.data.data);
+      console.log("ini data banner", respons.data.data.data);
     } catch (error) {}
   };
 
@@ -56,7 +56,7 @@ function Banner() {
             <div key={banner.id} className="flex justify-center">
               <img
                 className="w-full object-cover md:object-fill"
-                src={`https://api.katarasa.id/` + banner.link}
+                src={banner.images}
                 alt={banner.name}
               />
             </div>
@@ -78,7 +78,7 @@ function Banner() {
                 <div key={banner.id} className="flex justify-center">
                   <img
                     className="w-full object-cover rounded-md md:object-fill"
-                    src={`https://api.katarasa.id/` + banner.link}
+                    src={banner.images}
                     alt={banner.name}
                   />
                 </div>

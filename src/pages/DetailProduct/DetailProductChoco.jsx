@@ -386,6 +386,16 @@ function DetailProductChoco() {
                       </button>
                       <button
                         className={`border ${
+                          selectedButton === "Yes"
+                            ? "bg-[#3B8F51] text-white"
+                            : "border-[#3B8F51] text-[#3B8F51]"
+                        } py-2 px-4 rounded-full mt-2 hover:bg-[#41644A] hover:text-white`}
+                        onClick={() => handleButtonClick("Yes")}
+                      >
+                        Yes
+                      </button>
+                      {/* <button
+                        className={`border ${
                           selectedButton === "+500gr Robusta"
                             ? "bg-[#3B8F51] text-white"
                             : "border-[#3B8F51] text-[#3B8F51]"
@@ -423,7 +433,7 @@ function DetailProductChoco() {
                         onClick={() => handleButtonClick("+Choco Box")}
                       >
                         +Choco Box
-                      </button>
+                      </button> */}
                     </div>
 
                     <h1 className="text-md font-medium mt-3 mb-2 text-[#3B8F51]">
@@ -744,6 +754,16 @@ function DetailProductChoco() {
                           No
                         </button>
                         <button
+                        className={`border ${
+                          selectedButton === "Yes"
+                            ? "bg-[#3B8F51] text-white"
+                            : "border-[#3B8F51] text-[#3B8F51]"
+                        } py-2 px-4 rounded-full mt-2 hover:bg-[#41644A] hover:text-white`}
+                        onClick={() => handleButtonClick("Yes")}
+                      >
+                        Yes
+                      </button>
+                        {/* <button
                           className={`border ${
                             selectedButton === "+500gr Robusta"
                               ? "bg-[#3B8F51] text-white"
@@ -752,8 +772,8 @@ function DetailProductChoco() {
                           onClick={() => handleButtonClick("+500gr Robusta")}
                         >
                           +500gr Robusta
-                        </button>
-                        <button
+                        </button> */}
+                        {/* <button
                           className={`border ${
                             selectedButton === "+250gr Oolong Tea"
                               ? "bg-[#3B8F51] text-white"
@@ -782,7 +802,7 @@ function DetailProductChoco() {
                           onClick={() => handleButtonClick("+Choco Box")}
                         >
                           +Choco Box
-                        </button>
+                        </button> */}
                       </div>
                     </div>
                   </>

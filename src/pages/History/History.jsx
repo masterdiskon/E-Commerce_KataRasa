@@ -40,7 +40,7 @@ const History = () => {
     gender_id: "",
     birth_date: "",
     email: "",
-    phone_number: "",
+    // phone_number: "",
   });
   const GetDataAlamat = async () => {
     try {
@@ -70,7 +70,7 @@ const History = () => {
       corporate: "RajaCepat, PT",
       department: "IT Developer",
       tanggalLahir: DataProfill.birth_date,
-      phoneNumber: DataProfill.phone_number,
+      // phoneNumber: DataProfill.phone_number,
       gender: DataProfill.gender_id,
     };
 
@@ -321,13 +321,13 @@ const History = () => {
                         <Input
                           prefix={<div>+62</div>}
                           type="number"
-                          value={DataProfill.phone_number}
-                          onChange={(e) =>
-                            setDataProfill({
-                              ...DataProfill,
-                              phone_number: e.target.value,
-                            })
-                          }
+                          // value={DataProfill.phone_number}
+                          // onChange={(e) =>
+                          //   setDataProfill({
+                          //     ...DataProfill,
+                          //     phone_number: e.target.value,
+                          //   })
+                          // }
                           className="h-11 rounded-full mt-2 placeholder-black"
                           suffix={
                             <div>

@@ -349,17 +349,19 @@ function DetailPromo() {
             <div className="w-full rounded-lg shadow-lg bg-white">
               <div className="p-3">
                 <h1 className="text-[#3B8F51] font-medium text-lg pl-3 mt-2">
-                  Chinese New Year bundling discount!
+                {DetailPromoAll.name}
                 </h1>
                 <div className="flex justify-center items-center">
                   <img
-                    src={Promo1}
+                        src={`https://api.katarasa.id` + DetailPromoAll.images}
                     alt=""
                     className="w-[310px] h-[160px] mt-4 "
                   />
                 </div>
                 <div className="pl-3 mt-4 text-base">
-                  <p>
+                {DetailPromoAll.description}
+                  
+                  {/* <p>
                     Katarasa kasih kamu paket hemat untuk merayakan Chinese New
                     Year 2024 ini loh 🤩 Kamu bisa mendapatkan potongan harga up
                     to 50% 😍
@@ -374,7 +376,7 @@ function DetailPromo() {
                   <p className="mt-4">
                     Available on Go-Food
                     <p>“Kedai Kopi Kata & Rasa, Ciracas, Jakarta Timur”</p>
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>
@@ -383,7 +385,48 @@ function DetailPromo() {
               <div className="bg-white h-auto rounded-lg shadow-lg mt-10 p-2">
                 <p className="p-2 font-medium text-lg">Ketentuan Promo</p>
                 <div className="p-2 text-[#41644A] text-base">
-                  {promoDetails.map((detail, index) => (
+                <div className="p-2 text-[#41644A] text-base">
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">Waktu Periode</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">{DetailPromoAll.start_date}</div>
+                    </div>
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">End Periode</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">{DetailPromoAll.end_date}</div>
+                    </div>
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">Jenis Promo</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">
+                        Discount up to {DetailPromoAll.nominal_potongan}%
+                      </div>
+                    </div>
+                    <div className="w-full flex mb-3">
+                      <div className="w-1/3">Min Transaksi</div>
+                      <div className="w-1/6 flex justify-center items-center">
+                        :
+                      </div>
+                      <div className="w-1/2">{DetailPromoAll.minimum}</div>
+                    </div>
+                    {/* {promoDetails.map((detail, index) => (
+                      <div key={index} className="w-full flex mb-3">
+                        <div className="w-1/3">{detail.label}</div>
+                        <div className="w-1/6 flex justify-center items-center">
+                          :
+                        </div>
+                        <div className="w-1/2">{detail.value}</div>
+                      </div>
+                    ))} */}
+                  </div>
+                  {/* {promoDetails.map((detail, index) => (
                     <div key={index} className="w-full flex mb-3">
                       <div className="w-1/3 text-sm">{detail.label}</div>
                       <div className="w-1/6 flex justify-center items-center  text-sm">
@@ -391,7 +434,7 @@ function DetailPromo() {
                       </div>
                       <div className="w-1/2  text-sm">{detail.value}</div>
                     </div>
-                  ))}
+                  ))} */}
                 </div>
 
                 <div className="mt-1 p-2 font-medium text-lg">Kode Promo</div>

@@ -166,13 +166,13 @@ function ChocolateSection() {
                               <p className="text-slate-400 text-xs">
                                 {product.category}
                               </p>
-                              {product.discount[0].discount_price !== 0 ? (
+                              {/* {product.discount[0].discount_price !== 0 ? (
                                 <p className="text-[#E53C3C] font-semibold text-[10px]">
                                   <s>{product.formatted_price}</s>
                                 </p>
                               ) : (
                                 <br />
-                              )}
+                              )} */}
 
                               <div>
                                 <div className="text-lg font-semibold text-[#3B8F51]">
@@ -241,7 +241,7 @@ function ChocolateSection() {
                                 </p>
                                 {product.discount[0].discount_price !== 0 && (
                                   <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                    <s>{product.formatted_price}</s>
+                                    {/* <s>{product.formatted_price}</s> */}
                                   </p>
                                 )}
                                 <div>

@@ -150,7 +150,7 @@ function CoffeeSection() {
                   <div className="flex">
                     <div className="w-full flex space-x-4">
                       {/* Konten produk di kolom kiri */}
-                      {products.slice(0, 5).map((product, index) => (
+                      {products.slice(1, 6).map((product, index) => (
                         <Link to={`/detailproductt/${product.slug}`}>
                           <div
                             key={index}
@@ -172,10 +172,10 @@ function CoffeeSection() {
                               {product.discount[0].discount_price !== 0 && (
                                 <p className="text-[#E53C3C] font-semibold text-sm">
                                   <s>
-                                    {
+                                    {/* {
                                       product.discount[0]
                                         .discount_price_formatted
-                                    }
+                                    } */}
                                   </s>
                                 </p>
                               )}
@@ -222,7 +222,7 @@ function CoffeeSection() {
                     ref={carousel}
                     className="carousel-container h-[235px] relative flex gap-3 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                   >
-                    {products.slice(0, 5).map((product, index) => {
+                    {products.slice(1,).map((product, index) => {
                       return (
                         <Link to={`/detailproductt/${product.slug}`}>
                           <div
@@ -247,11 +247,11 @@ function CoffeeSection() {
                                 </p>
                                 {product.discount[0].discount_price !== 0 && (
                                 <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                  <s>
+                                  {/* <s>
                                     {
                                       product.formatted_price
                                     }
-                                  </s>
+                                  </s> */}
                                 </p>
                               )}
                                 <div>

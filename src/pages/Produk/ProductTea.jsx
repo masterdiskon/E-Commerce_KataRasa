@@ -241,10 +241,10 @@ function ProductTea() {
                               {product.discount[0].discount_price !== 0 && (
                                     <p className="text-[#E53C3C] font-semibold text-sm">
                                       <s>
-                                        {
+                                        {/* {
                                           product.discount[0]
                                             .discount_price_formatted
-                                        }
+                                        } */}
                                       </s>
                                     </p>
                                   )}
@@ -452,8 +452,8 @@ function ProductTea() {
                               )}
                           <div className="mt-2">
                             <div className="text-xs text-[#3B8F51]">
-                              {product.discount[0]
-                                        .discount_price_formatted}{" "}
+                              {/* {product.discount[0]
+                                        .discount_price_formatted}{" "} */}
                               <span className="text-[#FFCA0C] ml-8">
                                 &#9733;
                                 <span className="text-xs text-[#3B8F51] ml-2">

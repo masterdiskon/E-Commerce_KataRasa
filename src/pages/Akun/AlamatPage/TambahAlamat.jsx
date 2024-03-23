@@ -23,6 +23,7 @@ function TambahAlamat() {
     province_id: "",
     city_id: "",
     district_kd: "",
+    district_id: "",
     sub_district_id: "",
     postal_code: "",
     alamat_lengkap: "",
@@ -121,6 +122,7 @@ function TambahAlamat() {
     setFormData({
       ...formData,
       district_kd: selectedKabupaten,
+      district_id: selectedKabupaten,
       sub_district_id: null, // Reset nilai sub_district_id
     });
   };
@@ -131,6 +133,7 @@ function TambahAlamat() {
     // Mengatur nilai sub_district_id di formData
     setFormData({
       ...formData,
+      district_id: selectedKecamatan, // Menggunakan selectedKecamatan sebagai nilai district_id
       sub_district_id: selectedKecamatan,
     });
   };
@@ -161,8 +164,8 @@ function TambahAlamat() {
 
   return (
     <div className="mt-5">
-      <div className="flex space-x-4 ">
-        <div className="w-1/2">
+      <div className="sm:flex sm:space-x-4 mt-2">
+        <div className="sm:w-1/2 ">
           <div className="font-semibold ">Tempat pengiriman</div>
           <Input
             type="text"
@@ -173,7 +176,7 @@ function TambahAlamat() {
             className="mt-2 h-11 border border-solid border-[#3B8F51] rounded-lg"
           />
         </div>
-        <div className="w-1/2">
+        <div className="sm:w-1/2 sm:mt-0 mt-2 ">
           <div className="font-semibold">Nama Alamat</div>
           <Input
             type="text"
@@ -181,12 +184,12 @@ function TambahAlamat() {
             value={formData.company_as}
             onChange={handleChange}
             placeholder="Masukkan tempat pengiriman Anda di sini."
-            className="mt-2  h-11 border border-solid border-[#3B8F51] rounded-lg"
+            className="mt-2 sm:w-full h-11 border border-solid border-[#3B8F51] rounded-lg"
           />
         </div>
       </div>
-      <div className="flex space-x-4 mt-2">
-        <div className="w-1/2">
+      <div className="sm:flex sm:space-x-4 mt-2 ">
+        <div className="sm:w-1/2 ">
           <div className="font-semibold ">Nama Penerima</div>
           <Input
             type="text"
@@ -197,7 +200,7 @@ function TambahAlamat() {
             className="mt-2  h-11 border border-solid border-[#3B8F51] rounded-lg"
           />
         </div>
-        <div className="w-1/2">
+        <div className="sm:w-1/2">
           <div className="font-semibold">Nomor Penerima</div>
           <Input
             name="phone_number"
@@ -219,8 +222,8 @@ function TambahAlamat() {
         />
       </div>
 
-      <div className="w-full flex space-x-4 mt-2">
-        <div className="w-1/2 ">
+      <div className="w-full sm:flex sm:space-x-4 mt-2">
+        <div className="sm:w-1/2 ">
           <div className="font-semibold">Provinsi</div>
           <Select
             showSearch // Add showSearch prop here
@@ -244,8 +247,8 @@ function TambahAlamat() {
             )}
           </Select>
         </div>
-        <div className="w-1/2 ">
-          <div className="font-semibold">Kota</div>
+        <div className="sm:w-1/2 ">
+          <div className="font-semibold">Kabupaten</div>
           <Select
             showSearch // Add showSearch prop here
             filterOption={(input, option) =>
@@ -268,9 +271,9 @@ function TambahAlamat() {
         </div>
       </div>
 
-      <div className="w-full flex space-x-4 mt-2">
-        <div className="w-1/2 ">
-          <div className="font-semibold">Kabupaten</div>
+      <div className="w-full sm:flex sm:space-x-4 mt-2">
+        <div className="sm:w-1/2 ">
+          <div className="font-semibold">Kota</div>
           <Select
             showSearch // Add showSearch prop here
             filterOption={(input, option) =>
@@ -294,7 +297,7 @@ function TambahAlamat() {
             )}
           </Select>
         </div>
-        <div className="w-1/2 ">
+        <div className="sm:w-1/2 ">
           <div className="font-semibold">Kecamatan</div>
           <Select
             showSearch // Add showSearch prop here
@@ -321,8 +324,8 @@ function TambahAlamat() {
         </div>
       </div>
 
-      <div className="flex space-x-4">
-        <div className="mt-2 w-1/2">
+      <div className="sm:flex sm:space-x-4">
+        <div className="mt-2 sm:w-1/2">
           <div className="font-semibold">Kode Pos</div>
           <Input
             name="postal_code"
@@ -335,10 +338,10 @@ function TambahAlamat() {
         {/*  */}
       </div>
 
-      <div className="flex mt-3 justify-end">
+      <div className="sm:flex mt-3 justify-end ">
         <Button
           onClick={handleSubmit}
-          className="rounded-full bg-[#3B8F51] h-12 px-5 text-white"
+          className="rounded-full bg-[#3B8F51] h-12 px-5 text-white w-full sm:w-1/4"
         >
           Simpan
         </Button>
