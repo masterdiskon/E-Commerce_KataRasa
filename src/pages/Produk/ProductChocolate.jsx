@@ -257,28 +257,39 @@ function ProductChocolate() {
                                 <p className="text-sm text-gray-600">
                                   {product.category}
                                 </p>
-                              
-                                {product.discount[0].discount_price !== 0 && (
-                                  <p className="text-[#E53C3C] font-semibold text-sm">
-                                    <s>
-                                      {/* {
-                                        product.discount[0]
-                                          .discount_price_formatted
-                                      } */}
-                                    </s>
-                                  </p>
-                                )}
-                                <div className="mt-2">
-                                  <div className="text-lg font-semibold text-[#3B8F51]">
-                                    {product.formatted_price}
-                                    <span className="text-[#FFCA0C] ml-5">
-                                      &#9733;
-                                      <span className="text-sm text-[#3B8F51] ml-1">
-                                        {product.rating}/5
-                                      </span>
-                                    </span>
-                                  </div>
-                                </div>
+
+                                {product.discount &&
+                          product.discount[0].potongan > 0 ? (
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                  <s>{product.formatted_price}</s>
+                                </p>
+                                <p className="text-lg font-semibold text-[#3B8F51]">
+                                  {product.discount[0].discount_price_formatted}
+                                </p>
+                              </div>
+                              <div className="flex items-center mt-4">
+                                <span className="text-[#FFCA0C]">&#9733;</span>
+                                <span className="text-sm text-[#3B8F51] ml-1 ">
+                                  {product.rating}/5
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex justify-between items-center">
+                              <p className="text-lg font-semibold text-[#3B8F51]">
+                                {product.formatted_price}
+                              </p>
+                              <div className="flex items-center">
+                                <span className="text-[#FFCA0C]">&#9733;</span>
+                                <span className="text-sm text-[#3B8F51] ml-1">
+                                  {product.rating}/5
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                             
                                 {/* Informasi lebih lanjut atau tombol beli */}
                               </div>
                             </Link>
@@ -457,16 +468,38 @@ function ProductChocolate() {
                           <p className="text-[10px] text-gray-600">
                             {product.category}
                           </p>
-                          {product.discount[0].discount_price !== 0 && (
+                          {product.discount &&
+                          product.discount[0].potongan > 0 ? (
+                            <div className="flex justify-between items-center">
+                              <div>
                                 <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                  <s>
-                                    {
-                                      product.discount[0].discount_price
-                                    }
-                                  </s>
+                                  <s>{product.formatted_price}</s>
                                 </p>
-                              )}
-                          <div className="mt-2 flex">
+                                <p className="text-sm font-semibold text-[#3B8F51]">
+                                  {product.discount[0].discount_price_formatted}
+                                </p>
+                              </div>
+                              <div className="flex items-center mt-4">
+                                <span className="text-[#FFCA0C]">&#9733;</span>
+                                <span className="text-sm text-[#3B8F51] ml-1 ">
+                                  {product.rating}/5
+                                </span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex justify-between items-center">
+                              <p className="text-sm font-semibold text-[#3B8F51]">
+                                {product.formatted_price}
+                              </p>
+                              <div className="flex items-center">
+                                <span className="text-[#FFCA0C]">&#9733;</span>
+                                <span className="text-sm text-[#3B8F51] ml-1">
+                                  {product.rating}/5
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                          {/* <div className="mt-2 flex">
                             <div className="text-xs text-[#3B8F51]">
                               {product.formatted_price}
                               <span className="text-[#FFCA0C] ml-14 ">
@@ -476,7 +509,7 @@ function ProductChocolate() {
                                 </span>
                               </span>
                             </div>
-                          </div>
+                          </div> */}
                           {/* Informasi lebih lanjut atau tombol beli */}
                         </div>
                       </Link>

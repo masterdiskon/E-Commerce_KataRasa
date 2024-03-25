@@ -280,9 +280,28 @@ function DetailProductChoco() {
                         {/* <p className="mt-5 text-md text-red-500 text-xl font-medium">
                         <s>Rp. 0</s>
                       </p> */}
-                        <p className=" text-md text-[#3B8F51] text-3xl font-medium">
-                          {product.formatted_price}
-                        </p>
+                        {product.discount &&
+                        product.discount[0].discount_price ? (
+                          <div className="justify-end items-end  text-[#3B8F51] text-[22px] mt-2 font-medium">
+                            <Tag color="red">
+                              Diskon {product.discount[0].potongan}%
+                            </Tag>
+                            <p>
+                              <s className="text-base text-red-600">
+                                {product.formatted_price}
+                              </s>{" "}
+                              <p>
+                                <span className="mt-2">
+                                  {product.discount[0].discount_price_formatted}
+                                </span>
+                              </p>
+                            </p>
+                          </div>
+                        ) : (
+                          <p className="justify-end items-end  text-[#3B8F51] text-[22px] mt-2 font-medium">
+                            {product.formatted_price}
+                          </p>
+                        )}
                         <p className="mt-5 text-md">{product.description}</p>
                       </div>
                     </div>
@@ -440,7 +459,10 @@ function DetailProductChoco() {
                       Notes
                     </h1>
                     <div>
-                      <Input.TextArea rows={4} placeholder="Request di sini.." />
+                      <Input.TextArea
+                        rows={4}
+                        placeholder="Request di sini.."
+                      />
                     </div>
                   </div>
                 </>
@@ -481,8 +503,11 @@ function DetailProductChoco() {
                                 </p> */}
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] mt-2 font-medium">
                                   Rp.{" "}
-                                  {product.discount &&
-                                    parseInt(product.price) * count}
+                                  {(product.discount
+                                    ? parseInt(
+                                        product.discount[0].discount_price
+                                      ) * count
+                                    : parseInt(product.price) * count).toLocaleString("id-ID")}
                                 </p>
                               </div>
                             </div>
@@ -610,13 +635,39 @@ function DetailProductChoco() {
                     alt="Gambar Konten"
                     className="w-56 h-56  mb-4 rounded-lg border"
                   />
+                  {product.discount && product.discount[0].discount_price ? (
+                    <div className="justify-end items-end  text-[#3B8F51] text-[22px] mt-2 font-medium">
+                      <Tag color="red">
+                        Diskon {product.discount[0].potongan}%
+                      </Tag>
+                      <p>
+                        <s className="text-sm text-red-600">
+                          {product.formatted_price}
+                        </s>{" "}
+                        <p>
+                          Rp.{" "}
+                          <span className="mt-2">
+                          {product.discount[0].discount_price_formatted}
+                          </span>
+                        </p>
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="justify-end items-end  text-[#3B8F51] text-[22px] mt-2 font-medium">
+                      {product.formatted_price}
+                    </p>
+                  )}
+
                   {/* <p className="text-[#E53C3C] font-semibold ">
                     <s className="text-[10px]">Rp 56.000</s>
                    
                   </p> */}
-                  <span className="text-[#3B8F51] text-xl font-medium ">
-                    {product.formatted_price}
-                  </span>
+                  {/* <span className="text-[#3B8F51] text-xl font-medium ">
+                    Rp.{" "}
+                    {product.discount
+                      ? parseInt(product.discount[0].discount_price) * count
+                      : parseInt(product.price) * count}
+                  </span> */}
                 </div>
                 <div className="   w-1/3 flex flex-col items-center">
                   <img
@@ -754,15 +805,15 @@ function DetailProductChoco() {
                           No
                         </button>
                         <button
-                        className={`border ${
-                          selectedButton === "Yes"
-                            ? "bg-[#3B8F51] text-white"
-                            : "border-[#3B8F51] text-[#3B8F51]"
-                        } py-2 px-4 rounded-full mt-2 hover:bg-[#41644A] hover:text-white`}
-                        onClick={() => handleButtonClick("Yes")}
-                      >
-                        Yes
-                      </button>
+                          className={`border ${
+                            selectedButton === "Yes"
+                              ? "bg-[#3B8F51] text-white"
+                              : "border-[#3B8F51] text-[#3B8F51]"
+                          } py-2 px-4 rounded-full mt-2 hover:bg-[#41644A] hover:text-white`}
+                          onClick={() => handleButtonClick("Yes")}
+                        >
+                          Yes
+                        </button>
                         {/* <button
                           className={`border ${
                             selectedButton === "+500gr Robusta"

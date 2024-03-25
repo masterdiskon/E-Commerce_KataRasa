@@ -470,9 +470,10 @@ function DetailProduct() {
                                 {/* <p className="justify-end items-end flex text-[#E53C3C] ">
                                   <s>{product.formatted_price}</s>
                                 </p> */}
-                                <p className="justify-end items-end flex text-[#3B8F51] text-[16px] mt-1 font-medium">
+                                {/* <p className="justify-end items-end flex text-[#3B8F51] text-[16px] mt-1 font-medium">
                                  {product.formatted_price}
-                                </p>
+                                </p> */}
+                              <br />
                                 <p className="justify-end items-end flex text-[#3B8F51] text-[22px] font-medium">
                                   Rp.{" "}
                                   {product.price &&

@@ -150,7 +150,7 @@ function TeaSection() {
                     <div className="w-full flex space-x-3">
                       {/* Konten produk di kolom kiri */}
                       {products.slice(0, 5).map((product, index) => (
-                         <Link to={`/detailproduct/${product.slug}`}>
+                         <Link to={`/detailproductt/${product.slug}`}>
                          <div
                           key={index}
                           className="shadow-2xl md:w-[200px] md:h-[300px] mt-2 bg-white rounded-lg"
@@ -171,7 +171,37 @@ function TeaSection() {
                             {/* <p className="text-[#E53C3C] font-semibold text-sm">
                               <s>  {product.formatted_price}</s>
                             </p> */}
-                            <div>
+                             {product.discount &&
+                              product.discount[0].potongan > 0 ? (
+                                <div>
+                                  <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                    <s>{product.formatted_price}</s>
+                                  </p>
+                                  <p className="text-lg font-semibold text-[#3B8F51]">
+                                    {
+                                      product.discount[0]
+                                        .discount_price_formatted
+                                    }{" "}
+                                    <span className="text-[#FFCA0C]  ml-10">
+                                      &#9733;
+                                      <span className="text-sm text-[#3B8F51] ml-1">
+                                        {product.rating}/5
+                                      </span>
+                                    </span>
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="text-lg font-semibold text-[#3B8F51]">
+                                  {product.formatted_price}{" "}
+                                  <span className="text-[#FFCA0C]  ml-10">
+                                    &#9733;
+                                    <span className="text-sm text-[#3B8F51] ml-1">
+                                      {product.rating}/5
+                                    </span>
+                                  </span>
+                                </div>
+                              )}
+                            {/* <div>
                               <div className="text-lg font-semibold text-[#3B8F51]">
                                {" "} {product.formatted_price}
                                 <span className="text-[#FFCA0C]  ml-10">
@@ -181,7 +211,7 @@ function TeaSection() {
                                   </span>
                                 </span>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                         </Link>
@@ -216,7 +246,7 @@ function TeaSection() {
                   >
                     {products.slice(0, 5).map((product, index) => {
                       return (
-                        <Link to={`/detailproduct/${product.slug}`}>
+                        <Link to={`/detailproductt/${product.slug}`}>
                         <div
                           key={index}
                           className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
@@ -237,20 +267,38 @@ function TeaSection() {
                               <p className="text-slate-400 text-[10px]">
                                 {product.category}
                               </p>
-                              <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                {/* <s> {product.formatted_price}</s> */}
-                              </p>
-                              <div>
-                                <div className="text-sm font-semibold text-[#3B8F51] mt-2">
-                                 {" "}{product.formatted_price}
-                                  <span className="text-[#FFCA0C] ml-5">
-                                    &#9733;
-                                    <span className="text-sm text-[#3B8F51] ml-1">
-                                      {product.rating}/5
+                              {product.discount &&
+                              product.discount[0].potongan > 0 ? (
+                                <div>
+                                  <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                    <s>{product.formatted_price}</s>
+                                  </p>
+                                  <p className="text-sm font-semibold text-[#3B8F51]">
+                                    {
+                                      product.discount[0]
+                                        .discount_price_formatted
+                                    }{" "}
+                                    <span className="text-[#FFCA0C]  ml-4">
+                                      &#9733;
+                                      <span className="text-sm text-[#3B8F51] ml-1">
+                                        {product.rating}/5
+                                      </span>
                                     </span>
-                                  </span>
+                                  </p>
                                 </div>
-                              </div>
+                              ) : (
+                                <div>
+                                  <div className="text-sm font-semibold text-[#3B8F51] mt-3">
+                                    {product.formatted_price}{" "}
+                                    <span className="text-[#FFCA0C] ml-4">
+                                      &#9733;
+                                      <span className="text-sm text-[#3B8F51] ml-1">
+                                        {product.rating}/5
+                                      </span>
+                                    </span>
+                                  </div>
+                                </div>
+                              )}
                             </div>
                           </a>
                         </div>

@@ -132,11 +132,12 @@ function TambahAlamat() {
 
     // Mengatur nilai sub_district_id di formData
     setFormData({
-      ...formData,
-      district_id: selectedKecamatan, // Menggunakan selectedKecamatan sebagai nilai district_id
-      sub_district_id: selectedKecamatan,
+        ...formData,
+        district_id: selectedKecamatan, // Menggunakan selectedKecamatan sebagai nilai district_id
+        sub_district_id: selectedKecamatan,
     });
-  };
+};
+
 
   const GetSelect = async () => {
     try {

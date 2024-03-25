@@ -166,6 +166,8 @@ function ChocolateSection() {
                               <p className="text-slate-400 text-xs">
                                 {product.category}
                               </p>
+
+                              <p className="font-semibold"></p>
                               {/* {product.discount[0].discount_price !== 0 ? (
                                 <p className="text-[#E53C3C] font-semibold text-[10px]">
                                   <s>{product.formatted_price}</s>
@@ -173,10 +175,28 @@ function ChocolateSection() {
                               ) : (
                                 <br />
                               )} */}
-
-                              <div>
+                              {product.discount &&
+                              product.discount[0].potongan > 0 ? (
+                                <div>
+                                  <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                    <s>{product.formatted_price}</s>
+                                  </p>
+                                  <p className="text-lg font-semibold text-[#3B8F51]">
+                                    {
+                                      product.discount[0]
+                                        .discount_price_formatted
+                                    }{" "}
+                                    <span className="text-[#FFCA0C]  ml-10">
+                                      &#9733;
+                                      <span className="text-sm text-[#3B8F51] ml-1">
+                                        {product.rating}/5
+                                      </span>
+                                    </span>
+                                  </p>
+                                </div>
+                              ) : (
                                 <div className="text-lg font-semibold text-[#3B8F51]">
-                                  {product.formatted_price}{" "}
+                                  {product.price}{" "}
                                   <span className="text-[#FFCA0C]  ml-10">
                                     &#9733;
                                     <span className="text-sm text-[#3B8F51] ml-1">
@@ -184,7 +204,7 @@ function ChocolateSection() {
                                     </span>
                                   </span>
                                 </div>
-                              </div>
+                              )}
                             </div>
                           </div>
                         </Link>
@@ -239,22 +259,38 @@ function ChocolateSection() {
                                 <p className="text-slate-400 text-[10px]">
                                   {product.category}
                                 </p>
-                                {product.discount[0].discount_price !== 0 && (
-                                  <p className="text-[#E53C3C] font-semibold text-[10px]">
-                                    {/* <s>{product.formatted_price}</s> */}
-                                  </p>
-                                )}
-                                <div>
-                                  <div className="text-sm font-semibold text-[#3B8F51] mt-3">
-                                    {product.formatted_price}{" "}
-                                    <span className="text-[#FFCA0C] ml-4">
-                                      &#9733;
-                                      <span className="text-sm text-[#3B8F51] ml-1">
-                                        {product.rating}/5
+                                {product.discount &&
+                                product.discount[0].potongan > 0 ? (
+                                  <div>
+                                    <p className="text-[#E53C3C] font-semibold text-[10px]">
+                                      <s>{product.formatted_price}</s>
+                                    </p>
+                                    <p className="text-sm font-semibold text-[#3B8F51]">
+                                      {
+                                        product.discount[0]
+                                          .discount_price_formatted
+                                      }{" "}
+                                      <span className="text-[#FFCA0C]  ml-4">
+                                        &#9733;
+                                        <span className="text-sm text-[#3B8F51] ml-1">
+                                          {product.rating}/5
+                                        </span>
                                       </span>
-                                    </span>
+                                    </p>
                                   </div>
-                                </div>
+                                ) : (
+                                  <div>
+                                    <div className="text-sm font-semibold text-[#3B8F51] mt-3">
+                                      {product.formatted_price}{" "}
+                                      <span className="text-[#FFCA0C] ml-4">
+                                        &#9733;
+                                        <span className="text-sm text-[#3B8F51] ml-1">
+                                          {product.rating}/5
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </a>
                           </div>

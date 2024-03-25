@@ -7,6 +7,7 @@ import SearchIcon from "../../assets/Search.png";
 import keranjangIcon from "../../assets/Keranjang.png";
 import FotoProfil from "../../assets/Katarasa/DefaultProfil.png";
 import {
+  AutoComplete,
   Button,
   Dropdown,
   Input,
@@ -30,6 +31,9 @@ import Baseurl from "../Api/BaseUrl";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Base from "antd/es/typography/Base";
+import _ from "lodash";
+
+const { Option } = AutoComplete;
 
 function Navbar() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -340,6 +344,50 @@ function Navbar() {
     }
   };
 
+  const [options, setOptions] = useState([]);
+
+  const handleSearch = async (value) => {
+    try {
+      const response = await axios.get(
+        `${Baseurl}product/get-product-category/${value}`
+      );
+      const data = response.data;
+      const optionsData = data.data.products.map((product) => ({
+        value: product.name,
+        label: (
+          <Link to={`/detailproductt/${product.slug}`}>
+            <div
+              key={product.product_id}
+              style={{ display: "flex" }}
+              className="space-x-3 justify-start text-stajustify-start items-stajustify-start"
+            >
+              <div className="w-1/6">
+                <img src={product.url} alt={product.name} />
+              </div>
+              <div className="w-1/2">
+                <div className="text-base font-semibold">{product.name}</div>
+                <p className="text-gray-300">{product.category}</p>
+              </div>
+            </div>
+            <hr className="mt-3 " />
+          </Link>
+        ),
+      }));
+      setOptions(optionsData);
+    } catch (error) {
+      console.error("Error fetching autocomplete options:", error);
+    }
+  };
+
+  const onSelect = (value) => {
+    console.log("onSelect", value);
+  };
+  
+  const onClearSearch = () => {
+    setSearchValue(''); // Mengosongkan nilai pencarian
+    // Lakukan reset pencarian di sini jika diperlukan
+  };
+
   const menu = (
     <Menu className="w-48 justify-center items-center text-center overflow-auto">
       <br />
@@ -459,16 +507,24 @@ function Navbar() {
                 onCancel={handleCancel} // Panggil handleCancel saat modal ditutup
                 footer={null} // Tidak menampilkan footer
               >
-                <Input
+                
+                {/* <Input
                   placeholder="Cari disini"
                   className="border border-[#3B8F51] rounded-full mt-4"
+                /> */}
+                <AutoComplete
+                  className="h-10 border border-[#3B8F51] w-full rounded-full mt-4"
+                  placeholder="Cari menu yang kamu inginkan"
+                  options={options}
+                  onSelect={onSelect}
+                  onSearch={_.debounce(handleSearch, 300)} // Menggunakan lodash untuk debounce
                 />
-                <Link to="/pencarian">
+                {/* <Link to="/pencarian">
                   {" "}
                   <Button className="mt-5 w-full h-12 text-white bg-[#3B8F51] border border-[#3B8F51] rounded-full px-8 py-1  transition-colors duration-300 ease-in-out hover:bg-white hover:border-[#3B8F51]">
                     Search
                   </Button>
-                </Link>
+                </Link> */}
               </Modal>
             </div>
           </>
@@ -518,33 +574,21 @@ function Navbar() {
               </a>
             </div>
 
-            <Input
-              placeholder="Cari disini"
-              suffix={
-                <Link to="/pencarian">
-                  <div>
-                    <SearchOutlined
-                      width={100}
-                      style={{
-                        color: "rgba(0, 0, 0, 0.25)",
-                        width: "20px",
-                        height: "20px",
-                      }}
-                      className="cursor-pointer h-12"
-                    />
-                  </div>
-                </Link>
-              }
-              style={{
-                width: "480px",
-                marginLeft: "20px",
-                marginRight: "5px",
-                marginTop: "8px",
-                marginBottom: "8px",
-                borderRadius: "40px",
-                paddingLeft: "36px", // Sesuaikan dengan lebar ikon
-              }}
-            />
+            <div>
+              <AutoComplete
+                className="h-10 "
+                style={{
+                  width: 480,
+                  marginRight: 5,
+                  marginTop: 15,
+                  marginBottom: 8,
+                 
+                }}
+                options={options}
+                onSelect={onSelect}
+                onSearch={_.debounce(handleSearch, 300)} // Menggunakan lodash untuk debounce
+              />
+            </div>
             <div className="py-2 relative">
               {localStorage.getItem("token") ? (
                 <Link to="/tambahkeranjang">
