@@ -159,10 +159,10 @@ function Cupon() {
                     }}
                   >
                     <img
-                      src={`https://api.katarasa.id` + promo.images}
+                      src={promo.images}
                       // src={promo.images}
                       alt={`Promo ${index}`}
-                      className="w-full md:w-[270px] h-[150px]"
+                      className="w-full sm:w-[270px] h-[150px]"
                     />
                     <p></p>
                   </div>

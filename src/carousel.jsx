@@ -9,11 +9,44 @@ import data from "./data.json";
 import { Button, Col, Row } from "antd";
 import Navbar from "./layout/Navbar";
 import { Link } from "react-router-dom";
+import Baseurl from "./Api/BaseUrl";
+import axios from "axios";
 
 const Carousel = () => {
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
+  const [DataPromoAll, setDataPromoAll] = useState([]);
+
+  const GetDiskonAll = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(
+        `${Baseurl}product/get-product?limit=0&page=0&keyword=`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      // Filter produk dengan diskon
+      const produkDenganDiskon = response?.data?.data?.data?.filter(
+        (produk) => produk.discount !== 0
+      );
+      setDataPromoAll(produkDenganDiskon)
+      console.log("Data Diskonnn:", produkDenganDiskon);
+    } catch (error) {
+      console.error("Error fetching cart data:", error);
+    }
+  };
+  
+  useEffect(() => {
+    GetDiskonAll();
+  }, []);
+  useEffect(() => {
+    GetDiskonAll();
+  }, []);
 
   const movePrev = () => {
     if (currentIndex > 0) {
@@ -209,13 +242,15 @@ const Carousel = () => {
                       <div className="sm:col-span-1 lg:col-span-4">
                         {/* Konten kanan */}
                         <div className="pt-10" style={{ marginLeft: "-30px" }}>
-                          <Link to="/detailproduct">
+                          
                             <div
                               ref={carousel}
                               className="carousel-container relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 sm:h-[330px]"
                             >
-                              {products.map((product, index) => {
+                             
+                              {DataPromoAll.map((product, index) => {
                                 return (
+                                  <Link to={`/detailproductt/${product.slug}`}>
                                   <div
                                     key={index}
                                     className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white"
@@ -225,24 +260,24 @@ const Carousel = () => {
                                       className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
                                     >
                                       <img
-                                        src={product.image}
-                                        alt={product.title}
+                                        src={product.images}
+                                        alt={product.name}
                                         className="w-full rounded-lg"
                                       />
                                       <div className="ml-2 p-[10px]">
                                         <p className="font-bold text-sm mt-2">
-                                          {product.title}
+                                          {product.name}
                                         </p>
                                         <p className="text-slate-400 text-xs">
-                                          {product.type}
+                                          {product.category}
                                         </p>
                                         <p className="text-[#E53C3C] font-semibold text-sm">
-                                          <s>{product.originalPrice}</s>
+                                          <s>{product.formatted_price}</s>
                                         </p>
                                         <div className="">
-                                          <div className="text-lg font-semibold text-[#3B8F51] mt-3">
-                                            {product.discountedPrice}{" "}
-                                            <span className="text-[#FFCA0C] ml-6">
+                                          <div className="text-lg font-semibold text-[#3B8F51] mt-1">
+                                          {product.discount[0].discount_price_formatted}
+                                            <span className="text-[#FFCA0C] ml-9">
                                               &#9733;
                                               <span className="text-sm text-[#3B8F51] ml-1">
                                                 {product.rating}/5
@@ -253,10 +288,13 @@ const Carousel = () => {
                                       </div>
                                     </a>
                                   </div>
+                                  </Link>
                                 );
+                                
                               })}
+                            
                             </div>
-                          </Link>
+                          
                         </div>
                       </div>
                     </div>

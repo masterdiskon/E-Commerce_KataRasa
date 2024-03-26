@@ -346,6 +346,33 @@ function Navbar() {
 
   const [options, setOptions] = useState([]);
 
+  // const handleSearch = async (value) => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${Baseurl}product/get-product-category/${value}`
+  //     );
+  //     const data = response.data;
+  //     const category =
+  //       data.data.products.length > 0 ? data.data.products[0].category : "";
+
+  //     const optionsData = {
+  //       value: category,
+  //       label: (
+     
+  //         <Link to={`/categoryproduct`}>
+  //           <div key={data.data.products[0].product_id}>
+  //             <p>{category}</p>
+  //           </div>
+  //         </Link>
+  //       ),
+  //     };
+
+  //     setOptions([optionsData]);
+  //   } catch (error) {
+  //     console.error("Error fetching autocomplete options:", error);
+  //   }
+  // };
+
   const handleSearch = async (value) => {
     try {
       const response = await axios.get(
@@ -382,9 +409,9 @@ function Navbar() {
   const onSelect = (value) => {
     console.log("onSelect", value);
   };
-  
+
   const onClearSearch = () => {
-    setSearchValue(''); // Mengosongkan nilai pencarian
+    setSearchValue(""); // Mengosongkan nilai pencarian
     // Lakukan reset pencarian di sini jika diperlukan
   };
 
@@ -507,7 +534,6 @@ function Navbar() {
                 onCancel={handleCancel} // Panggil handleCancel saat modal ditutup
                 footer={null} // Tidak menampilkan footer
               >
-                
                 {/* <Input
                   placeholder="Cari disini"
                   className="border border-[#3B8F51] rounded-full mt-4"
@@ -582,7 +608,6 @@ function Navbar() {
                   marginRight: 5,
                   marginTop: 15,
                   marginBottom: 8,
-                 
                 }}
                 options={options}
                 onSelect={onSelect}

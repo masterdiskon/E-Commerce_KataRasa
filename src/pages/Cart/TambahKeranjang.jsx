@@ -311,29 +311,33 @@ function TambahKeranjang() {
   //   }
   // }, 0);
 
-  async function UpdateQty(tambagKurang, qty) {
-    // console.log(tambagKurang, qty);
-    if (tambagKurang == "kurang") {
-      console.log(`ini kurang`, qty.qty - 1);
-      await updateQty(qty, "kurang");
+  async function UpdateQty(tambagKurang, item) {
+    // console.log(tambagKurang, item);
+    if (tambagKurang === "kurang") {
+        if (item.qty > 1) { // Cek apakah nilai qty lebih besar dari 1 sebelum mengurangi
+            console.log(`ini kurang`, item.qty - 1);
+            await updateQty(item, "kurang");
+        } else {
+            console.log(`Minimal qty reached`); // Jika sudah minimum, mungkin Anda ingin memberi tahu pengguna atau melakukan tindakan lain
+        }
     } else {
-      console.log(`ini tambah`, qty.qty + 1);
-      await updateQty(qty, "tambah");
+        console.log(`ini tambah`, item.qty + 1);
+        await updateQty(item, "tambah");
     }
-  }
+}
 
-  async function updateQty(qty, tambahKurang) {
-    console.log(`ini api`, qty);
-    let qtyok = "";
-    if (tambahKurang == "kurang") {
-      qtyok = parseInt(qty.qty) - 1;
-    } else {
-      qtyok = parseInt(qty.qty) + 1;
-    }
-    const body = {
-      cart_id: qty.cart_id,
+async function updateQty(item, tambahKurang) {
+  console.log(`ini api`, item);
+  let qtyok = "";
+  if (tambahKurang === "kurang") {
+      qtyok = Math.max(parseInt(item.qty) - 1, 1); // Pastikan qty tidak pernah kurang dari 1
+  } else {
+      qtyok = parseInt(item.qty) + 1;
+  }
+  const body = {
+      cart_id: item.cart_id,
       qty: qtyok,
-    };
+  };
 
     try {
       const response = await axios.put(`${Baseurl}cart/update-qty-cart`, body, {

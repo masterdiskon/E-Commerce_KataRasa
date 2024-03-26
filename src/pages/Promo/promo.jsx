@@ -20,14 +20,14 @@ function Promo() {
     { image: Promo5, name: "Promo Sumpah Pemuda - Discount 28%!" },
     { image: Promo6, name: "Buy 2 Get 1 - Independence day" },
   ];
-  
+
   const [DataPromoAll, setDataPromoAll] = useState([]);
 
   const GetCuponAll = async () => {
     try {
       // const token = localStorage.getItem("token");
       const response = await axios.get(
-        `${Baseurl}promo/get-promo?page=1&limit=999&keyword=`,
+        `${Baseurl}promo/get-promo?page=1&limit=999&keyword=`
         // {
         //   headers: {
         //     Authorization: `Bearer ${token}`,
@@ -57,24 +57,34 @@ function Promo() {
                 Promo Special Kata Rasa
               </h1>
               <div className="mt-10">
-              <div className="flex flex-wrap space-x-3">
-                {DataPromoAll.map((promo, index) => (
-                  <div className="w-1/3 mb-5 " key={index}>
-                    <Link to={`/detailpromosi/${promo.id_promo}`}>
-                      <div className="bg-white rounded-lg shadow-md p-1">
-                        <img src={`https://api.katarasa.id` + promo.images} alt={`Promo ${index + 1}`} />
-                        <p className="mb-4 ml-2 font-medium text-lg">
-                          {promo.name}
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
+                <div
+                  className={`flex flex-wrap ${
+                    DataPromoAll.length >= 3
+                      ? "justify-between"
+                      : "justify-start"
+                  }`}
+                >
+                  {DataPromoAll.map((promo, index) => (
+                    <div className="w-1/3 mb-5 " key={index}>
+                      <Link to={`/detailpromosi/${promo.id_promo}`}>
+                        <div className="bg-white rounded-lg shadow-md p-1">
+                          <div className="flex justify-center items-center">
+                            <img
+                              className="w-[80%] h-[8rem] "
+                              src={promo.images}
+                              alt={`Promo ${index + 1}`}
+                            />
+                          </div>
+                          <p className="mb-4 ml-2 font-medium text-lg">
+                            {promo.name}
+                          </p>
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            </div>
-
-           
           </div>
         </div>
       </>
@@ -87,23 +97,23 @@ function Promo() {
               Promo Special Kata Rasa
             </h1>
           </div>
-          
+
           <div className="mt-5 w-full">
-              <div className="flex flex-wrap justify-between">
-                {DataPromoAll.map((promo, index) => (
-                  <div className="w-full mb-5 " key={index}>
-                    <Link to={`/detailpromosi/${promo.id_promo}`}>
-                      <div className="bg-white rounded-lg shadow-md p-1">
-                      <img src={`https://api.katarasa.id` + promo.images} alt={`Promo ${index + 1}`} />
-                        <p className="mb-4 ml-2 font-medium text-lg">
-                          {promo.name}
-                        </p>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
-              </div>
+            <div className="flex flex-wrap justify-between">
+              {DataPromoAll.map((promo, index) => (
+                <div className="w-full mb-5 " key={index}>
+                  <Link to={`/detailpromosi/${promo.id_promo}`}>
+                    <div className="bg-white rounded-lg shadow-md p-1">
+                      <img src={promo.images} alt={`Promo ${index + 1}`} />
+                      <p className="mb-4 ml-2 font-medium text-lg">
+                        {promo.name}
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              ))}
             </div>
+          </div>
         </div>
       </>
       <div className="hidden md:inline lg:inline">

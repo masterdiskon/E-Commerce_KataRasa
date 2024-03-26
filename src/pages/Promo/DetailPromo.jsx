@@ -151,7 +151,7 @@ function DetailPromo() {
                     {DetailPromoAll.name}
                   </h1>
                   <img
-                    src={`https://api.katarasa.id` + DetailPromoAll.images}
+                    src={DetailPromoAll.images}
                     alt=""
                     className="w-full h-[320px] mt-6"
                   />
@@ -353,7 +353,7 @@ function DetailPromo() {
                 </h1>
                 <div className="flex justify-center items-center">
                   <img
-                        src={`https://api.katarasa.id` + DetailPromoAll.images}
+                        src={DetailPromoAll.images}
                     alt=""
                     className="w-[310px] h-[160px] mt-4 "
                   />

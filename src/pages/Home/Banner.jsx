@@ -55,7 +55,7 @@ function Banner() {
           {DataBanner.map((banner) => (
             <div key={banner.id} className="flex justify-center">
               <img
-                className="w-full object-cover md:object-fill"
+                className="w-full object-cover sm:object-fill"
                 src={banner.images}
                 alt={banner.name}
               />

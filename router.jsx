@@ -18,6 +18,7 @@ import ProductMerchen from "./src/pages/Produk/ProductMerchen";
 import DetailProductChoco from "./src/pages/DetailProduct/DetailProductChoco";
 import AkunPage from "./src/pages/Akun/AkunPage";
 import BantuanPage from "./src/pages/Bantuan/BantuanPage";
+import CategoryProduct from "./src/pages/Produk/CategoryProduct";
 
 const AppRouter = () => {
   return (
@@ -29,6 +30,7 @@ const AppRouter = () => {
       <Route path="/tambahkeranjang" element={<TambahKeranjang />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/pencarian" element={<Pencarian />} />
+      <Route path="/categoryproduct" element={<CategoryProduct />} />
       {/* <Route path="/detailproduct" element={<DetailProduct />} /> */}
       <Route path="/detailproduct/:slug" element={<DetailProduct />} />
       <Route path="/detailproductt/:slug" element={<DetailProductChoco />} />
