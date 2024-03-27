@@ -7,6 +7,7 @@ import Valentine from "../../../assets/Promo/promo2.png";
 import Promo3 from "../../../assets/Promo/promo3.png";
 import Promo4 from "../../../assets/Promo/promo4.png";
 import Promo5 from "../../../assets/Promo/promo5.png";
+import noPromo from "../../../assets/NoPromo.png";
 import { Card, Carousel } from "antd";
 import { Link } from "react-router-dom";
 import Baseurl from "../../Api/BaseUrl";
@@ -147,27 +148,40 @@ function Cupon() {
               style={{ maxWidth: "100%" }}
               ref={sliderRef}
             >
-              {DataPromoAll.map((promo, index) => (
-                <Link to={`/detailpromosi/${promo.id_promo}`}>
-                  <div
-                    key={index}
-                    className="justify-start mt-2"
-                    style={{
-                      position: "relative",
-                      flex: "0 0 auto",
-                      marginRight: "10px",
-                    }}
-                  >
+              {DataPromoAll.length === 0 ? (
+                <div className=" w-full">
+                  <div className="flex justify-center items-center">
                     <img
-                      src={promo.images}
-                      // src={promo.images}
-                      alt={`Promo ${index}`}
-                      className="w-full sm:w-[270px] h-[150px]"
+                      src={noPromo}
+                      alt="No Promo"
+                      className="w-full sm:w-[250px] h-[150px]"
                     />
-                    <p></p>
                   </div>
-                </Link>
-              ))}
+                  <div className="flex justify-center items-center text-center text-green-700">
+                    <p className="mb-5">No promo available</p>
+                  </div>
+                </div>
+              ) : (
+                DataPromoAll.map((promo, index) => (
+                  <Link to={`/detailpromosi/${promo.id_promo}`} key={index}>
+                    <div
+                      className="justify-start mt-2"
+                      style={{
+                        position: "relative",
+                        flex: "0 0 auto",
+                        marginRight: "10px",
+                      }}
+                    >
+                      <img
+                        src={promo.images}
+                        alt={`Promo ${index}`}
+                        className="w-full sm:w-[270px] h-[150px]"
+                      />
+                      <p></p>
+                    </div>
+                  </Link>
+                ))
+              )}
             </div>
             <button
               className="absolute   top-0 bottom-0 left-0 bg-transparent text-[#3B8F51] px-2 py-1"
@@ -212,13 +226,31 @@ function Cupon() {
       </div>
 
       {/* Layar HP */}
-      <div className="mx-auto justify-center flex px-6 py-2">
-        <div className="md:hidden lg:hidden ">
+      <div className="mx-auto inline sm:hidden  px-6 py-2">
+        <div className="inline sm:hidden ">
           <p className="font-medium text-lg ">
             Makin <span className="text-[#3B8F51]">discount</span> dengan kupon!
           </p>
-          <div className="flex overflow-auto" style={{ maxWidth: "100%" }}>
-            {promos.map((promo, index) => (
+        </div>
+        <div
+          className="flex   overflow-auto"
+          style={{ maxWidth: "100%" }}
+        >
+          {DataPromoAll.length === 0 ? (
+            <div className="w-full">
+              <div className="flex justify-center items-center">
+                <img
+                  src={noPromo}
+                  alt="No Promo"
+                  className="w-[10rem] rounded-lg mt-5"
+                />
+              </div>
+              <div className="flex justify-center items-center text-center text-green-700">
+                <p>No promo available</p>
+              </div>
+            </div>
+          ) : (
+            DataPromoAll.map((promo, index) => (
               <div
                 key={index}
                 className="justify-start mt-2"
@@ -232,21 +264,9 @@ function Cupon() {
                   src={promo.image}
                   className="w-full md:w-[240px] h-[95px]"
                 />
-                {/* <div
-                  style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "15px",
-                    color: "white",
-                  }}
-                >
-                  <p className="text-xs font-medium mt-2">{promo.title}</p>
-                  <p className="text-[10px]">{promo.discount}</p>
-                  <p className="text-[10px] mt-2">{promo.date}</p>
-                </div> */}
               </div>
-            ))}
-          </div>
+            ))
+          )}
         </div>
       </div>
     </div>

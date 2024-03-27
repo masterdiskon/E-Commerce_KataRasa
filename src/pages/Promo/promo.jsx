@@ -6,6 +6,7 @@ import Promo3 from "../../../assets/Promo/promo3.png";
 import Promo4 from "../../../assets/Promo/promo4.png";
 import Promo5 from "../../../assets/Promo/promo5.png";
 import Promo6 from "../../../assets/Promo/promo6.png";
+import noPromo from "../../../assets/NoFound.png";
 import Footer from "../../layout/Footer";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -64,24 +65,41 @@ function Promo() {
                       : "justify-start"
                   }`}
                 >
-                  {DataPromoAll.map((promo, index) => (
-                    <div className="w-1/3 mb-5 " key={index}>
-                      <Link to={`/detailpromosi/${promo.id_promo}`}>
-                        <div className="bg-white rounded-lg shadow-md p-1">
-                          <div className="flex justify-center items-center">
-                            <img
-                              className="w-[80%] h-[8rem] "
-                              src={promo.images}
-                              alt={`Promo ${index + 1}`}
-                            />
-                          </div>
-                          <p className="mb-4 ml-2 font-medium text-lg">
-                            {promo.name}
-                          </p>
+                  {DataPromoAll.length === 0 ? (
+                    <div className="w-full  mb-5">
+                      <div className="h-full  p-1">
+                        <div className="flex justify-center items-center mt-[6rem]">
+                          <img
+                            className="w-[30%] "
+                            src={noPromo}
+                            alt="No Promo"
+                          />
                         </div>
-                      </Link>
+                        <p className="mb-4 text-green-600 font-medium text-lg text-center">
+                          No Promo Available
+                        </p>
+                      </div>
                     </div>
-                  ))}
+                  ) : (
+                    DataPromoAll.map((promo, index) => (
+                      <div className="w-1/3 mb-5" key={index}>
+                        <Link to={`/detailpromosi/${promo.id_promo}`}>
+                          <div className="bg-white rounded-lg shadow-md p-1">
+                            <div className="flex justify-center items-center">
+                              <img
+                                className="w-[80%] h-[8rem]"
+                                src={promo.images}
+                                alt={`Promo ${index + 1}`}
+                              />
+                            </div>
+                            <p className="mb-4 ml-2 font-medium text-lg">
+                              {promo.name}
+                            </p>
+                          </div>
+                        </Link>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
@@ -100,23 +118,36 @@ function Promo() {
 
           <div className="mt-5 w-full">
             <div className="flex flex-wrap justify-between">
-              {DataPromoAll.map((promo, index) => (
-                <div className="w-full mb-5 " key={index}>
-                  <Link to={`/detailpromosi/${promo.id_promo}`}>
-                    <div className="bg-white rounded-lg shadow-md p-1">
-                      <img src={promo.images} alt={`Promo ${index + 1}`} />
-                      <p className="mb-4 ml-2 font-medium text-lg">
-                        {promo.name}
-                      </p>
+              {DataPromoAll.length === 0 ? (
+                <div className="w-full mb-5 ">
+                  <div className="h-full  p-1">
+                    <div className="flex justify-center items-center mt-[5rem]">
+                      <img className="w-[30%]" src={noPromo} alt="No Promo" />
                     </div>
-                  </Link>
+                    <p className=" text-green-600 font-medium text-sm text-center mb-[5rem]">
+                      No Promo Available
+                    </p>
+                  </div>
                 </div>
-              ))}
+              ) : (
+                DataPromoAll.map((promo, index) => (
+                  <div className="w-full mb-5" key={index}>
+                    <Link to={`/detailpromosi/${promo.id_promo}`}>
+                      <div className="bg-white rounded-lg shadow-md p-1">
+                        <img src={promo.images} alt={`Promo ${index + 1}`} />
+                        <p className="mb-4 ml-2 font-medium text-lg">
+                          {promo.name}
+                        </p>
+                      </div>
+                    </Link>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
       </>
-      <div className="hidden md:inline lg:inline">
+      <div className="">
         <Footer />
       </div>
     </div>

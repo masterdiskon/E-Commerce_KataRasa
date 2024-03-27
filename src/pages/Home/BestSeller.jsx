@@ -200,7 +200,7 @@ const BestSeller = () => {
                       <div className="p-4 hidden sm:inline">
                         <div
                           className="justify-start"
-                          style={{ position: "relative" }}
+                          style={{ position: "relativew" }}
                         >
                           <img
                             src={PestaDisc}

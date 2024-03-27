@@ -5,6 +5,7 @@ import ProductChocoBar1 from "../assets/ChocoBar/productChocobar2.png";
 import ProductChocoBar2 from "../assets/ChocoBar/productChocobar4.png";
 import ProductChocolate1 from "../assets/ProductChocolate/productChocolateJar2.png";
 import ProductChocolate2 from "../assets/ProductChocolate/productChocolateJar4.png";
+import noPromo from "../../../assets/NoPromo.png";
 import data from "./data.json";
 import { Button, Col, Row } from "antd";
 import Navbar from "./layout/Navbar";
@@ -29,18 +30,18 @@ const Carousel = () => {
           },
         }
       );
-  
+
       // Filter produk dengan diskon
       const produkDenganDiskon = response?.data?.data?.data?.filter(
         (produk) => produk.discount !== 0
       );
-      setDataPromoAll(produkDenganDiskon)
+      setDataPromoAll(produkDenganDiskon);
       console.log("Data Diskonnn:", produkDenganDiskon);
     } catch (error) {
       console.error("Error fetching cart data:", error);
     }
   };
-  
+
   useEffect(() => {
     GetDiskonAll();
   }, []);
@@ -242,59 +243,74 @@ const Carousel = () => {
                       <div className="sm:col-span-1 lg:col-span-4">
                         {/* Konten kanan */}
                         <div className="pt-10" style={{ marginLeft: "-30px" }}>
-                          
-                            <div
-                              ref={carousel}
-                              className="carousel-container relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 sm:h-[330px]"
-                            >
-                             
-                              {DataPromoAll.map((product, index) => {
+                          <div
+                            ref={carousel}
+                            className="carousel-container relative flex gap-2 overflow-hidden scroll-smooth snap-x snap-mandatory touch-pan-x z-0 sm:h-[330px]"
+                          >
+                            {DataPromoAll.length === 0 ? (
+                              <div className="carousel-item rounded-lg relative snap-start shadow-2xl sm:w-full sm:h-[310px] mt-1 bg-white">
+                                <div className="flex justify-center text-center items-center">
+                                  <img
+                                    src={noPromo}
+                                    alt="No Promo"
+                                    className="w-[256px] rounded-lg mt-10"
+                                  />
+                                </div>
+                                <div className="text-center p-[10px]">
+                                  <p className="font-bold text-sm mt-6 text-green-700">
+                                    No Diskon Available
+                                  </p>
+                                </div>
+                              </div>
+                            ) : (
+                              DataPromoAll.map((product, index) => {
                                 return (
-                                  <Link to={`/detailproductt/${product.slug}`}>
-                                  <div
+                                  <Link
+                                    to={`/detailproductt/${product.slug}`}
                                     key={index}
-                                    className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white"
                                   >
-                                    <a
-                                      href={product.link}
-                                      className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
-                                    >
-                                      <img
-                                        src={product.images}
-                                        alt={product.name}
-                                        className="w-full rounded-lg"
-                                      />
-                                      <div className="ml-2 p-[10px]">
-                                        <p className="font-bold text-sm mt-2">
-                                          {product.name}
-                                        </p>
-                                        <p className="text-slate-400 text-xs">
-                                          {product.category}
-                                        </p>
-                                        <p className="text-[#E53C3C] font-semibold text-sm">
-                                          <s>{product.formatted_price}</s>
-                                        </p>
-                                        <div className="">
-                                          <div className="text-lg font-semibold text-[#3B8F51] mt-1">
-                                          {product.discount[0].discount_price_formatted}
-                                            <span className="text-[#FFCA0C] ml-9">
-                                              &#9733;
-                                              <span className="text-sm text-[#3B8F51] ml-1">
-                                                {product.rating}/5
+                                    <div className="carousel-item rounded-lg relative snap-start shadow-2xl md:w-[200px] sm:h-[310px] mt-1 bg-white">
+                                      <a
+                                        href={product.link}
+                                        className="h-full w-full aspect-square block bg-origin-padding bg-left-top bg-cover bg-no-repeat z-0"
+                                      >
+                                        <img
+                                          src={product.images}
+                                          alt={product.name}
+                                          className="w-full rounded-lg"
+                                        />
+                                        <div className="ml-2 p-[10px]">
+                                          <p className="font-bold text-sm mt-2">
+                                            {product.name}
+                                          </p>
+                                          <p className="text-slate-400 text-xs">
+                                            {product.category}
+                                          </p>
+                                          <p className="text-[#E53C3C] font-semibold text-sm">
+                                            <s>{product.formatted_price}</s>
+                                          </p>
+                                          <div className="">
+                                            <div className="text-lg font-semibold text-[#3B8F51] mt-1">
+                                              {
+                                                product.discount[0]
+                                                  .discount_price_formatted
+                                              }
+                                              <span className="text-[#FFCA0C] ml-9">
+                                                &#9733;
+                                                <span className="text-sm text-[#3B8F51] ml-1">
+                                                  {product.rating}/5
+                                                </span>
                                               </span>
-                                            </span>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    </a>
-                                  </div>
+                                      </a>
+                                    </div>
                                   </Link>
                                 );
-                                
-                              })}
-                            
-                            </div>
-                          
+                              })
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -308,9 +324,8 @@ const Carousel = () => {
 
       {/* Layar Hp */}
       <>
-        <div className=" sm:inline lg:hidden md:hidden sm:w-full mx-auto justify-center flex px-4 py-2 mt-5 ">
-          <div>
-            <div className="flex">
+        <div className=" sm:inline lg:hidden md:hidden sm:w-full mx-auto  px-4 py-2 mt-5 ">
+        <div className="flex justify-between ">
               <div className="w-full p-4 mb-0">
                 <p className="text-[#3B8F51] text-sm font-bold">
                   Pesta Seru Discount!
@@ -324,12 +339,15 @@ const Carousel = () => {
                   </p>
                 </Button>
               </div>
+              
             </div>
-            <div className="container mx-auto p-4 pt-0">
+            <div>
+            
+            <div className="container mx-auto  pt-0">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
                 <div className="sm:col-span-1 lg:col-span-1">
                   {/* Konten kiri */}
-                  <div className="p-4 hidden sm:inline">
+                  <div className=" hidden sm:inline">
                     <div
                       className="justify-start"
                       style={{ position: "relative" }}
@@ -368,8 +386,23 @@ const Carousel = () => {
                         ref={carousel}
                         className="carousel-container  relative flex gap-1 overflow-auto scroll-smooth snap-x snap-mandatory touch-pan-x z-0"
                       >
-                        {products.map((product, index) => {
-                          return (
+                        {DataPromoAll.length === 0 ? (
+                          <div className=" carousel-item rounded-lg relative snap-start w-full sm:h-[310px] mt-1 bg-white">
+                            <div className="flex justify-center text-center items-center">
+                              <img
+                                src={noPromo}
+                                alt="No Promo"
+                                className="w-[10rem] rounded-lg mt-5"
+                              />
+                            </div>
+                            <div className="text-center ">
+                              <p className="font-semibold text-sm mt-6 text-green-700">
+                                No Diskon Available
+                              </p>
+                            </div>
+                          </div>
+                        ) : (
+                          DataPromoAll.map((product, index) => (
                             <div
                               key={index}
                               className="carousel-item rounded-lg relative snap-start shadow-2xl w-[140px] h-[220px] mt-2 bg-white"
@@ -408,16 +441,16 @@ const Carousel = () => {
                               </a>
 
                               {/* <a
-             href={product.link}
-             className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-blue-800/75 z-10"
-           >
-             <h3 className="text-black py-6 px-3 mx-auto text-xl">
-               {product.title}
-             </h3>
-           </a> */}
+        href={product.link}
+        className="h-full w-full aspect-square block absolute top-0 left-0 transition-opacity duration-300 opacity-0 hover:opacity-100 bg-blue-800/75 z-10"
+      >
+        <h3 className="text-black py-6 px-3 mx-auto text-xl">
+          {product.title}
+        </h3>
+      </a> */}
                             </div>
-                          );
-                        })}
+                          ))
+                        )}
                       </div>
                     </Link>
                   </div>
